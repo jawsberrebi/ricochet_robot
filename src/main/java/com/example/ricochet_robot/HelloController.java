@@ -1,4 +1,4 @@
-package com.example.ricochet_robot.frontend;
+package com.example.ricochet_robot;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

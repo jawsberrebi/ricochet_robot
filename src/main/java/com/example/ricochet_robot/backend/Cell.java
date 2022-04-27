@@ -1,10 +1,11 @@
 package com.example.ricochet_robot.backend;
 
-import javafx.geometry.Pos;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cell {
     private Position position;
-    private Wall[] walls;
+    private List<Wall> walls = new ArrayList<>();
     private boolean isThereWall;
     private boolean isThereARobot;
 
@@ -15,11 +16,22 @@ public class Cell {
     }
 
     //Construction d'une case avec mur
-    Cell(Position p, Wall[] w){
+    Cell(Position p, List<Wall> w){
         this.position = p;
         this.walls = w;
         this.isThereWall = true;
     }
+
+    //Getters/Setters
+    public Position getPosition() {
+        return position;
+    }
+
+    public void addWalls(Orientation orientation){
+        this.walls.add(new Wall(orientation));
+        this.isThereWall = true;
+    }
+
 
 
 }

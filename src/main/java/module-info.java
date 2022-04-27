@@ -4,7 +4,6 @@ module com.example.ricochet_robot {
 
 
     opens com.example.ricochet_robot to javafx.fxml;
+    exports com.example.ricochet_robot.backend;
     exports com.example.ricochet_robot;
-    exports com.example.ricochet_robot.frontend;
-    opens com.example.ricochet_robot.frontend to javafx.fxml;
 }
