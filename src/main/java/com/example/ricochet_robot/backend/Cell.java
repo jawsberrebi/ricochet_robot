@@ -27,11 +27,16 @@ public class Cell {
         return position;
     }
 
+    public List<Wall> getWalls() {
+        return this.walls;
+    }
+
     public void addWalls(Orientation orientation){
         this.walls.add(new Wall(orientation));
         this.isThereWall = true;
     }
 
-
-
+    public boolean isThereWall() {
+        return this.isThereWall;
+    }
 }
