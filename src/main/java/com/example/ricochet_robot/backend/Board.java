@@ -27,6 +27,10 @@ public class Board {
         this.cells = new Cell[17][17];
     }
 
+    public Cell[][] getCells() {
+        return this.cells;
+    }
+
     //Génération d'un nouveau plateau
     public void createBoard(){
         this.cells = new Cell[17][17];
@@ -54,29 +58,17 @@ public class Board {
             }
         }
 
-        //Bas gauche
-        this.cells[9][8].addWalls(Orientation.WEST);
-        this.cells[9][8].addWalls(Orientation.SOUTH);
-        //On place la signalisation du goal bas gauche dans la boîte centrale
-        //this.goalBox[1][0].setPosition(this.cells[9][8].getPosition());
-
-        //Bas droit
-        this.cells[9][9].addWalls(Orientation.EAST);
-        this.cells[9][9].addWalls(Orientation.SOUTH);
-        //On place la signalisation du goal bas droit dans la boîte centrale
-        //this.goalBox[1][1].setPosition(this.cells[9][9].getPosition());
-
-        //Haut gauche
-        this.cells[8][8].addWalls(Orientation.WEST);
-        this.cells[8][8].addWalls(Orientation.NORTH);
-        //On place la signalisation du goal haut gauche dans la boîte centrale
-        //this.goalBox[0][0].setPosition(this.cells[8][8].getPosition());
-
-        //Haut droit
-        this.cells[8][9].addWalls(Orientation.EAST);
-        this.cells[8][9].addWalls(Orientation.NORTH);
-        //On place la signalisation du goal haut droit dans la boîte centrale
-        //this.goalBox[0][1].setPosition(this.cells[8][9].getPosition());
+        //Création de murs pour encadrer la boîte de l'objectif
+        this.cells[9][7].addWalls(Orientation.EAST);
+        this.cells[9][10].addWalls(Orientation.WEST);
+        this.cells[10][9].addWalls(Orientation.NORTH);
+        this.cells[7][9].addWalls(Orientation.SOUTH);
+        this.cells[7][8].addWalls(Orientation.SOUTH);
+        this.cells[8][10].addWalls(Orientation.WEST);
+        this.cells[8][7].addWalls(Orientation.EAST);
+        this.cells[10][8].addWalls(Orientation.NORTH);
 
     }
+
+
 }

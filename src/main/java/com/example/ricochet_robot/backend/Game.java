@@ -11,4 +11,8 @@ public class Game {
     public void play(){
         this.board.createBoard();
     }
+
+    public Board getBoard() {
+        return this.board;
+    }
 }
