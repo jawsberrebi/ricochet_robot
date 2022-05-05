@@ -68,6 +68,22 @@ public class Board {
         this.cells[8][7].addWalls(Orientation.EAST);
         this.cells[10][8].addWalls(Orientation.NORTH);
 
+        //Création des murs de détourage du plateau
+        for(int i = 1; i < this.cells.length; i++){
+            this.cells[1][i].addWalls(Orientation.NORTH);
+        }
+
+        for(int i = 1; i < this.cells.length; i++){
+            this.cells[i][1].addWalls(Orientation.WEST);
+        }
+
+        for(int i = 1; i < this.cells.length; i++){
+            this.cells[i][16].addWalls(Orientation.EAST);
+        }
+
+        for(int i = 1; i < this.cells.length; i++){
+            this.cells[16][i].addWalls(Orientation.SOUTH);
+        }
     }
 
 

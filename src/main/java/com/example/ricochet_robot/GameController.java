@@ -45,6 +45,7 @@ public class GameController implements Initializable {
                 //Dans le cas où plusieurs murs sont présents sur une même case, on superpose les images de murs
                 if (this.game.getBoard().getCells()[j + 1][i + 1].isThereWall()){
                     Group finalOverlaid = new Group();
+                    Group overlaidBlack = new Group(new ImageView(imageCell));
                     for (int w = 0; w < this.game.getBoard().getCells()[j + 1][i + 1].getWalls().size(); w++){
                         if(this.game.getBoard().getCells()[j + 1][i + 1].getWalls().get(w).getOrientation() == Orientation.NORTH){
                             Image imageWall = new Image(new File("C:\\Users\\berja\\OneDrive\\Bureau\\Travail\\A1\\ricochet_robot\\src\\main\\resources\\com\\example\\ricochet_robot\\boards\\NorthWall.png").toURI().toString() , 44, 44, false, false);
@@ -56,8 +57,8 @@ public class GameController implements Initializable {
                                     whiteRect
                             );
                             inverted.setBlendMode(BlendMode.MULTIPLY);
-                            Group overlaidBlack = new Group(
-                                    new ImageView(imageCell),
+                            overlaidBlack = new Group(
+                                    overlaidBlack,
                                     inverted
                             );
 
@@ -89,8 +90,8 @@ public class GameController implements Initializable {
                             );
 
                             inverted.setBlendMode(BlendMode.MULTIPLY);
-                            Group overlaidBlack = new Group(
-                                    new ImageView(imageCell),
+                            overlaidBlack = new Group(
+                                    overlaidBlack,
                                     inverted
                             );
 
@@ -105,8 +106,8 @@ public class GameController implements Initializable {
                             imageWallSouth.setBlendMode(BlendMode.ADD);
                             finalOverlaid = new Group(
                                     overlaidBlack,
-                                    imageWallSouth,
-                                    finalOverlaid
+                                    imageWallSouth
+
                             );
 
                         }
@@ -122,8 +123,8 @@ public class GameController implements Initializable {
                             );
 
                             inverted.setBlendMode(BlendMode.MULTIPLY);
-                            Group overlaidBlack = new Group(
-                                    new ImageView(imageCell),
+                            overlaidBlack = new Group(
+                                    overlaidBlack,
                                     inverted
                             );
 
@@ -155,8 +156,8 @@ public class GameController implements Initializable {
                             );
 
                             inverted.setBlendMode(BlendMode.MULTIPLY);
-                            Group overlaidBlack = new Group(
-                                    new ImageView(imageCell),
+                            overlaidBlack = new Group(
+                                    overlaidBlack,
                                     inverted
                             );
 
@@ -176,6 +177,7 @@ public class GameController implements Initializable {
                             );
 
                         }
+
 
                         pane.getChildren().add(finalOverlaid);
 
