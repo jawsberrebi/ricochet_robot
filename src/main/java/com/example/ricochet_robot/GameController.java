@@ -21,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class GameController implements Initializable {
 
@@ -96,9 +97,6 @@ public class GameController implements Initializable {
 
 
                 if((i != 8 && i != 7) || (j != 7 && j != 8)){
-
-
-
                     // Rendre stackPane cliquable
                     stackPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -106,6 +104,18 @@ public class GameController implements Initializable {
                         public void handle(MouseEvent event) {
                             String id = ((StackPane) event.getSource()).getId();
                             System.out.println("Tile id : " + id);
+
+                            int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
+
+                            // Vérifier s'il existe un robot
+                            Cell clickedCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
+                            if (clickedCell.isThereARobot()) {
+
+                                // Sélectionner robot
+                                Robot selectedRobot = clickedCell.getCurrentRobot();
+                                System.out.println(selectedRobot.getColor());
+                            }
+
                             event.consume();
                         }
                     });
@@ -113,6 +123,7 @@ public class GameController implements Initializable {
                     // Ajouter stackPane au board
                     this.board[i][j] = stackPane;
                     this.boardPane.add(stackPane, i, j);
+                    System.out.println(this.boardPane.getChildren());
                 }
             }
         }
