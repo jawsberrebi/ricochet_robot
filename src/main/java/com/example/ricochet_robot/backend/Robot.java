@@ -114,4 +114,7 @@ public class Robot {
         }
     }
 
+    public Color getColor() {
+        return color;
+    }
 }
