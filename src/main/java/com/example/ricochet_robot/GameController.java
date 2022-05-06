@@ -19,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 public class GameController implements Initializable {
 
@@ -36,6 +37,8 @@ public class GameController implements Initializable {
         this.game.play();
         //Création du plateau en frontend
         boardGeneration();
+
+        updateImage(3, 5);
     }
 
     private void boardGeneration(){
@@ -62,7 +65,6 @@ public class GameController implements Initializable {
                         // Add wall image to cell
                         Image wallImage = new Image(new File(filePathRoot + "boards/" + wallImageFilename).toURI().toString() , 44, 44, false, false);
                         ImageView wallImageView = new ImageView(wallImage);
-
                         stackPane.getChildren().add(wallImageView);
                     }
                 }
@@ -93,8 +95,23 @@ public class GameController implements Initializable {
 
                     this.board[i][j] = stackPane;
                     this.boardPane.add(stackPane, i, j);
+
+                }else{
+                    stackPane = new StackPane();
+                    Image goalBox = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/GoalBox.png").toURI().toString() , 44, 44, false, false);
+                    ImageView goalBoxView = new ImageView(goalBox);
+                    stackPane.getChildren().add(goalBoxView);
+                    this.board[i][j] = stackPane;
+                    this.boardPane.add(stackPane, i, j);
                 }
             }
         }
+    }
+
+    private void updateImage(int row, int col){
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().add(new ImageView(new Image(new File("src/main/resources/com/example/ricochet_robot/robots/robotYellow.png").toURI().toString() , 44, 44, false, false)));
+        this.boardPane.getChildren().remove(row*col);
+        this.boardPane.add(stackPane, col-1, row-1);
     }
 }
