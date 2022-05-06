@@ -42,6 +42,7 @@ public class Board {
         }
 
         makeCentralBox();
+        addWallsOnBoard();
     }
 
     //Ajout de murs dans une case : on spécifie la position de cette case dans la matrice de cases puis on opère la changement
@@ -108,16 +109,14 @@ public class Board {
 
     public void addRobotsToBoard() {
         for (int i = 0; i < 4; i++) {
-            int randomRow = (int)(Math.random() * 16);
-            int randomColumn = (int)(Math.random() * 16);
+            int randomRow = (int)(Math.random() * 16) + 1;
+            int randomColumn = (int)(Math.random() * 16) + 1;
 
             // Positionner aléatoirement les robots
-            /*
-            while (!(randomRow > 6 && randomRow < 11 && randomColumn > 6 && randomColumn < 11)) {
+            while ((randomRow == 8 || randomRow == 9) && (randomColumn == 8 || randomColumn == 9)) {
                 randomRow = (int)(Math.random() * 16);
                 randomColumn = (int)(Math.random() * 16);
             }
-            */
 
             Color robotColor = Color.RED;
             switch (i) {

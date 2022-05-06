@@ -12,6 +12,11 @@ public class Robot {
     }
 
     //Getters/Setters
+
+    public Color getColor() {
+        return color;
+    }
+
     public boolean isTheGoalRobot() {
         return isTheGoalRobot;
     }
