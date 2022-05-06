@@ -86,8 +86,6 @@ public class Board {
         }
     }
 
-<<<<<<< Updated upstream
-=======
     public void addWallsOnBoard(){
         this.cells[1][2].addWalls(Orientation.EAST);
         this.cells[1][10].addWalls(Orientation.EAST);
@@ -106,7 +104,5 @@ public class Board {
         this.cells[16][5].addWalls(Orientation.EAST);
         this.cells[16][11].addWalls(Orientation.EAST);
     }
-
->>>>>>> Stashed changes
 
 }
