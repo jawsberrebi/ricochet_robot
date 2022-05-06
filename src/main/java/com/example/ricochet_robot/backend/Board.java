@@ -41,6 +41,7 @@ public class Board {
         }
 
         makeCentralBox();
+        addWallsOnBoard();
     }
 
     //Ajout de murs dans une case : on spécifie la position de cette case dans la matrice de cases puis on opère la changement
@@ -91,18 +92,45 @@ public class Board {
         this.cells[1][10].addWalls(Orientation.EAST);
         this.cells[2][4].addWalls(Orientation.NORTH);
         this.cells[2][4].addWalls(Orientation.WEST);
+        this.cells[2][13].addWalls(Orientation.NORTH);
+        this.cells[2][13].addWalls(Orientation.WEST);
+        this.cells[2][16].addWalls(Orientation.SOUTH);
+        this.cells[4][7].addWalls(Orientation.SOUTH);
+        this.cells[4][7].addWalls(Orientation.EAST);
+        this.cells[4][10].addWalls(Orientation.SOUTH);
+        this.cells[4][10].addWalls(Orientation.WEST);
         this.cells[5][2].addWalls(Orientation.WEST);
         this.cells[5][2].addWalls(Orientation.SOUTH);
+        this.cells[5][15].addWalls(Orientation.EAST);
+        this.cells[5][15].addWalls(Orientation.SOUTH);
+        this.cells[6][11].addWalls(Orientation.NORTH);
+        this.cells[6][11].addWalls(Orientation.EAST);
         this.cells[7][5].addWalls(Orientation.NORTH);
         this.cells[7][1].addWalls(Orientation.SOUTH);
         this.cells[7][5].addWalls(Orientation.EAST);
+        this.cells[9][13].addWalls(Orientation.NORTH);
+        this.cells[9][13].addWalls(Orientation.WEST);
         this.cells[10][4].addWalls(Orientation.SOUTH);
         this.cells[10][4].addWalls(Orientation.EAST);
+        this.cells[10][11].addWalls(Orientation.WEST);
+        this.cells[10][11].addWalls(Orientation.SOUTH);
         this.cells[11][1].addWalls(Orientation.SOUTH);
+        this.cells[11][16].addWalls(Orientation.SOUTH);
+        this.cells[12][6].addWalls(Orientation.NORTH);
+        this.cells[12][6].addWalls(Orientation.WEST);
+        this.cells[12][10].addWalls(Orientation.EAST);
+        this.cells[12][10].addWalls(Orientation.SOUTH);
+        this.cells[13][1].addWalls(Orientation.NORTH);
+        this.cells[13][1].addWalls(Orientation.WEST);
         this.cells[14][2].addWalls(Orientation.WEST);
         this.cells[14][2].addWalls(Orientation.SOUTH);
+        this.cells[15][7].addWalls(Orientation.NORTH);
+        this.cells[15][7].addWalls(Orientation.EAST);
+        this.cells[15][14].addWalls(Orientation.NORTH);
+        this.cells[15][14].addWalls(Orientation.WEST);
         this.cells[16][5].addWalls(Orientation.EAST);
         this.cells[16][11].addWalls(Orientation.EAST);
+
     }
 
 }
