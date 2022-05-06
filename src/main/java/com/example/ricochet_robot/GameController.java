@@ -4,12 +4,14 @@ import com.example.ricochet_robot.backend.Cell;
 import com.example.ricochet_robot.backend.Game;
 import com.example.ricochet_robot.backend.Orientation;
 import com.example.ricochet_robot.backend.Robot;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -43,6 +45,10 @@ public class GameController implements Initializable {
             for (int j = 0; j < 16; j++) {
                 StackPane stackPane = new StackPane();
 
+                // Ajouter un identifiant
+                //stackPane.setId();
+
+                // Ajouter image de cellule
                 Image cellImage = new Image(new File(filePathRoot + "boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
                 ImageView cellImageView = new ImageView(cellImage);
                 stackPane.getChildren().add(cellImageView);
@@ -67,6 +73,7 @@ public class GameController implements Initializable {
                     }
                 }
 
+                // Afficher robots
                 if (this.game.getBoard().getCells()[j + 1][i + 1].isThereARobot()) {
                     Robot robot = this.game.getBoard().getCells()[j + 1][i + 1].getCurrentRobot();
                     String filename;
@@ -91,6 +98,19 @@ public class GameController implements Initializable {
 
                 if((i != 8 && i != 7) || (j != 7 && j != 8)){
 
+
+
+                    // Rendre stackPane cliquable
+                    stackPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                        @Override
+                        public void handle(MouseEvent event) {
+                            System.out.println("Tile pressed");
+                            event.consume();
+                        }
+                    });
+
+                    // Ajouter stackPane au board
                     this.board[i][j] = stackPane;
                     this.boardPane.add(stackPane, i, j);
                 }
