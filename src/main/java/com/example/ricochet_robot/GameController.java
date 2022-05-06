@@ -46,7 +46,7 @@ public class GameController implements Initializable {
                 StackPane stackPane = new StackPane();
 
                 // Ajouter un identifiant
-                //stackPane.setId();
+                stackPane.setId(Integer.toString(j + 1) + "," + Integer.toString(i + 1));
 
                 // Ajouter image de cellule
                 Image cellImage = new Image(new File(filePathRoot + "boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
@@ -77,7 +77,6 @@ public class GameController implements Initializable {
                 if (this.game.getBoard().getCells()[j + 1][i + 1].isThereARobot()) {
                     Robot robot = this.game.getBoard().getCells()[j + 1][i + 1].getCurrentRobot();
                     String filename;
-                    System.out.println(j + 1 + ", " + i + 1);
 
                     if (robot.getColor().equals(Color.RED)) {
                         filename = "robotRed.png";
@@ -105,7 +104,8 @@ public class GameController implements Initializable {
 
                         @Override
                         public void handle(MouseEvent event) {
-                            System.out.println("Tile pressed");
+                            String id = ((StackPane) event.getSource()).getId();
+                            System.out.println("Tile id : " + id);
                             event.consume();
                         }
                     });
