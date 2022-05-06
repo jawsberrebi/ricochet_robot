@@ -8,8 +8,9 @@ public class Game {
         this.board = new Board();
     }
 
-    public void play(){
+    public void play() {
         this.board.createBoard();
+        this.board.addRobotsToBoard();
     }
 
     public Board getBoard() {

@@ -2,6 +2,7 @@ package com.example.ricochet_robot.backend;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.paint.Color;
 
 public class Board {
 
@@ -105,4 +106,28 @@ public class Board {
         this.cells[16][11].addWalls(Orientation.EAST);
     }
 
+    public void addRobotsToBoard() {
+        for (int i = 0; i < 4; i++) {
+            int randomRow = (int)(Math.random() * 16);
+            int randomColumn = (int)(Math.random() * 16);
+
+            // Positionner aléatoirement les robots
+            /*
+            while (!(randomRow > 6 && randomRow < 11 && randomColumn > 6 && randomColumn < 11)) {
+                randomRow = (int)(Math.random() * 16);
+                randomColumn = (int)(Math.random() * 16);
+            }
+            */
+
+            Color robotColor = Color.RED;
+            switch (i) {
+                case 1 -> robotColor = Color.BLUE;
+                case 2 -> robotColor = Color.GREEN;
+                case 3 -> robotColor = Color.YELLOW;
+            }
+
+            Robot robot = new Robot(robotColor);
+            this.cells[randomRow][randomColumn].addRobot(robot);
+        }
+    }
 }

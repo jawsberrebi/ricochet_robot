@@ -2,6 +2,7 @@ package com.example.ricochet_robot;
 
 import com.example.ricochet_robot.backend.Game;
 import com.example.ricochet_robot.backend.Orientation;
+import com.example.ricochet_robot.backend.Robot;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -43,9 +44,10 @@ public class GameController implements Initializable {
                 //Cas où la case contient des murs :
                 //On créée une nouvelle boucle c=qui va détecter chaque mur, à l'aide de la classe Group on empile affiche les murs sur les cases.
                 //Dans le cas où plusieurs murs sont présents sur une même case, on superpose les images de murs
+                Group finalOverlaid = new Group();
+                Group overlaidBlack = new Group(new ImageView(imageCell));
+
                 if (this.game.getBoard().getCells()[j + 1][i + 1].isThereWall()){
-                    Group finalOverlaid = new Group();
-                    Group overlaidBlack = new Group(new ImageView(imageCell));
                     for (int w = 0; w < this.game.getBoard().getCells()[j + 1][i + 1].getWalls().size(); w++){
                         if(this.game.getBoard().getCells()[j + 1][i + 1].getWalls().get(w).getOrientation() == Orientation.NORTH){
                             Image imageWall = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/NorthWall.png").toURI().toString() , 44, 44, false, false);
@@ -175,16 +177,63 @@ public class GameController implements Initializable {
                                     imageWallWest,
                                     finalOverlaid
                             );
-
                         }
 
-
                         pane.getChildren().add(finalOverlaid);
-
                     }
                 }else {
                     pane.getChildren().add(new ImageView(imageCell));
                 }
+
+                // add robots
+                if (this.game.getBoard().getCells()[j + 1][i + 1].isThereARobot()) {
+                    Robot robot = this.game.getBoard().getCells()[j + 1][i + 1].getCurrentRobot();
+                    String filename;
+                    System.out.println(j + 1 + ", " + i + 1);
+
+                    if (robot.getColor().equals(Color.RED)) {
+                        filename = "robotRed.png";
+                    } else if (robot.getColor().equals(Color.BLUE)) {
+                        filename = "robotBlue.png";
+                    } else if (robot.getColor().equals(Color.GREEN)) {
+                        filename = "robotGreen.png";
+                    } else {
+                        filename = "robotYellow.png";
+                    }
+
+                    Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
+                    Rectangle whiteRect = new Rectangle(robotImage.getWidth(), robotImage.getHeight());
+                    whiteRect.setFill(Color.BLACK);
+                    whiteRect.setBlendMode(BlendMode.DIFFERENCE);
+                    Group inverted = new Group(
+                            new ImageView(robotImage),
+                            whiteRect
+                    );
+
+                    inverted.setBlendMode(BlendMode.MULTIPLY);
+                    overlaidBlack = new Group(
+                            overlaidBlack,
+                            inverted
+                    );
+
+                    Rectangle redRect = new Rectangle(robotImage.getWidth(), robotImage.getHeight());
+                    redRect.setBlendMode(BlendMode.MULTIPLY);
+
+                    Group g = new Group(
+                            new ImageView(robotImage),
+                            redRect
+                    );
+
+                    g.setBlendMode(BlendMode.ADD);
+                    finalOverlaid = new Group(
+                            overlaidBlack,
+                            g
+
+                    );
+
+                    pane.getChildren().add(finalOverlaid);
+                }
+
 
                 if((i != 8 && i != 7) || (j != 7 && j != 8)){
                     this.board[i][j] = pane;

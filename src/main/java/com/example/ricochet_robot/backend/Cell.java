@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Cell {
     private Position position;
+    private Robot currentRobot;
     private List<Wall> walls = new ArrayList<>();
     private boolean isThereWall;
     private boolean isThereARobot;
@@ -36,7 +37,25 @@ public class Cell {
         this.isThereWall = true;
     }
 
+    public Robot getCurrentRobot() {
+        return currentRobot;
+    }
+
+    public void addRobot(Robot robot) {
+        this.currentRobot = robot;
+        this.isThereARobot = true;
+    }
+
+    public void removeRobot() {
+        this.currentRobot = null;
+        this.isThereARobot = false;
+    }
+
+
     public boolean isThereWall() {
         return this.isThereWall;
+    }
+    public boolean isThereARobot() {
+        return isThereARobot;
     }
 }
