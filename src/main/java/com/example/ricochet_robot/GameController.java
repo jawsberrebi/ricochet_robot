@@ -53,10 +53,10 @@ public class GameController implements Initializable {
                 if (currentCell.isThereWall()) {
                     for (int w = 0; w < currentCell.getWalls().size(); w++) {
                         switch (currentCell.getWalls().get(w).getOrientation()) {
-                            case NORTH -> wallImageFilename = "wallNorth.png";
-                            case SOUTH -> wallImageFilename = "wallSouth.png";
-                            case EAST -> wallImageFilename = "wallEast.png";
-                            case WEST -> wallImageFilename = "wallWest.png";
+                            case NORTH -> wallImageFilename = "NorthWall.png";
+                            case SOUTH -> wallImageFilename = "SouthWall.png";
+                            case EAST -> wallImageFilename = "EastWall.png";
+                            case WEST -> wallImageFilename = "WestWall.png";
                         }
 
                         // Add wall image to cell
