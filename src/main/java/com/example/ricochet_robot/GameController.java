@@ -38,7 +38,7 @@ public class GameController implements Initializable {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 Pane pane = new Pane();
-                Image imageCell = new Image(new File("C:\\Users\\berja\\OneDrive\\Bureau\\Travail\\A1\\ricochet_robot\\src\\main\\resources\\com\\example\\ricochet_robot\\boards\\Cell.png").toURI().toString() , 44, 44, false, false);
+                Image imageCell = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
 
                 //Cas où la case contient des murs :
                 //On créée une nouvelle boucle c=qui va détecter chaque mur, à l'aide de la classe Group on empile affiche les murs sur les cases.
@@ -48,7 +48,7 @@ public class GameController implements Initializable {
                     Group overlaidBlack = new Group(new ImageView(imageCell));
                     for (int w = 0; w < this.game.getBoard().getCells()[j + 1][i + 1].getWalls().size(); w++){
                         if(this.game.getBoard().getCells()[j + 1][i + 1].getWalls().get(w).getOrientation() == Orientation.NORTH){
-                            Image imageWall = new Image(new File("C:\\Users\\berja\\OneDrive\\Bureau\\Travail\\A1\\ricochet_robot\\src\\main\\resources\\com\\example\\ricochet_robot\\boards\\NorthWall.png").toURI().toString() , 44, 44, false, false);
+                            Image imageWall = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/NorthWall.png").toURI().toString() , 44, 44, false, false);
                             Rectangle whiteRect = new Rectangle(imageWall.getWidth(), imageWall.getHeight());
                             whiteRect.setFill(Color.BLACK);
                             whiteRect.setBlendMode(BlendMode.DIFFERENCE);
@@ -80,7 +80,7 @@ public class GameController implements Initializable {
                         }
 
                         if(this.game.getBoard().getCells()[j + 1][i + 1].getWalls().get(w).getOrientation() == Orientation.SOUTH){
-                            Image imageWall = new Image(new File("C:\\Users\\berja\\OneDrive\\Bureau\\Travail\\A1\\ricochet_robot\\src\\main\\resources\\com\\example\\ricochet_robot\\boards\\SouthWall.png").toURI().toString() , 44, 44, false, false);
+                            Image imageWall = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/SouthWall.png").toURI().toString() , 44, 44, false, false);
                             Rectangle whiteRect = new Rectangle(imageWall.getWidth(), imageWall.getHeight());
                             whiteRect.setFill(Color.BLACK);
                             whiteRect.setBlendMode(BlendMode.DIFFERENCE);
@@ -113,7 +113,7 @@ public class GameController implements Initializable {
                         }
 
                         if(this.game.getBoard().getCells()[j + 1][i + 1].getWalls().get(w).getOrientation() == Orientation.EAST){
-                            Image imageWall = new Image(new File("C:\\Users\\berja\\OneDrive\\Bureau\\Travail\\A1\\ricochet_robot\\src\\main\\resources\\com\\example\\ricochet_robot\\boards\\EastWall.png").toURI().toString() , 44, 44, false, false);
+                            Image imageWall = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/EastWall.png").toURI().toString() , 44, 44, false, false);
                             Rectangle whiteRect = new Rectangle(imageWall.getWidth(), imageWall.getHeight());
                             whiteRect.setFill(Color.BLACK);
                             whiteRect.setBlendMode(BlendMode.DIFFERENCE);
@@ -146,7 +146,7 @@ public class GameController implements Initializable {
                         }
 
                         if(this.game.getBoard().getCells()[j + 1][i + 1].getWalls().get(w).getOrientation() == Orientation.WEST){
-                            Image imageWall = new Image(new File("C:\\Users\\berja\\OneDrive\\Bureau\\Travail\\A1\\ricochet_robot\\src\\main\\resources\\com\\example\\ricochet_robot\\boards\\WestWall.png").toURI().toString() , 44, 44, false, false);
+                            Image imageWall = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/WestWall.png").toURI().toString() , 44, 44, false, false);
                             Rectangle whiteRect = new Rectangle(imageWall.getWidth(), imageWall.getHeight());
                             whiteRect.setFill(Color.BLACK);
                             whiteRect.setBlendMode(BlendMode.DIFFERENCE);

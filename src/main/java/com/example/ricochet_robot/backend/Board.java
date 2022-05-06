@@ -86,5 +86,27 @@ public class Board {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    public void addWallsOnBoard(){
+        this.cells[1][2].addWalls(Orientation.EAST);
+        this.cells[1][10].addWalls(Orientation.EAST);
+        this.cells[2][4].addWalls(Orientation.NORTH);
+        this.cells[2][4].addWalls(Orientation.WEST);
+        this.cells[5][2].addWalls(Orientation.WEST);
+        this.cells[5][2].addWalls(Orientation.SOUTH);
+        this.cells[7][5].addWalls(Orientation.NORTH);
+        this.cells[7][1].addWalls(Orientation.SOUTH);
+        this.cells[7][5].addWalls(Orientation.EAST);
+        this.cells[10][4].addWalls(Orientation.SOUTH);
+        this.cells[10][4].addWalls(Orientation.EAST);
+        this.cells[11][1].addWalls(Orientation.SOUTH);
+        this.cells[14][2].addWalls(Orientation.WEST);
+        this.cells[14][2].addWalls(Orientation.SOUTH);
+        this.cells[16][5].addWalls(Orientation.EAST);
+        this.cells[16][11].addWalls(Orientation.EAST);
+    }
+
+>>>>>>> Stashed changes
 
 }
