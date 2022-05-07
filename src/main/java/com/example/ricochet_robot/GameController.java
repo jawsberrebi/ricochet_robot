@@ -78,7 +78,31 @@ public class GameController implements Initializable {
                             case GEAR -> symbolImageFilename = "BlueGear.png";
                             case MOON -> symbolImageFilename = "BlueMoon.png";
                             case PLANET -> symbolImageFilename = "BluePlanet.png";
+                            case STAR -> symbolImageFilename = "BlueStar.png";
                         }
+                    } else if (Color.GREEN.equals(currentCell.getSymbol().getColor())) {
+                        switch (currentCell.getSymbol().getTheShape()) {
+                            case GEAR -> symbolImageFilename = "GreenGear.png";
+                            case MOON -> symbolImageFilename = "GreenMoon.png";
+                            case PLANET -> symbolImageFilename = "GreenPlanet.png";
+                            case STAR -> symbolImageFilename = "GreenStar.png";
+                        }
+                    } else if (Color.YELLOW.equals(currentCell.getSymbol().getColor())) {
+                        switch (currentCell.getSymbol().getTheShape()) {
+                            case GEAR -> symbolImageFilename = "YellowGear.png";
+                            case MOON -> symbolImageFilename = "YellowMoon.png";
+                            case PLANET -> symbolImageFilename = "YellowPlanet.png";
+                            case STAR -> symbolImageFilename = "YellowStar.png";
+                        }
+                    } else if (Color.RED.equals(currentCell.getSymbol().getColor())) {
+                        switch (currentCell.getSymbol().getTheShape()) {
+                            case GEAR -> symbolImageFilename = "RedGear.png";
+                            case MOON -> symbolImageFilename = "RedMoon.png";
+                            case PLANET -> symbolImageFilename = "RedPlanet.png";
+                            case STAR -> symbolImageFilename = "RedStar.png";
+                        }
+                    } else if (Color.BLACK.equals(currentCell.getSymbol().getColor())) {
+                        symbolImageFilename = "Vortex.png";
                     }
                 }
 
