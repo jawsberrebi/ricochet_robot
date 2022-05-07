@@ -38,7 +38,7 @@ public class GameController implements Initializable {
         //Création du plateau en frontend
         boardGeneration();
 
-        updateImage(3, 5);
+        //updateImage(3, 5);
     }
 
     private void boardGeneration(){
@@ -52,6 +52,7 @@ public class GameController implements Initializable {
 
                 Cell currentCell = this.game.getBoard().getCells()[j + 1][i + 1];
 
+                //Ajout des murs, s'il y en a
                 String wallImageFilename = null;
                 if (currentCell.isThereWall()) {
                     for (int w = 0; w < currentCell.getWalls().size(); w++) {
@@ -69,6 +70,23 @@ public class GameController implements Initializable {
                     }
                 }
 
+                //Ajout des symboles, s'il y en a
+                String symbolImageFilename = null;
+                if(currentCell.isThereASymbol()){
+                    if (Color.BLUE.equals(currentCell.getSymbol().getColor())) {
+                        switch (currentCell.getSymbol().getTheShape()) {
+                            case GEAR -> symbolImageFilename = "BlueGear.png";
+                            case MOON -> symbolImageFilename = "BlueMoon.png";
+                            case PLANET -> symbolImageFilename = "BluePlanet.png";
+                        }
+                    }
+                }
+
+                Image symbolImage = new Image(new File(filePathRoot + "goals/" + symbolImageFilename).toURI().toString() , 35, 35, false, false);
+                ImageView symbolImageView = new ImageView(symbolImage);
+                stackPane.getChildren().add(symbolImageView);
+
+                //Placement des robots
                 if (this.game.getBoard().getCells()[j + 1][i + 1].isThereARobot()) {
                     Robot robot = this.game.getBoard().getCells()[j + 1][i + 1].getCurrentRobot();
                     String filename;
@@ -86,16 +104,14 @@ public class GameController implements Initializable {
 
                     Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
                     ImageView robotImageView = new ImageView(robotImage);
-
                     stackPane.getChildren().add(robotImageView);
                 }
 
-
+                //S'il s'agit pas de la boîte centrale, on posera les tuiles classiques avec ce qu'elles contiennent (mur, robot, jeton objectif) s'il y en a
                 if((i != 8 && i != 7) || (j != 7 && j != 8)){
-
                     this.board[i][j] = stackPane;
                     this.boardPane.add(stackPane, i, j);
-
+                //Sinon on posera une tuile grise avec l'objectif en cours
                 }else{
                     stackPane = new StackPane();
                     Image goalBox = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/GoalBox.png").toURI().toString() , 44, 44, false, false);
@@ -104,14 +120,20 @@ public class GameController implements Initializable {
                     this.board[i][j] = stackPane;
                     this.boardPane.add(stackPane, i, j);
                 }
+
+
             }
         }
-    }
 
+
+    }
+    /*
     private void updateImage(int row, int col){
         StackPane stackPane = new StackPane();
         stackPane.getChildren().add(new ImageView(new Image(new File("src/main/resources/com/example/ricochet_robot/robots/robotYellow.png").toURI().toString() , 44, 44, false, false)));
         this.boardPane.getChildren().remove(row*col);
         this.boardPane.add(stackPane, col-1, row-1);
     }
+
+     */
 }

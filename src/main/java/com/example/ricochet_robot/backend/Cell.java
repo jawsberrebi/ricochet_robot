@@ -9,11 +9,14 @@ public class Cell {
     private List<Wall> walls = new ArrayList<>();
     private boolean isThereWall;
     private boolean isThereARobot;
+    private boolean isThereASymbol;
+    private Symbol symbol;
 
     //Construction d'une case simple
     Cell(Position p){
         this.position = p;
         this.isThereWall = false;
+        this.isThereASymbol = false;
     }
 
     //Construction d'une case avec mur
@@ -37,6 +40,12 @@ public class Cell {
         this.isThereWall = true;
     }
 
+    //Ajout d'un jeton objectif sur la case
+    public void addSymbol(Symbol symbol){
+        this.isThereASymbol = true;
+        this.symbol = symbol;
+    }
+
     public Robot getCurrentRobot() {
         return currentRobot;
     }
@@ -51,11 +60,17 @@ public class Cell {
         this.isThereARobot = false;
     }
 
-
+    //Getters/Setters
     public boolean isThereWall() {
         return this.isThereWall;
     }
     public boolean isThereARobot() {
         return isThereARobot;
+    }
+    public boolean isThereASymbol() {
+        return isThereASymbol;
+    }
+    public Symbol getSymbol() {
+        return symbol;
     }
 }

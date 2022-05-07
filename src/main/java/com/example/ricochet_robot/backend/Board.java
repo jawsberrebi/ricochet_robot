@@ -17,12 +17,46 @@ public class Board {
     private int goalsNumber;
 
     Board(){        //Test
+        this.symbols = new ArrayList<>();
+        this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.STAR, new Position(4, 10)));
+        this.symbols.add(new Symbol(Color.RED, Shape.MOON, new Position(5, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.MOON, new Position(5, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.PLANET, new Position(6, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.PLANET, new Position(7, 5)));
+        this.symbols.add(new Symbol(Color.BLACK, Shape.VORTEX, new Position(9, 13)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.MOON, new Position(10, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.GEAR, new Position(10, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.PLANET, new Position(12, 6)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.GEAR, new Position(12, 10)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.PLANET, new Position(13, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
+        this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
     }
 
-    Board(List<Symbol> s, List<Goal> g, List<Robot> r, int gN){
-        this.symbols = s;
+    Board(List<Goal> g, int gN){
+        this.symbols = new ArrayList<>();
+        this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.STAR, new Position(4, 10)));
+        this.symbols.add(new Symbol(Color.RED, Shape.MOON, new Position(5, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.MOON, new Position(5, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.PLANET, new Position(6, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.PLANET, new Position(7, 5)));
+        this.symbols.add(new Symbol(Color.BLACK, Shape.VORTEX, new Position(9, 13)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.MOON, new Position(10, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.GEAR, new Position(10, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.PLANET, new Position(12, 6)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.GEAR, new Position(12, 10)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.PLANET, new Position(13, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
+        this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
         this.goals = g;
-        this.robots = r;
         this.goalsNumber = gN;
         this.goalBox = new Goal[4][4];
         this.cells = new Cell[17][17];
@@ -43,6 +77,7 @@ public class Board {
 
         makeCentralBox();
         addWallsOnBoard();
+        setSymbols();
     }
 
     //Ajout de murs dans une case : on spécifie la position de cette case dans la matrice de cases puis on opère la changement
@@ -107,11 +142,11 @@ public class Board {
         this.cells[16][11].addWalls(Orientation.EAST);
     }
 
+    //Ajout des robots sur le plateau
     public void addRobotsToBoard() {
         for (int i = 0; i < 4; i++) {
             int randomRow = (int)(Math.random() * 16) + 1;
             int randomColumn = (int)(Math.random() * 16) + 1;
-
             // Positionner aléatoirement les robots
             while ((randomRow == 8 || randomRow == 9) && (randomColumn == 8 || randomColumn == 9)) {
                 randomRow = (int)(Math.random() * 16);
@@ -126,7 +161,29 @@ public class Board {
             }
 
             Robot robot = new Robot(robotColor);
-            this.cells[randomRow][randomColumn].addRobot(robot);
+            this.robots.add(robot);
+            this.cells[randomRow][randomColumn].addRobot(this.robots.get(i));
         }
+    }
+
+    //Ajout des symboles sur les cases
+    public void setSymbols(){
+        this.cells[2][4].addSymbol(this.symbols.get(0));
+        this.cells[2][13].addSymbol(this.symbols.get(1));
+        this.cells[4][7].addSymbol(this.symbols.get(2));
+        this.cells[4][10].addSymbol(this.symbols.get(3));
+        this.cells[5][2].addSymbol(this.symbols.get(4));
+        this.cells[5][15].addSymbol(this.symbols.get(5));
+        this.cells[6][11].addSymbol(this.symbols.get(6));
+        this.cells[7][5].addSymbol(this.symbols.get(7));
+        this.cells[9][13].addSymbol(this.symbols.get(8));
+        this.cells[10][11].addSymbol(this.symbols.get(9));
+        this.cells[10][4].addSymbol(this.symbols.get(10));
+        this.cells[12][6].addSymbol(this.symbols.get(11));
+        this.cells[12][10].addSymbol(this.symbols.get(12));
+        this.cells[13][15].addSymbol(this.symbols.get(13));
+        this.cells[14][2].addSymbol(this.symbols.get(14));
+        this.cells[15][7].addSymbol(this.symbols.get(15));
+        this.cells[15][14].addSymbol(this.symbols.get(16));
     }
 }
