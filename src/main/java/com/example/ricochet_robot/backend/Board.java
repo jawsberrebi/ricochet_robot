@@ -1,40 +1,26 @@
 package com.example.ricochet_robot.backend;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+
 import javafx.scene.paint.Color;
 
 public class Board {
 
     private Cell[][] cells;     //Le plateau est une matrice 16x16 de cases --- Convention : on partirait de 1 pour le premier coeff de la matrice comme ça pas d'embrouille ?
     private List<Symbol> symbols = new ArrayList<>();
-    private List<Goal> goals = new ArrayList<>();
-    private Goal currentGoal;
-    private Goal[][] goalBox;
+    private List<Symbol> goals = new ArrayList<>();
+    private Cell[][] goalBox;
     private List<Robot> robots = new ArrayList<>();
     private Robot currentRobot;
     private Robot goalRobot;
+    private Symbol currentGoal;
     private int goalsNumber;
 
     Board(){        //Test
-        this.symbols = new ArrayList<>();
-        this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
-        this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.STAR, new Position(4, 10)));
-        this.symbols.add(new Symbol(Color.RED, Shape.MOON, new Position(5, 2)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.MOON, new Position(5, 15)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.PLANET, new Position(6, 11)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.PLANET, new Position(7, 5)));
-        this.symbols.add(new Symbol(Color.BLACK, Shape.VORTEX, new Position(9, 13)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.MOON, new Position(10, 11)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.GEAR, new Position(10, 4)));
-        this.symbols.add(new Symbol(Color.RED, Shape.PLANET, new Position(12, 6)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.GEAR, new Position(12, 10)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.PLANET, new Position(13, 15)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
-        this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
+
     }
 
     Board(List<Goal> g, int gN){
@@ -56,14 +42,30 @@ public class Board {
         this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
         this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
         this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
-        this.goals = g;
-        this.goalsNumber = gN;
-        this.goalBox = new Goal[4][4];
+        //this.goalBox = new Goal[4][4];
         this.cells = new Cell[17][17];
     }
 
+    //Getters/Setters
     public Cell[][] getCells() {
         return this.cells;
+    }
+    public void setCells(Cell[][] cells) {
+        this.cells = cells;
+    }
+    public List<Symbol> getGoals() {
+        return goals;
+    }
+
+    public List<Symbol> getSymbols() {
+        return symbols;
+    }
+
+    public void setCurrentGoal(Goal currentGoal) {
+        this.currentGoal = currentGoal;
+    }
+    public Symbol getCurrentGoal() {
+        return currentGoal;
     }
 
     //Génération d'un nouveau plateau
@@ -75,9 +77,30 @@ public class Board {
             }
         }
 
-        makeCentralBox();
-        addWallsOnBoard();
+        makeCentralBox();       //Création de la boîte centrale
+        addWallsOnBoard();      //Ajout des murs
         setSymbols();
+        setSymbolsOnCell();           //Placement des objectifs sur les cases
+    }
+
+    public void setSymbols() {
+        this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.STAR, new Position(4, 10)));
+        this.symbols.add(new Symbol(Color.RED, Shape.MOON, new Position(5, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.MOON, new Position(5, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.PLANET, new Position(6, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.PLANET, new Position(7, 5)));
+        this.symbols.add(new Symbol(Color.BLACK, Shape.VORTEX, new Position(9, 13)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.MOON, new Position(10, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.GEAR, new Position(10, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.PLANET, new Position(12, 6)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.GEAR, new Position(12, 10)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.PLANET, new Position(13, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
+        this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
     }
 
     //Ajout de murs dans une case : on spécifie la position de cette case dans la matrice de cases puis on opère la changement
@@ -88,12 +111,15 @@ public class Board {
     //Génération de la boîte centrale avec l'objectif dedans
     public void makeCentralBox(){
         //Attribution de l'objectif pour la boîte
-        this.goalBox = new Goal[4][4];
+        /*
+        this.goalBox = new Cell[4][4];
         for (int i = 0; i < 2; i++){
             for (int n = 0; n < 2; n++){
-                this.goalBox[i][n] = this.currentGoal;
+                this.goalBox[i][n].addSymbol(this.currentGoal);
             }
         }
+
+         */
 
         //Création de murs pour encadrer la boîte de l'objectif
         this.cells[9][7].addWalls(Orientation.EAST);
@@ -167,7 +193,7 @@ public class Board {
     }
 
     //Ajout des symboles sur les cases
-    public void setSymbols(){
+    public void setSymbolsOnCell(){
         this.cells[2][4].addSymbol(this.symbols.get(0));
         this.cells[2][13].addSymbol(this.symbols.get(1));
         this.cells[4][7].addSymbol(this.symbols.get(2));
@@ -185,5 +211,18 @@ public class Board {
         this.cells[14][2].addSymbol(this.symbols.get(14));
         this.cells[15][7].addSymbol(this.symbols.get(15));
         this.cells[15][14].addSymbol(this.symbols.get(16));
+    }
+
+    //Création de la liste de jetons objectifs pour chaque manche : les jetons sont mélangés à chaque nouveau jeu
+    public void setGoalList(){
+        this.goals = this.symbols;
+        Collections.shuffle(this.goals);
+    }
+
+    public void setSymbolInGoalBox(Symbol symbol){
+        this.cells[8][8].addSymbol(symbol);
+        this.cells[9][8].addSymbol(symbol);
+        this.cells[8][9].addSymbol(symbol);
+        this.cells[9][9].addSymbol(symbol);
     }
 }
