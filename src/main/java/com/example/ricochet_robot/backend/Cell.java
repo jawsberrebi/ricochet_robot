@@ -32,13 +32,16 @@ public class Cell {
         return this.walls;
     }
 
-    public void addWalls(Orientation orientation){
+    public void addWalls(Orientation orientation) {
         this.walls.add(new Wall(orientation));
         this.isThereWall = true;
     }
 
     public Robot getCurrentRobot() {
-        return currentRobot;
+        if (currentRobot != null) {
+            return currentRobot;
+        }
+        return null;
     }
 
     public void addRobot(Robot robot) {

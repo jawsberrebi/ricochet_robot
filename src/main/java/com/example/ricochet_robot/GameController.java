@@ -1,16 +1,18 @@
 package com.example.ricochet_robot;
 
-import com.example.ricochet_robot.backend.Cell;
-import com.example.ricochet_robot.backend.Game;
-import com.example.ricochet_robot.backend.Orientation;
-import com.example.ricochet_robot.backend.Robot;
+import com.example.ricochet_robot.backend.*;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -25,10 +27,11 @@ import java.util.stream.Stream;
 
 public class GameController implements Initializable {
 
-    private Game game = new Game();
+    private final Game game = new Game();
     private final Pane[][] board = new Pane[16][16];
 
     private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";
+    private Robot selectedRobot;
 
     @FXML
     private GridPane boardPane;
@@ -38,23 +41,43 @@ public class GameController implements Initializable {
         //Lancement du jeu
         this.game.play();
         //Création du plateau en frontend
+        Scene scene = boardPane.getScene();
+        initKeyListeners(scene);
         boardGeneration();
     }
 
-    private void boardGeneration(){
+    private void initKeyListeners(Scene scene) {
+        /*
+        scene.setOnKeyPressed(e -> {
+            System.out.println("Keystroke");
+            if (selectedRobot != null) {
+                switch (e.getCode()) {
+                    case UP -> move(Orientation.NORTH);
+                    case DOWN -> move(Orientation.SOUTH);
+                    case RIGHT -> move(Orientation.EAST);
+                    case LEFT -> move(Orientation.WEST);
+                }
+            } else {
+                System.out.println("Il faut choisir un robot d'abord");
+            }
+        });
+        */
+    }
+
+    private void boardGeneration() {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 StackPane stackPane = new StackPane();
 
                 // Ajouter un identifiant
-                stackPane.setId(Integer.toString(j + 1) + "," + Integer.toString(i + 1));
+                stackPane.setId(Integer.toString(i + 1) + "," + Integer.toString(j + 1));
 
                 // Ajouter image de cellule
                 Image cellImage = new Image(new File(filePathRoot + "boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
                 ImageView cellImageView = new ImageView(cellImage);
                 stackPane.getChildren().add(cellImageView);
 
-                Cell currentCell = this.game.getBoard().getCells()[j + 1][i + 1];
+                Cell currentCell = this.game.getBoard().getCells()[i + 1][j + 1];
 
                 String wallImageFilename = null;
                 if (currentCell.isThereWall()) {
@@ -75,19 +98,10 @@ public class GameController implements Initializable {
                 }
 
                 // Afficher robots
-                if (this.game.getBoard().getCells()[j + 1][i + 1].isThereARobot()) {
-                    Robot robot = this.game.getBoard().getCells()[j + 1][i + 1].getCurrentRobot();
-                    String filename;
+                if (this.game.getBoard().getCells()[i + 1][j + 1].isThereARobot()) {
+                    Robot robot = this.game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
 
-                    if (robot.getColor().equals(Color.RED)) {
-                        filename = "robotRed.png";
-                    } else if (robot.getColor().equals(Color.BLUE)) {
-                        filename = "robotBlue.png";
-                    } else if (robot.getColor().equals(Color.GREEN)) {
-                        filename = "robotGreen.png";
-                    } else {
-                        filename = "robotYellow.png";
-                    }
+                    String filename = getRobotImageFilename(robot.getColor());
 
                     Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
                     ImageView robotImageView = new ImageView(robotImage);
@@ -96,7 +110,7 @@ public class GameController implements Initializable {
                 }
 
 
-                if((i != 8 && i != 7) || (j != 7 && j != 8)){
+                if((i != 7 && i != 8) || (j != 7 && j != 8)){
                     // Rendre stackPane cliquable
                     stackPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -105,15 +119,15 @@ public class GameController implements Initializable {
                             String id = ((StackPane) event.getSource()).getId();
                             System.out.println("Tile id : " + id);
 
+                            // Get robot from cell
                             int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
+                            Cell currentCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
 
-                            // Vérifier s'il existe un robot
-                            Cell clickedCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
-                            if (clickedCell.isThereARobot()) {
+                            if (currentCell.isThereARobot()) {
+                                selectedRobot = currentCell.getCurrentRobot();
+                                selectedRobot.setCurrentCell(currentCell);
 
-                                // Sélectionner robot
-                                Robot selectedRobot = clickedCell.getCurrentRobot();
-                                System.out.println(selectedRobot.getColor());
+                                move(Orientation.NORTH);
                             }
 
                             event.consume();
@@ -123,9 +137,63 @@ public class GameController implements Initializable {
                     // Ajouter stackPane au board
                     this.board[i][j] = stackPane;
                     this.boardPane.add(stackPane, i, j);
-                    System.out.println(this.boardPane.getChildren());
                 }
             }
         }
+
     }
+
+    private String getRobotImageFilename(Color robotColor) {
+        if (robotColor.equals(Color.RED)) {
+            return "robotRed.png";
+        } else if (robotColor.equals(Color.BLUE)) {
+            return "robotBlue.png";
+        } else if (robotColor.equals(Color.GREEN)) {
+            return "robotGreen.png";
+        } else {
+            return "robotYellow.png";
+        }
+    }
+
+    private void move(Orientation direction) {
+        Cell currentCell = selectedRobot.getCurrentCell();
+
+        if (selectedRobot != null) {
+            while (game.isValidMove(currentCell, direction)) {
+                Position oldPosition = currentCell.getPosition();
+                Position newPosition = currentCell.getPosition().nextPosition(direction);
+
+                System.out.print("Old tile: ");
+                System.out.print(currentCell.getPosition().getRow() + "," + currentCell.getPosition().getColumn());
+                System.out.print(" New tile: ");
+                System.out.println(newPosition.getRow() + "," + newPosition.getColumn());
+
+                game.move(currentCell, direction);
+                updateRobotDisplay(oldPosition, newPosition);
+                currentCell = game.getBoard().getCell(newPosition);
+            }
+        }
+    }
+
+    private void removeRobotFromCell(Position position) {
+        int numberOfChildren = board[position.getRow()  - 1][position.getColumn() - 1].getChildren().size();
+        board[position.getRow() - 1][position.getColumn() - 1].getChildren().remove(numberOfChildren - 1);
+    }
+
+    private void addRobotToCell(Position position) {
+        Robot robot = selectedRobot;
+        String filename = getRobotImageFilename(selectedRobot.getColor());
+
+        // Get stackPane
+        Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
+        ImageView robotImageView = new ImageView(robotImage);
+
+        board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
+    }
+
+    private void updateRobotDisplay(Position oldPosition, Position newPosition) {
+        removeRobotFromCell(oldPosition);
+        addRobotToCell(newPosition);
+    }
+
 }

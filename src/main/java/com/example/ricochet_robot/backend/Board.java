@@ -32,6 +32,10 @@ public class Board {
         return this.cells;
     }
 
+    public Cell getCell(Position position) {
+        return this.cells[position.getRow()][position.getColumn()];
+    }
+
     //Génération d'un nouveau plateau
     public void createBoard(){
         this.cells = new Cell[17][17];
@@ -72,19 +76,19 @@ public class Board {
 
         //Création des murs de détourage du plateau
         for(int i = 1; i < this.cells.length; i++){
-            this.cells[1][i].addWalls(Orientation.NORTH);
+            this.cells[i][1].addWalls(Orientation.NORTH);
         }
 
         for(int i = 1; i < this.cells.length; i++){
-            this.cells[i][1].addWalls(Orientation.WEST);
+            this.cells[1][i].addWalls(Orientation.WEST);
         }
 
         for(int i = 1; i < this.cells.length; i++){
-            this.cells[i][16].addWalls(Orientation.EAST);
+            this.cells[16][i].addWalls(Orientation.EAST);
         }
 
         for(int i = 1; i < this.cells.length; i++){
-            this.cells[16][i].addWalls(Orientation.SOUTH);
+            this.cells[i][16].addWalls(Orientation.SOUTH);
         }
     }
 
@@ -114,8 +118,8 @@ public class Board {
 
             // Positionner aléatoirement les robots
             while ((randomRow == 8 || randomRow == 9) && (randomColumn == 8 || randomColumn == 9)) {
-                randomRow = (int)(Math.random() * 16);
-                randomColumn = (int)(Math.random() * 16);
+                randomRow = (int)(Math.random() * 16) + 1;
+                randomColumn = (int)(Math.random() * 16) + 1;
             }
 
             Color robotColor = Color.RED;
@@ -127,6 +131,8 @@ public class Board {
 
             Robot robot = new Robot(robotColor);
             this.cells[randomRow][randomColumn].addRobot(robot);
+
+            System.out.println("Robot " + i + " : " + randomRow + "," + randomColumn);
         }
     }
 }

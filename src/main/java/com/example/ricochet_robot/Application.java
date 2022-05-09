@@ -14,6 +14,15 @@ public class Application extends javafx.application.Application {
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
+
+        // Init keystroke event handler
+        initKeyEventHandler(scene);
+    }
+
+    private void initKeyEventHandler(Scene scene) {
+        scene.setOnKeyPressed(e -> {
+            System.out.println("Pressed");
+        });
     }
 
     public static void main(String[] args) {
