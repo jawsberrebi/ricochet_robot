@@ -15,9 +15,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 import java.io.File;
-import java.lang.annotation.Documented;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameController implements Initializable {
 
@@ -32,9 +33,12 @@ public class GameController implements Initializable {
     private ImageView currentImageGoal;
     @FXML
     private Button gameBtn;
+    @FXML
+    private Label timerText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        timerText.setVisible(true);
         //Lancement du jeu
         game.play();
         //Création du plateau en frontend
@@ -49,10 +53,13 @@ public class GameController implements Initializable {
         switch (game.Status) {
             case START_ROUND -> {
                 this.gameBtn.setVisible(false);
+                timer();
                 Game.Status = Game.Status.LAUNCH_TIMER;
             }
-            //case LAUNCH_TIMER ->
-                    //Code...
+            case LAUNCH_TIMER -> {
+                timerText.setVisible(true);
+
+            }
         }
     }
 
@@ -200,6 +207,25 @@ public class GameController implements Initializable {
         Image symbolImage = new Image(new File(filePathRoot + "goals/" + symbolImageFilename).toURI().toString() , 40, 40, false, false);
         this.currentImageGoal.setImage(symbolImage);
         this.currentImageGoal.setVisible(true);
+    }
+
+
+    public void timer(){
+        //Checker ça : https://www.educba.com/javafx-timer/
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int i = 30;
+            public void run() {
+                timerText.setText("Time left: " + i);
+                System.out.println(i);
+                i--;
+
+                if (i < 0) {
+                    timer.cancel();
+                    timerText.setText("Time Over");
+                }
+            }
+        }, 0, 1000);
     }
 
     /*

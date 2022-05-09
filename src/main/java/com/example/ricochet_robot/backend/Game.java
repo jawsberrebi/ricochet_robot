@@ -9,7 +9,6 @@ public class Game {
     private Symbol currentGoal;        //Jeton objectif à atteindre
     private int goalCursor;            //Variable à incrémenter pour sélectionner l'objectif actuel
     public static Status Status;       //État du jeu
-    private Timeline timeline;
 
     public Game(){
         this.board = new Board();
