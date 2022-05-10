@@ -81,6 +81,33 @@ public class Board {
         addWallsOnBoard();      //Ajout des murs
         setSymbols();
         setSymbolsOnCell();           //Placement des objectifs sur les cases
+
+        Cell[][] celltest = new Cell[9][9];
+
+        for(int i = 1; i <= 8; i++){
+            for(int n = 1; n <= 8; n++){
+                celltest[i][n] = this.cells[n][i];
+            }
+        }
+
+        for(int i = 1; i <= 8; i++){
+            for(int n = 1; n <= 8; n++){
+
+            }
+        }
+
+        for(int i = 1; i <= 8; i++){
+            for(int n = 1; n <= 8; n++){
+
+            }
+        }
+
+        for(int i = 1; i <= 8; i++){
+            for(int n = 1; n <= 8; n++){
+
+            }
+        }
+
     }
 
     public void setSymbols() {

@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ricochet_robot.GameController">
    <children>
@@ -67,11 +66,10 @@
          </font>
       </Label>
       <Button fx:id="gameBtn" layoutX="944.0" layoutY="500.0" mnemonicParsing="false" onAction="#handleGameBtn" prefHeight="46.0" prefWidth="225.0" text="Lancer le sablier" />
-      <Label fx:id="timerText" layoutX="743.0" layoutY="220.0" prefHeight="30.0" prefWidth="213.0" text="test" textAlignment="CENTER">
+      <Label fx:id="timerText" layoutX="819.0" layoutY="188.0" prefHeight="63.0" prefWidth="75.0" textAlignment="CENTER">
          <font>
-            <Font name="Agency FB" size="24.0" />
+            <Font name="Agency FB" size="50.0" />
          </font>
       </Label>
-      <Text fx:id="text" layoutX="850.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
    </children>
 </AnchorPane>

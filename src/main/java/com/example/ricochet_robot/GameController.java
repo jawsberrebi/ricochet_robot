@@ -3,6 +3,11 @@ package com.example.ricochet_robot;
 import com.example.ricochet_robot.backend.Cell;
 import com.example.ricochet_robot.backend.Game;
 import com.example.ricochet_robot.backend.Robot;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,15 +21,22 @@ import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameController implements Initializable {
 
     private static final Game game = new Game();
     private final Pane[][] board = new Pane[16][16];
     private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";
+
+    private Label timerLabel = new Label(), splitTimerLabel = new Label();
+    private DoubleProperty timeSeconds = new SimpleDoubleProperty(), splitTimeSeconds = new SimpleDoubleProperty();
+    private Duration time = Duration.ZERO, splitTime = Duration.ZERO;
+
     @FXML
     private GridPane boardPane;
     @FXML
@@ -35,10 +47,10 @@ public class GameController implements Initializable {
     private Button gameBtn;
     @FXML
     private Label timerText;
-
+    private int i = 30;
+    private boolean isTheTimerStopped;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        timerText.setVisible(true);
         //Lancement du jeu
         game.play();
         //Création du plateau en frontend
@@ -64,11 +76,11 @@ public class GameController implements Initializable {
     }
 
     private void boardGeneration(){
+        Image cellImage = new Image(new File(filePathRoot + "boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 StackPane stackPane = new StackPane();
 
-                Image cellImage = new Image(new File(filePathRoot + "boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
                 ImageView cellImageView = new ImageView(cellImage);
                 stackPane.getChildren().add(cellImageView);
 
@@ -209,23 +221,24 @@ public class GameController implements Initializable {
         this.currentImageGoal.setVisible(true);
     }
 
+    //Sablier activé après clic sur le bouton de jeu
+    private void timer(){
+        isTheTimerStopped = false;
+        timerText.setVisible(true);
+        timerText.setText(String.valueOf(i));
+        Timeline timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e ->{
+            i--;
+            timerText.setText(String.valueOf(i));
 
-    public void timer(){
-        //Checker ça : https://www.educba.com/javafx-timer/
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int i = 30;
-            public void run() {
-                timerText.setText("Time left: " + i);
-                System.out.println(i);
-                i--;
-
-                if (i < 0) {
-                    timer.cancel();
-                    timerText.setText("Time Over");
-                }
+            if (i == 0) {
+                timerText.setText("");
+                i = 0;
+                isTheTimerStopped = true;
+                System.out.println(isTheTimerStopped);
             }
-        }, 0, 1000);
+        }));
+        timeline.setCycleCount(30);
+        timeline.play();
     }
 
     /*
