@@ -49,15 +49,15 @@ public class Game {
         Cell nextCell = this.board.getCell(nextCellPosition);
 
         // Check if valid move
-        if (currentCell.isThereWall()) {
+        if (currentCell.getIsThereWall()) {
             for (Wall wall : currentCell.getWalls()) {
                 if (wall.getOrientation() == direction) { return false; }
             }
         }
 
-        if (nextCell.isThereARobot()) { return false; }
+        if (nextCell.getIsThereARobot()) { return false; }
 
-        if (nextCell.isThereWall()) {
+        if (nextCell.getIsThereWall()) {
             for (Wall wall : nextCell.getWalls()) {
                 switch (wall.getOrientation()) {
                     case NORTH:

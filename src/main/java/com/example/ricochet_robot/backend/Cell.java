@@ -55,6 +55,7 @@ public class Cell {
                 }
             }
         }
+    }
       
     //Ajout d'un jeton objectif sur la case
     public void addSymbol(Symbol symbol){
@@ -76,17 +77,29 @@ public class Cell {
         this.isThereARobot = false;
     }
 
+
+
     //Getters/Setters
-    public boolean isThereWall() {
-        return this.isThereWall;
+    public boolean getIsThereWall() {
+        return isThereWall;
     }
-    public boolean isThereARobot() {
+
+
+
+    public boolean getIsThereARobot() {
         return isThereARobot;
     }
-    public boolean isThereASymbol() {
+    public boolean getIsThereASymbol() {
         return isThereASymbol;
     }
     public Symbol getSymbol() {
         return symbol;
     }
+
+
+
 }
+
+
+
+

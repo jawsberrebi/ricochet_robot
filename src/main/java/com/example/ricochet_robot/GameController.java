@@ -108,6 +108,7 @@ public class GameController implements Initializable {
 
     private void boardGeneration(){
         Image cellImage = new Image(new File(filePathRoot + "boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
+
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 StackPane stackPane = new StackPane();
@@ -123,7 +124,7 @@ public class GameController implements Initializable {
 
                 //Ajout des murs, s'il y en a
                 String wallImageFilename = null;
-                if (currentCell.isThereWall()) {
+                if (currentCell.getIsThereWall()) {
                     for (int w = 0; w < currentCell.getWalls().size(); w++) {
                         switch (currentCell.getWalls().get(w).getOrientation()) {
                             case NORTH -> wallImageFilename = "NorthWall.png";
@@ -142,7 +143,7 @@ public class GameController implements Initializable {
                 /* Potentiel bug */
                 //Ajout des symboles, s'il y en a
                 String symbolImageFilename = null;
-                if(currentCell.isThereASymbol()){
+                if(currentCell.getIsThereASymbol()){
                     if (Color.BLUE.equals(currentCell.getSymbol().getColor())) {
                         switch (currentCell.getSymbol().getTheShape()) {
                             case GEAR -> symbolImageFilename = "BlueGear.png";
@@ -183,7 +184,7 @@ public class GameController implements Initializable {
                 /* Potentiel bug */
               
                 // Afficher robots
-                if (this.game.getBoard().getCells()[i + 1][j + 1].isThereARobot()) {
+                if (this.game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()) {
                     Robot robot = this.game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
 
                     String filename = getRobotImageFilename(robot.getColor());
@@ -206,7 +207,7 @@ public class GameController implements Initializable {
                             int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
                             Cell currentCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
 
-                            if (currentCell.isThereARobot()) {
+                            if (currentCell.getIsThereARobot()) {
                                 selectedRobot = currentCell.getCurrentRobot();
                                 selectedRobot.setCurrentCell(currentCell);
 
@@ -223,10 +224,13 @@ public class GameController implements Initializable {
                     stackPane.getChildren().add(goalBoxView);
                     //Coder affichage du jeton objectif dans la boîte centrale
                   
-                    // Ajouter stackPane au board
-                    this.board[i][j] = stackPane;
-                    this.boardPane.add(stackPane, i, j);
+
+
                 }
+                // Ajouter stackPane au board
+                this.board[i][j] = stackPane;
+                this.boardPane.add(stackPane, i, j);
+
             }
         }
 
