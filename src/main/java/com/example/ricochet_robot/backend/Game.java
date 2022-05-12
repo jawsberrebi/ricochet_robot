@@ -33,28 +33,16 @@ public class Game {
         this.goalCursor = 0;                                            //Initialisation du curseur qui parcours la liste d'objectifs au fil de la partie
         this.currentGoal = this.board.getGoals().get(this.goalCursor);  //Définition du jeton objectif à atteindre
         this.board.setSymbolInGoalBox(this.currentGoal);                //Ajout du jeton objectif au centre de la boîte
-        Status = Status.PLAYERONE_TURN;
 
     }
 
     //État du jeu
     public enum Status{
-        PLAYERONE_TURN,                    //Nouvelle manche : nouveau jeton objectif, début de la manche
-        PLAYERTWO_TURN                    //Lancement du timer par un joueur : le joueur qui a lancé le timer peut faire bouger les robots
+        LAUNCH_TIMER,
+        PLAYTIME;
     }
 
     //Méthodes
-    public void playerOneTurn(){
-        if(Game.context.Status == Status.PLAYERONE_TURN){
-            this.playerOne.setMyTurn(true);
-        }
-    }
-
-    public void playerTwoTurn(){
-        if(Game.context.Status == Status.PLAYERONE_TURN){
-            this.playerOne.setMyTurn(true);
-        }
-    }
 
     //Getters/Setters
     public Board getBoard() {

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Spinner;
 import javafx.scene.effect.BlendMode;
 import com.example.ricochet_robot.backend.Cell;
 import com.example.ricochet_robot.backend.Game;
@@ -64,6 +65,10 @@ public class GameController implements Initializable {
     private Label ScorePlayerTwo;
     @FXML
     private ImageView goalCenterImage;
+    @FXML
+    private Spinner spinnerPlayerOne;
+    @FXML
+    private Spinner spinnerPlayerTwo;
     private int i = 30;
     private boolean isTheTimerStopped;
     @Override
@@ -75,25 +80,25 @@ public class GameController implements Initializable {
         Scene scene = boardPane.getScene();
         initKeyListeners(scene);
         boardGeneration();
-        //Affichage du jeton objectif à atteindre
-        Game.Status = Game.Status.PLAYERONE_TURN;
+        this.spinnerPlayerOne.setVisible(false);
+        this.spinnerPlayerTwo.setVisible(false);
+        game.Status = Game.Status.LAUNCH_TIMER;
     }
 
     @FXML
     private void handleGameBtn(){
         switch (game.Status) {
-            case PLAYERONE_TURN -> {
-                this.gameBtn.setVisible(false);
-                game.playerOneTurn();
-                displayGoal();
+            case LAUNCH_TIMER -> {
+                this.spinnerPlayerOne.setVisible(true);
+                this.spinnerPlayerTwo.setVisible(true);
+                this.gameBtn.setText("Confirmer le nombre de coups");
+                game.Status = Game.Status.PLAYTIME;
                 timer();
-                movePlayer();
             }
-            case PLAYERTWO_TURN -> {
+            case PLAYTIME -> {
+                this.spinnerPlayerOne.setVisible(false);
+                this.spinnerPlayerTwo.setVisible(false);
                 this.gameBtn.setVisible(false);
-                game.playerTwoTurn();
-                displayGoal();
-                timer();
                 movePlayer();
             }
         }
@@ -195,8 +200,8 @@ public class GameController implements Initializable {
                 /* Potentiel bug */
               
                 // Afficher robots
-                if (this.game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()) {
-                    Robot robot = this.game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
+                if (game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()) {
+                    Robot robot = game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
 
                     String filename = getRobotImageFilename(robot.getColor());
 
@@ -340,6 +345,7 @@ public class GameController implements Initializable {
 
     //Sablier activé après clic sur le bouton de jeu
     private void timer(){
+        i = 30;
         isTheTimerStopped = false;
         timerText.setVisible(true);
         timerText.setText(String.valueOf(i));
@@ -351,6 +357,8 @@ public class GameController implements Initializable {
                 timerText.setText("");
                 i = 0;
                 isTheTimerStopped = true;
+                game.Status = Game.Status.PLAYTIME;
+                handleGameBtn();
                 System.out.println(isTheTimerStopped);
             }
         }));
@@ -359,38 +367,34 @@ public class GameController implements Initializable {
     }
 
     private void movePlayer(){
-        for (int i = 0; i < 16; i++){
-            for (int j = 0; j < 16; j++){
-                this.board[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        if(!isTheTimerStopped){
+            for (int i = 0; i < 16; i++){
+                for (int j = 0; j < 16; j++){
+                    this.board[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            String id = ((StackPane) event.getSource()).getId();
+                            System.out.println("Tile id : " + id);
 
-                    @Override
-                    public void handle(MouseEvent event) {
-                        String id = ((StackPane) event.getSource()).getId();
-                        System.out.println("Tile id : " + id);
+                            // Get robot from cell
+                            int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
+                            Cell currentCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
 
-                        // Get robot from cell
-                        int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
-                        Cell currentCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
-
-                        if (currentCell.getIsThereARobot()) {
-                            selectedRobot = currentCell.getCurrentRobot();
-                            selectedRobot.setCurrentCell(currentCell);
-                            move(Orientation.NORTH);
-                            if(game.playerOne.isMyTurn()){
+                            if (currentCell.getIsThereARobot()) {
+                                selectedRobot = currentCell.getCurrentRobot();
+                                selectedRobot.setCurrentCell(currentCell);
+                                move(Orientation.NORTH);
                                 game.playerOne.setHitsNumber(game.playerOne.getHitsNumber() + 1);
                                 System.out.println(game.playerOne.getHitsNumber());
                                 scorePlayerOne.setText(String.valueOf(game.playerOne.getHitsNumber()));
-                            } else if (game.playerTwo.isMyTurn()) {
-                                game.playerTwo.setHitsNumber(game.playerTwo.getHitsNumber() + 1);
-                                System.out.println(game.playerTwo.getHitsNumber());
-                                ScorePlayerTwo.setText(String.valueOf(game.playerTwo.getHitsNumber()));
                             }
+                            event.consume();
                         }
-                        event.consume();
-                    }
-                });
+                    });
+                }
             }
         }
+
     }
 
 }

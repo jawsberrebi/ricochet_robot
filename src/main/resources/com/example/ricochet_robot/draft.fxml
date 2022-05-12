@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -84,5 +85,7 @@
             <Font name="Agency FB" size="24.0" />
          </font>
       </Label>
+      <Spinner fx:id="spinnerPlayerOne" layoutX="868.0" layoutY="317.0" prefHeight="26.0" prefWidth="75.0" />
+      <Spinner fx:id="spinnerPlayerTwo" layoutX="868.0" layoutY="382.0" prefHeight="26.0" prefWidth="75.0" />
    </children>
 </AnchorPane>
