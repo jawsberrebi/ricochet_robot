@@ -5,5 +5,5 @@ public enum Shape {
     MOON,
     STAR,
     PLANET,
-    HOLE
+    VORTEX
 }

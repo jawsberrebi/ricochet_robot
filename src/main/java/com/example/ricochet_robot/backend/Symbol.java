@@ -8,6 +8,7 @@ public class Symbol extends StackPane {
     private Color color;
     private Shape shape;
     private Position position;
+    private boolean isItAGoal;
 
     Symbol(Color c, Shape s, Position p){
         this.color = c;
@@ -39,5 +40,17 @@ public class Symbol extends StackPane {
 
     public void setShape(Shape shape) {
         this.shape = shape;
+    }
+
+    public boolean isItAGoal() {
+        return isItAGoal;
+    }
+
+    public void setItAGoal(boolean itAGoal) {
+        isItAGoal = itAGoal;
+    }
+
+    public void display(){
+        System.out.println(this.shape + " " + this.color);
     }
 }
