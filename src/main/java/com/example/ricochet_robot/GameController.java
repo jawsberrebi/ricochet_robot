@@ -23,9 +23,6 @@ import java.io.File;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameController implements Initializable {
 

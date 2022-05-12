@@ -1,7 +1,5 @@
 package com.example.ricochet_robot.backend;
 
-import javafx.animation.Timeline;
-
 public class Game {
 
     public static Game context;
