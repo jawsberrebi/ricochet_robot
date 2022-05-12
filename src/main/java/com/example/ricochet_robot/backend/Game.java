@@ -12,7 +12,8 @@ public class Game {
     }
 
     public void play() {
-        this.board.createBoard();
+        this.board.constructBoardFromMiniBoards();
+        //this.board.createBoard();
         this.board.addRobotsToBoard();
     }
 

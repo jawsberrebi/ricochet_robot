@@ -28,6 +28,10 @@ public class Cell {
         return position;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public List<Wall> getWalls() {
         return this.walls;
     }
@@ -37,11 +41,21 @@ public class Cell {
         this.isThereWall = true;
     }
 
-    public Robot getCurrentRobot() {
-        if (currentRobot != null) {
-            return currentRobot;
+    public void rotateWallsRight(int numberOfRotations) {
+        for (Wall wall : walls) {
+            for (int n = 0; n < numberOfRotations; n++) {
+                switch (wall.getOrientation()) {
+                    case NORTH -> wall.setOrientation(Orientation.EAST);
+                    case SOUTH -> wall.setOrientation(Orientation.WEST);
+                    case EAST -> wall.setOrientation(Orientation.SOUTH);
+                    case WEST -> wall.setOrientation(Orientation.NORTH);
+                }
+            }
         }
-        return null;
+    }
+
+    public Robot getCurrentRobot() {
+        return currentRobot;
     }
 
     public void addRobot(Robot robot) {
