@@ -58,32 +58,41 @@ public class GameController implements Initializable {
     private Button gameBtn;
     @FXML
     private Label timerText;
+    @FXML
+    private Label scorePlayerOne;
+    @FXML
+    private Label ScorePlayerTwo;
     private int i = 30;
     private boolean isTheTimerStopped;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Lancement du jeu
         game.play();
+        scorePlayerOne.setText("");
         //Création du plateau en frontend
         Scene scene = boardPane.getScene();
         initKeyListeners(scene);
         boardGeneration();
         //Affichage du jeton objectif à atteindre
-        displayGoal();
-        Game.Status = Game.Status.START_ROUND;
+        Game.Status = Game.Status.PLAYERONE_TURN;
     }
 
     @FXML
     private void handleGameBtn(){
         switch (game.Status) {
-            case START_ROUND -> {
+            case PLAYERONE_TURN -> {
                 this.gameBtn.setVisible(false);
+                game.playerOneTurn();
+                displayGoal();
                 timer();
-                Game.Status = Game.Status.LAUNCH_TIMER;
+                movePlayer();
             }
-            case LAUNCH_TIMER -> {
-                timerText.setVisible(true);
-
+            case PLAYERTWO_TURN -> {
+                this.gameBtn.setVisible(false);
+                game.playerTwoTurn();
+                displayGoal();
+                timer();
+                movePlayer();
             }
         }
     }
@@ -196,6 +205,7 @@ public class GameController implements Initializable {
 
                 if((i != 7 && i != 8) || (j != 7 && j != 8)){
                     // Rendre stackPane cliquable
+                    /*
                     stackPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
                         @Override
@@ -210,22 +220,20 @@ public class GameController implements Initializable {
                             if (currentCell.getIsThereARobot()) {
                                 selectedRobot = currentCell.getCurrentRobot();
                                 selectedRobot.setCurrentCell(currentCell);
-
                                 move(Orientation.NORTH);
                             }
 
                             event.consume();
                         }
                     });
+                     */
+
                 }else{
                     stackPane = new StackPane();
                     Image goalBox = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/GoalBox.png").toURI().toString() , 44, 44, false, false);
                     ImageView goalBoxView = new ImageView(goalBox);
                     stackPane.getChildren().add(goalBoxView);
                     //Coder affichage du jeton objectif dans la boîte centrale
-                  
-
-
                 }
                 // Ajouter stackPane au board
                 this.board[i][j] = stackPane;
@@ -346,4 +354,40 @@ public class GameController implements Initializable {
         timeline.setCycleCount(30);
         timeline.play();
     }
+
+    private void movePlayer(){
+        for (int i = 0; i < 16; i++){
+            for (int j = 0; j < 16; j++){
+                this.board[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        String id = ((StackPane) event.getSource()).getId();
+                        System.out.println("Tile id : " + id);
+
+                        // Get robot from cell
+                        int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
+                        Cell currentCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
+
+                        if (currentCell.getIsThereARobot()) {
+                            selectedRobot = currentCell.getCurrentRobot();
+                            selectedRobot.setCurrentCell(currentCell);
+                            move(Orientation.NORTH);
+                            if(game.playerOne.isMyTurn()){
+                                game.playerOne.setHitsNumber(game.playerOne.getHitsNumber() + 1);
+                                System.out.println(game.playerOne.getHitsNumber());
+                                scorePlayerOne.setText(String.valueOf(game.playerOne.getHitsNumber()));
+                            } else if (game.playerTwo.isMyTurn()) {
+                                game.playerTwo.setHitsNumber(game.playerTwo.getHitsNumber() + 1);
+                                System.out.println(game.playerTwo.getHitsNumber());
+                                ScorePlayerTwo.setText(String.valueOf(game.playerTwo.getHitsNumber()));
+                            }
+                        }
+                        event.consume();
+                    }
+                });
+            }
+        }
+    }
+
 }

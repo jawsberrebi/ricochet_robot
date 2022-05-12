@@ -10,6 +10,8 @@ public class Game {
     private Symbol currentGoal;        //Jeton objectif à atteindre
     private int goalCursor;            //Variable à incrémenter pour sélectionner l'objectif actuel
     public static Status Status;       //État du jeu
+    public Player playerOne = new Player("J1");
+    public Player playerTwo = new Player("J2");;
 
     public Game(){
         this.board = new Board();
@@ -21,22 +23,37 @@ public class Game {
                     ("Merci de ne pas exécuter plusieurs fois le jeu");
         }
         //this.board.constructBoardFromMiniBoards();
-      
+        //Création d'un jeu
         Game.context = new Game();
+        //Création des joueurs
+        Player playerTwo = new Player("J2");
         this.board.createBoard();                                       //Création du plateau
         this.board.addRobotsToBoard();                                  //Ajout des robots sur le plateau
         this.board.setGoalList();                                       //Définition de l'ordre d'apparition des jetons objectif à atteindre
         this.goalCursor = 0;                                            //Initialisation du curseur qui parcours la liste d'objectifs au fil de la partie
         this.currentGoal = this.board.getGoals().get(this.goalCursor);  //Définition du jeton objectif à atteindre
         this.board.setSymbolInGoalBox(this.currentGoal);                //Ajout du jeton objectif au centre de la boîte
-        Status = Status.START_ROUND;
+        Status = Status.PLAYERONE_TURN;
 
     }
 
     //État du jeu
     public enum Status{
-        START_ROUND,                    //Nouvelle manche : nouveau jeton objectif, début de la manche
-        LAUNCH_TIMER                    //Lancement du timer par un joueur : le joueur qui a lancé le timer peut faire bouger les robots
+        PLAYERONE_TURN,                    //Nouvelle manche : nouveau jeton objectif, début de la manche
+        PLAYERTWO_TURN                    //Lancement du timer par un joueur : le joueur qui a lancé le timer peut faire bouger les robots
+    }
+
+    //Méthodes
+    public void playerOneTurn(){
+        if(Game.context.Status == Status.PLAYERONE_TURN){
+            this.playerOne.setMyTurn(true);
+        }
+    }
+
+    public void playerTwoTurn(){
+        if(Game.context.Status == Status.PLAYERONE_TURN){
+            this.playerOne.setMyTurn(true);
+        }
     }
 
     //Getters/Setters

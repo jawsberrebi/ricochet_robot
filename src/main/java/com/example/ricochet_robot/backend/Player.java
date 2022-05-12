@@ -10,7 +10,24 @@ public class Player {
     Player(String n){
         this.name = n;
         this.isMyTurn = false;
+        this.hitsNumber = 0;
     }
 
 
+    //Getters/Setters
+    public boolean isMyTurn() {
+        return isMyTurn;
+    }
+
+    public void setMyTurn(boolean myTurn) {
+        isMyTurn = myTurn;
+    }
+
+    public int getHitsNumber() {
+        return hitsNumber;
+    }
+
+    public void setHitsNumber(int hitsNumber) {
+        this.hitsNumber = hitsNumber;
+    }
 }
