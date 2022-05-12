@@ -62,6 +62,8 @@ public class GameController implements Initializable {
     private Label scorePlayerOne;
     @FXML
     private Label ScorePlayerTwo;
+    @FXML
+    private ImageView goalCenterImage;
     private int i = 30;
     private boolean isTheTimerStopped;
     @Override
@@ -229,6 +231,7 @@ public class GameController implements Initializable {
                      */
 
                 }else{
+
                     stackPane = new StackPane();
                     Image goalBox = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/GoalBox.png").toURI().toString() , 44, 44, false, false);
                     ImageView goalBoxView = new ImageView(goalBox);

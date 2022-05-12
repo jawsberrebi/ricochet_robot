@@ -48,6 +48,9 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
+         <children>
+            <ImageView fx:id="goalCenterImage" fitHeight="78.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7" GridPane.rowIndex="8" />
+         </children>
       </GridPane>
       <Label fx:id="indication" layoutX="957.0" layoutY="71.0" prefHeight="30.0" prefWidth="213.0" text="Jeton objectif à atteindre :" textAlignment="CENTER">
          <font>
