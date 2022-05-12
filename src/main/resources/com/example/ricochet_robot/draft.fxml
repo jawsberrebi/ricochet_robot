@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ricochet_robot.GameController">
    <children>
@@ -45,5 +49,27 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
+      <Label fx:id="indication" layoutX="957.0" layoutY="71.0" prefHeight="30.0" prefWidth="213.0" text="Jeton objectif à atteindre :" textAlignment="CENTER">
+         <font>
+            <Font name="Agency FB" size="24.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="currentImageGoal" fitHeight="89.0" fitWidth="92.0" layoutX="1012.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="957.0" layoutY="315.0" prefHeight="30.0" prefWidth="100.0" text="JOUEUR 1 :" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="Agency FB" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="957.0" layoutY="380.0" prefHeight="30.0" prefWidth="100.0" text="JOUEUR 2 :" textAlignment="CENTER" textFill="#4800ff">
+         <font>
+            <Font name="Agency FB" size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="gameBtn" layoutX="944.0" layoutY="500.0" mnemonicParsing="false" onAction="#handleGameBtn" prefHeight="46.0" prefWidth="225.0" text="Lancer le sablier" />
+      <Label fx:id="timerText" layoutX="819.0" layoutY="188.0" prefHeight="63.0" prefWidth="75.0" textAlignment="CENTER">
+         <font>
+            <Font name="Agency FB" size="50.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
