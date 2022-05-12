@@ -31,15 +31,31 @@ public class Cell {
         return position;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public List<Wall> getWalls() {
         return this.walls;
     }
 
-    public void addWalls(Orientation orientation){
+    public void addWalls(Orientation orientation) {
         this.walls.add(new Wall(orientation));
         this.isThereWall = true;
     }
 
+    public void rotateWallsRight(int numberOfRotations) {
+        for (Wall wall : walls) {
+            for (int n = 0; n < numberOfRotations; n++) {
+                switch (wall.getOrientation()) {
+                    case NORTH -> wall.setOrientation(Orientation.EAST);
+                    case SOUTH -> wall.setOrientation(Orientation.WEST);
+                    case EAST -> wall.setOrientation(Orientation.SOUTH);
+                    case WEST -> wall.setOrientation(Orientation.NORTH);
+                }
+            }
+        }
+      
     //Ajout d'un jeton objectif sur la case
     public void addSymbol(Symbol symbol){
         this.isThereASymbol = true;

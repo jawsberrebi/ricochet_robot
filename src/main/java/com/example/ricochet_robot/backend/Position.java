@@ -28,6 +28,18 @@ public class Position {
         this.column = column;
     }
 
+    // Methods
+    public Position nextPosition(Orientation direction) {
+        Position nextCellPosition = new Position(this.row, this.column);
 
+        switch (direction) {
+            case NORTH -> nextCellPosition.setColumn(nextCellPosition.getColumn() - 1);
+            case SOUTH -> nextCellPosition.setColumn(nextCellPosition.getColumn() + 1);
+            case EAST -> nextCellPosition.setColumn(nextCellPosition.getRow() + 1);
+            case WEST -> nextCellPosition.setColumn(nextCellPosition.getRow() - 1);
+        }
+
+        return nextCellPosition;
+    }
 
 }
