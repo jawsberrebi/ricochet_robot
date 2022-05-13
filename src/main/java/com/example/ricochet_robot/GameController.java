@@ -1,39 +1,32 @@
 package com.example.ricochet_robot;
 
 import com.example.ricochet_robot.backend.*;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Spinner;
-import javafx.scene.effect.BlendMode;
+import javafx.scene.control.*;
 import com.example.ricochet_robot.backend.Cell;
 import com.example.ricochet_robot.backend.Game;
 import com.example.ricochet_robot.backend.Robot;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.io.File;
 import java.net.URL;
+import java.text.BreakIterator;
 import java.time.Duration;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
@@ -62,14 +55,30 @@ public class GameController implements Initializable {
     @FXML
     private Label scorePlayerOne;
     @FXML
-    private Label ScorePlayerTwo;
+    private Label scorePlayerTwo;
     @FXML
     private ImageView goalCenterImage;
     @FXML
-    private Spinner spinnerPlayerOne;
+    private Spinner<Integer> spinnerPlayerOne;
     @FXML
-    private Spinner spinnerPlayerTwo;
-    private int i = 30;
+    private Spinner<Integer> spinnerPlayerTwo;
+    @FXML
+    private Label hitsNumberChoicePlayerOne;
+    @FXML
+    private Label hitsNumberChoicePlayerTwo;
+    @FXML
+    private RadioButton radioPlayerOne;
+    @FXML
+    private RadioButton radioPlayerTwo;
+    @FXML
+    private ToggleGroup radioGroup = new ToggleGroup();
+    @FXML
+    private Label dotPlayerOne;
+    @FXML
+    private Label dotPlayerTwo;
+    @FXML
+    private Text indicationNumberOfHits;
+    private int launchTimer = 30;
     private boolean isTheTimerStopped;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -82,6 +91,11 @@ public class GameController implements Initializable {
         boardGeneration();
         this.spinnerPlayerOne.setVisible(false);
         this.spinnerPlayerTwo.setVisible(false);
+        this.radioPlayerOne.setVisible(false);
+        this.radioPlayerTwo.setVisible(false);
+        this.dotPlayerOne.setVisible(false);
+        this.dotPlayerTwo.setVisible(false);
+        this.indicationNumberOfHits.setVisible(false);
         game.Status = Game.Status.LAUNCH_TIMER;
     }
 
@@ -91,14 +105,40 @@ public class GameController implements Initializable {
             case LAUNCH_TIMER -> {
                 this.spinnerPlayerOne.setVisible(true);
                 this.spinnerPlayerTwo.setVisible(true);
+                this.indicationNumberOfHits.setVisible(true);
+                hitsNumberChoicePlayerOne.setVisible(false);
+                hitsNumberChoicePlayerTwo.setVisible(false);
                 this.gameBtn.setText("Confirmer le nombre de coups");
-                game.Status = Game.Status.PLAYTIME;
+                game.Status = Game.Status.PREPARE_ROUND;
+                launchSpinners();
+                getFirstFinderPlayer();
                 timer();
+                movePlayer();
+                displayGoal();
             }
-            case PLAYTIME -> {
+            case PREPARE_ROUND -> {
+                launchTimer = 0;
                 this.spinnerPlayerOne.setVisible(false);
                 this.spinnerPlayerTwo.setVisible(false);
+                this.radioPlayerOne.setVisible(false);
+                this.radioPlayerTwo.setVisible(false);
+                this.indicationNumberOfHits.setVisible(false);
+                if (game.getPlayerOne().getIsIHaveTheNumberOfHitsFirst()){
+                    this.dotPlayerOne.setVisible(true);
+                    this.dotPlayerTwo.setVisible(false);
+                } else if (game.getPlayerTwo().getIsIHaveTheNumberOfHitsFirst()) {
+                    this.dotPlayerTwo.setVisible(true);
+                    this.dotPlayerOne.setVisible(false);
+                }
                 this.gameBtn.setVisible(false);
+                this.hitsNumberChoicePlayerOne.setVisible(true);
+                this.hitsNumberChoicePlayerTwo.setVisible(true);
+                game.setFirstTurn();
+                handleGameBtn();
+            }
+            case PLAYER_ONE_TURN -> {
+                movePlayer();
+            }case PLAYER_TWO_TURN -> {
                 movePlayer();
             }
         }
@@ -196,9 +236,9 @@ public class GameController implements Initializable {
                 Image symbolImage = new Image(new File(filePathRoot + "goals/" + symbolImageFilename).toURI().toString() , 35, 35, false, false);
                 ImageView symbolImageView = new ImageView(symbolImage);
                 stackPane.getChildren().add(symbolImageView);
-                
+
                 /* Potentiel bug */
-              
+
                 // Afficher robots
                 if (game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()) {
                     Robot robot = game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
@@ -345,22 +385,26 @@ public class GameController implements Initializable {
 
     //Sablier activé après clic sur le bouton de jeu
     private void timer(){
-        i = 30;
+        launchTimer = 30;
         isTheTimerStopped = false;
         timerText.setVisible(true);
-        timerText.setText(String.valueOf(i));
+        timerText.setText(String.valueOf(launchTimer));
         Timeline timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e ->{
-            i--;
-            timerText.setText(String.valueOf(i));
-
-            if (i == 0) {
+            if (launchTimer == 0) {
                 timerText.setText("");
-                i = 0;
+                launchTimer = 0;
                 isTheTimerStopped = true;
-                game.Status = Game.Status.PLAYTIME;
-                handleGameBtn();
-                System.out.println(isTheTimerStopped);
+                if(game.Status != Game.Status.PREPARE_ROUND){
+                    game.Status = Game.Status.PREPARE_ROUND;
+                    handleGameBtn();
+                }
+            }else {
+                launchTimer--;
+                timerText.setText(String.valueOf(launchTimer));
             }
+
+
+
         }));
         timeline.setCycleCount(30);
         timeline.play();
@@ -383,10 +427,23 @@ public class GameController implements Initializable {
                             if (currentCell.getIsThereARobot()) {
                                 selectedRobot = currentCell.getCurrentRobot();
                                 selectedRobot.setCurrentCell(currentCell);
-                                move(Orientation.NORTH);
-                                game.playerOne.setHitsNumber(game.playerOne.getHitsNumber() + 1);
-                                System.out.println(game.playerOne.getHitsNumber());
-                                scorePlayerOne.setText(String.valueOf(game.playerOne.getHitsNumber()));
+                                if (game.getPlayerOne().getIsMyTurn() && game.getPlayerOne().getHitsNumber() < game.getPlayerOne().getHitsNumberChoice()){
+                                    move(Orientation.NORTH);
+                                    game.getPlayerOne().setHitsNumber(game.getPlayerOne().getHitsNumber() + 1);
+                                    System.out.println(game.getPlayerOne().getHitsNumber());
+                                    scorePlayerOne.setText(String.valueOf(game.getPlayerOne().getHitsNumber()));
+                                    //game.itIsWin(selectedRobot); À tester
+                                }else if(game.getPlayerTwo().getIsMyTurn() && game.getPlayerTwo().getHitsNumber() < game.getPlayerTwo().getHitsNumberChoice()){
+                                    move(Orientation.NORTH);
+                                    game.getPlayerTwo().setHitsNumber(game.getPlayerTwo().getHitsNumber() + 1);
+                                    System.out.println(game.getPlayerTwo().getHitsNumber());
+                                    scorePlayerTwo.setText(String.valueOf(game.getPlayerTwo().getHitsNumber()));
+                                    //game.itIsWin(selectedRobot); À tester
+                                }else{
+                                    game.setNextTurn();
+                                    handleGameBtn();
+                                }
+
                             }
                             event.consume();
                         }
@@ -395,6 +452,55 @@ public class GameController implements Initializable {
             }
         }
 
+    }
+
+    private void launchSpinners(){
+        SpinnerValueFactory<Integer> valueFactoryPlayerOne = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100);
+        valueFactoryPlayerOne.setValue(1);
+        SpinnerValueFactory<Integer> valueFactoryPlayerTwo = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100);
+        valueFactoryPlayerTwo.setValue(1);
+        spinnerPlayerOne.setValueFactory(valueFactoryPlayerOne);
+        spinnerPlayerTwo.setValueFactory(valueFactoryPlayerTwo);
+        game.getPlayerOne().setHitsNumberChoice(spinnerPlayerOne.getValue());
+        game.getPlayerTwo().setHitsNumberChoice(spinnerPlayerTwo.getValue());
+        hitsNumberChoicePlayerOne.setText(String.valueOf("Nombre de coups choisi : " + game.getPlayerOne().getHitsNumberChoice()));
+        hitsNumberChoicePlayerTwo.setText(String.valueOf("Nombre de coups choisi : " + game.getPlayerTwo().getHitsNumberChoice()));
+        this.spinnerPlayerOne.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                game.getPlayerOne().setHitsNumberChoice(spinnerPlayerOne.getValue());
+                hitsNumberChoicePlayerOne.setText(String.valueOf("Nombre de coups choisi : " + game.getPlayerOne().getHitsNumberChoice()));
+            }
+        });
+        this.spinnerPlayerTwo.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                game.getPlayerTwo().setHitsNumberChoice(spinnerPlayerTwo.getValue());
+                hitsNumberChoicePlayerTwo.setText(String.valueOf("Nombre de coups choisi : " + game.getPlayerTwo().getHitsNumberChoice()));
+            }
+        });
+    }
+
+    public void getFirstFinderPlayer(){
+        this.radioPlayerOne.setToggleGroup(this.radioGroup);
+        this.radioPlayerTwo.setToggleGroup(this.radioGroup);
+        this.radioPlayerOne.setVisible(true);
+        this.radioPlayerTwo.setVisible(true);
+        radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                if (radioGroup.getSelectedToggle() != null) {
+                    RadioButton button = (RadioButton) radioGroup.getSelectedToggle();
+                    if (button == radioPlayerOne){
+                        game.getPlayerOne().setiHaveTheNumberOfHitsFirst(true);
+                        game.getPlayerTwo().setiHaveTheNumberOfHitsFirst(false);
+                    }else if(button == radioPlayerTwo){
+                        game.getPlayerTwo().setiHaveTheNumberOfHitsFirst(true);
+                        game.getPlayerOne().setiHaveTheNumberOfHitsFirst(false);
+                    }
+                }
+            }
+        });
     }
 
 }

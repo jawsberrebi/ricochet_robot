@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="1000.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ricochet_robot.GameController">
    <children>
@@ -80,12 +82,39 @@
             <Font name="Agency FB" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="ScorePlayerTwo" layoutX="1054.0" layoutY="380.0" prefHeight="30.0" prefWidth="100.0" textAlignment="CENTER" textFill="#4800ff">
+      <Label fx:id="scorePlayerTwo" layoutX="1054.0" layoutY="380.0" prefHeight="30.0" prefWidth="100.0" textAlignment="CENTER" textFill="#4800ff">
          <font>
             <Font name="Agency FB" size="24.0" />
          </font>
       </Label>
       <Spinner fx:id="spinnerPlayerOne" layoutX="868.0" layoutY="317.0" prefHeight="26.0" prefWidth="75.0" />
       <Spinner fx:id="spinnerPlayerTwo" layoutX="868.0" layoutY="382.0" prefHeight="26.0" prefWidth="75.0" />
+      <Label fx:id="hitsNumberChoicePlayerOne" layoutX="768.0" layoutY="317.0" prefHeight="26.0" prefWidth="175.0" textFill="RED">
+         <font>
+            <Font name="Agency FB" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="hitsNumberChoicePlayerTwo" layoutX="767.0" layoutY="382.0" prefHeight="26.0" prefWidth="175.0" textFill="#4800ff">
+         <font>
+            <Font name="Agency FB" size="18.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="radioPlayerOne" layoutX="793.0" layoutY="321.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="10.0" />
+      <RadioButton fx:id="radioPlayerTwo" layoutX="793.0" layoutY="386.0" mnemonicParsing="false" />
+      <Text fx:id="indicationNumberOfHits" layoutX="735.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Qui a eu en premier le nombre de coups ?" textAlignment="CENTER" wrappingWidth="132.7999877929687">
+         <font>
+            <Font name="Agency FB" size="18.0" />
+         </font>
+      </Text>
+      <Label fx:id="dotPlayerOne" layoutX="933.0" layoutY="293.0" prefHeight="43.0" prefWidth="22.0" text="•" textFill="RED">
+         <font>
+            <Font name="System Bold" size="50.0" />
+         </font>
+      </Label>
+      <Label fx:id="dotPlayerTwo" layoutX="933.0" layoutY="358.0" prefHeight="43.0" prefWidth="22.0" text="•" textFill="#4800ff">
+         <font>
+            <Font name="System Bold" size="50.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

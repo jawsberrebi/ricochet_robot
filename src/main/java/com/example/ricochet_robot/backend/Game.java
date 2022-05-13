@@ -3,6 +3,8 @@ package com.example.ricochet_robot.backend;
 import com.example.ricochet_robot.GameController;
 import javafx.geometry.Pos;
 
+import java.util.stream.Stream;
+
 public class Game {
 
     public static Game context;
@@ -10,8 +12,8 @@ public class Game {
     private Symbol currentGoal;        //Jeton objectif à atteindre
     private int goalCursor;            //Variable à incrémenter pour sélectionner l'objectif actuel
     public static Status Status;       //État du jeu
-    public Player playerOne = new Player("J1");
-    public Player playerTwo = new Player("J2");;
+    private Player playerOne = new Player("J1");
+    private Player playerTwo = new Player("J2");
 
     public Game(){
         this.board = new Board();
@@ -33,13 +35,23 @@ public class Game {
         this.goalCursor = 0;                                            //Initialisation du curseur qui parcours la liste d'objectifs au fil de la partie
         this.currentGoal = this.board.getGoals().get(this.goalCursor);  //Définition du jeton objectif à atteindre
         this.board.setSymbolInGoalBox(this.currentGoal);                //Ajout du jeton objectif au centre de la boîte
+    }
 
+    //Getters/Setters
+    public Player getPlayerOne() {
+        return playerOne;
+    }
+
+    public Player getPlayerTwo() {
+        return playerTwo;
     }
 
     //État du jeu
     public enum Status{
         LAUNCH_TIMER,
-        PLAYTIME;
+        PREPARE_ROUND,
+        PLAYER_ONE_TURN,
+        PLAYER_TWO_TURN;
     }
 
     //Méthodes
@@ -47,6 +59,41 @@ public class Game {
     //Getters/Setters
     public Board getBoard() {
         return this.board;
+    }
+
+    public void setFirstTurn(){
+        if(this.playerOne.getIsIHaveTheNumberOfHitsFirst()){
+            this.playerOne.setIsMyTurn(true);
+            this.playerTwo.setIsMyTurn(false);
+            Game.Status = Status.PLAYER_ONE_TURN;
+        }else if(this.playerTwo.getIsIHaveTheNumberOfHitsFirst()){
+            System.out.println("ofofof");
+            this.playerTwo.setIsMyTurn(true);
+            this.playerOne.setIsMyTurn(false);
+            Game.Status = Status.PLAYER_TWO_TURN;
+        }
+    }
+
+    public void setNextTurn(){
+        if (this.playerOne.getIsMyTurn()){
+            this.playerOne.setIsMyTurn(false);
+            this.playerTwo.setIsMyTurn(true);
+            Game.Status = Status.PLAYER_TWO_TURN;
+        }else if(this.playerTwo.getIsMyTurn()){
+            this.playerTwo.setIsMyTurn(false);
+            this.playerOne.setIsMyTurn(true);
+            Game.Status = Status.PLAYER_ONE_TURN;
+        }
+    }
+
+    public void itIsWin(Robot robot){
+        if((robot.getCurrentCell().getSymbol() == this.currentGoal) && (robot.getCurrentCell().getSymbol().getColor() == robot.getColor()) && (this.currentGoal.getColor() == robot.getColor())){
+            if(this.playerOne.getIsMyTurn()){
+                this.playerOne.addAnotherWonRound();
+            }else if(this.playerTwo.getIsMyTurn()){
+                this.playerTwo.addAnotherWonRound();
+            }
+        }
     }
 
     public boolean isValidMove(Cell currentCell, Orientation direction) {
