@@ -390,14 +390,12 @@ public class GameController implements Initializable {
         timerText.setVisible(true);
         timerText.setText(String.valueOf(launchTimer));
         Timeline timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e ->{
-            if (launchTimer == 0) {
+            if (launchTimer <= 0) {
                 timerText.setText("");
                 launchTimer = 0;
                 isTheTimerStopped = true;
-                if(game.Status != Game.Status.PREPARE_ROUND){
-                    game.Status = Game.Status.PREPARE_ROUND;
-                    handleGameBtn();
-                }
+                game.Status = Game.Status.PREPARE_ROUND;
+                handleGameBtn();
             }else {
                 launchTimer--;
                 timerText.setText(String.valueOf(launchTimer));
@@ -406,12 +404,12 @@ public class GameController implements Initializable {
 
 
         }));
-        timeline.setCycleCount(30);
+        timeline.setCycleCount(31);
         timeline.play();
     }
 
     private void movePlayer(){
-        if(!isTheTimerStopped){
+        if(isTheTimerStopped){
             for (int i = 0; i < 16; i++){
                 for (int j = 0; j < 16; j++){
                     this.board[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
