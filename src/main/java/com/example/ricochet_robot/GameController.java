@@ -139,6 +139,8 @@ public class GameController implements Initializable {
                 movePlayer();
             }case PLAYER_TWO_TURN -> {
                 movePlayer();
+            }case END_ROUND -> {
+
             }
         }
     }
@@ -157,7 +159,7 @@ public class GameController implements Initializable {
                 ImageView cellImageView = new ImageView(cellImage);
                 stackPane.getChildren().add(cellImageView);
 
-                Cell currentCell = this.game.getBoard().getCells()[i + 1][j + 1];
+                Cell currentCell = game.getBoard().getCells()[i + 1][j + 1];
 
                 //Ajout des murs, s'il y en a
                 String wallImageFilename = null;
@@ -217,8 +219,6 @@ public class GameController implements Initializable {
                 Image symbolImage = new Image(new File(filePathRoot + "goals/" + symbolImageFilename).toURI().toString() , 35, 35, false, false);
                 ImageView symbolImageView = new ImageView(symbolImage);
                 stackPane.getChildren().add(symbolImageView);
-
-                /* Potentiel bug */
 
                 // Afficher robots
                 if (game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()) {
@@ -385,9 +385,6 @@ public class GameController implements Initializable {
                 launchTimer--;
                 timerText.setText(String.valueOf(launchTimer));
             }
-
-
-
         }));
         timeline.setCycleCount(31);
         timeline.play();
@@ -414,17 +411,17 @@ public class GameController implements Initializable {
                                     game.getPlayerOne().setHitsNumber(game.getPlayerOne().getHitsNumber() + 1);
                                     System.out.println(game.getPlayerOne().getHitsNumber());
                                     scorePlayerOne.setText(String.valueOf(game.getPlayerOne().getHitsNumber()));
-                                    //game.itIsWin(selectedRobot); À tester
+                                    game.itIsWin(selectedRobot);
                                 }else if(game.getPlayerTwo().getIsMyTurn() && game.getPlayerTwo().getHitsNumber() < game.getPlayerTwo().getHitsNumberChoice()){
                                     game.getPlayerTwo().setHitsNumber(game.getPlayerTwo().getHitsNumber() + 1);
                                     System.out.println(game.getPlayerTwo().getHitsNumber());
                                     scorePlayerTwo.setText(String.valueOf(game.getPlayerTwo().getHitsNumber()));
-                                    //game.itIsWin(selectedRobot); À tester
+                                    game.itIsWin(selectedRobot);
                                 }else{
                                     game.setNextTurn();
+                                    Game.Status = Game.Status.END_ROUND;
                                     handleGameBtn();
                                 }
-
                             }
                             event.consume();
                         }

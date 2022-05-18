@@ -51,7 +51,8 @@ public class Game {
         LAUNCH_TIMER,
         PREPARE_ROUND,
         PLAYER_ONE_TURN,
-        PLAYER_TWO_TURN;
+        PLAYER_TWO_TURN,
+        END_ROUND;
     }
 
     //Méthodes
@@ -67,7 +68,6 @@ public class Game {
             this.playerTwo.setIsMyTurn(false);
             Game.Status = Status.PLAYER_ONE_TURN;
         }else if(this.playerTwo.getIsIHaveTheNumberOfHitsFirst()){
-            System.out.println("ofofof");
             this.playerTwo.setIsMyTurn(true);
             this.playerOne.setIsMyTurn(false);
             Game.Status = Status.PLAYER_TWO_TURN;
@@ -93,6 +93,8 @@ public class Game {
             }else if(this.playerTwo.getIsMyTurn()){
                 this.playerTwo.addAnotherWonRound();
             }
+
+            Game.Status = Status.END_ROUND;
         }
     }
 
