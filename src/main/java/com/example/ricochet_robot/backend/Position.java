@@ -35,8 +35,8 @@ public class Position {
         switch (direction) {
             case NORTH -> nextCellPosition.setColumn(nextCellPosition.getColumn() - 1);
             case SOUTH -> nextCellPosition.setColumn(nextCellPosition.getColumn() + 1);
-            case EAST -> nextCellPosition.setColumn(nextCellPosition.getRow() + 1);
-            case WEST -> nextCellPosition.setColumn(nextCellPosition.getRow() - 1);
+            case EAST -> nextCellPosition.setRow(nextCellPosition.getRow() + 1);
+            case WEST -> nextCellPosition.setRow(nextCellPosition.getRow() - 1);
         }
 
         return nextCellPosition;

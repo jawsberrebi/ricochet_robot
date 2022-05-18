@@ -36,7 +36,7 @@ public class GameController implements Initializable {
     private static final Game game = new Game();
     private final Pane[][] board = new Pane[16][16];
     private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";
-    private Robot selectedRobot;
+    public Robot selectedRobot;
 
     private Label timerLabel = new Label(), splitTimerLabel = new Label();
     private DoubleProperty timeSeconds = new SimpleDoubleProperty(), splitTimeSeconds = new SimpleDoubleProperty();
@@ -87,7 +87,6 @@ public class GameController implements Initializable {
         scorePlayerOne.setText("");
         //Création du plateau en frontend
         Scene scene = boardPane.getScene();
-        initKeyListeners(scene);
         boardGeneration();
         this.spinnerPlayerOne.setVisible(false);
         this.spinnerPlayerTwo.setVisible(false);
@@ -142,24 +141,6 @@ public class GameController implements Initializable {
                 movePlayer();
             }
         }
-    }
-
-    private void initKeyListeners(Scene scene) {
-        /*
-        scene.setOnKeyPressed(e -> {
-            System.out.println("Keystroke");
-            if (selectedRobot != null) {
-                switch (e.getCode()) {
-                    case UP -> move(Orientation.NORTH);
-                    case DOWN -> move(Orientation.SOUTH);
-                    case RIGHT -> move(Orientation.EAST);
-                    case LEFT -> move(Orientation.WEST);
-                }
-            } else {
-                System.out.println("Il faut choisir un robot d'abord");
-            }
-        });
-        */
     }
 
     private void boardGeneration(){
@@ -304,7 +285,7 @@ public class GameController implements Initializable {
         }
     }
 
-    private void move(Orientation direction) {
+    public void move(Orientation direction) {
         Cell currentCell = selectedRobot.getCurrentCell();
 
         if (selectedRobot != null) {
@@ -320,7 +301,11 @@ public class GameController implements Initializable {
                 game.move(currentCell, direction);
                 updateRobotDisplay(oldPosition, newPosition);
                 currentCell = game.getBoard().getCell(newPosition);
+                selectedRobot.setCurrentCell(currentCell);
             }
+
+            // Update selected robot
+            selectedRobot = currentCell.getCurrentRobot();
         }
     }
 
@@ -426,13 +411,11 @@ public class GameController implements Initializable {
                                 selectedRobot = currentCell.getCurrentRobot();
                                 selectedRobot.setCurrentCell(currentCell);
                                 if (game.getPlayerOne().getIsMyTurn() && game.getPlayerOne().getHitsNumber() < game.getPlayerOne().getHitsNumberChoice()){
-                                    move(Orientation.NORTH);
                                     game.getPlayerOne().setHitsNumber(game.getPlayerOne().getHitsNumber() + 1);
                                     System.out.println(game.getPlayerOne().getHitsNumber());
                                     scorePlayerOne.setText(String.valueOf(game.getPlayerOne().getHitsNumber()));
                                     //game.itIsWin(selectedRobot); À tester
                                 }else if(game.getPlayerTwo().getIsMyTurn() && game.getPlayerTwo().getHitsNumber() < game.getPlayerTwo().getHitsNumberChoice()){
-                                    move(Orientation.NORTH);
                                     game.getPlayerTwo().setHitsNumber(game.getPlayerTwo().getHitsNumber() + 1);
                                     System.out.println(game.getPlayerTwo().getHitsNumber());
                                     scorePlayerTwo.setText(String.valueOf(game.getPlayerTwo().getHitsNumber()));

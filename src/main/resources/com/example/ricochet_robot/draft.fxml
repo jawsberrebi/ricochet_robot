@@ -54,12 +54,12 @@
          </font>
       </Label>
       <ImageView fx:id="currentImageGoal" fitHeight="89.0" fitWidth="92.0" layoutX="1012.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="957.0" layoutY="315.0" prefHeight="30.0" prefWidth="100.0" text="JOUEUR 1 :" textAlignment="CENTER" textFill="RED">
+      <Label layoutX="957.0" layoutY="315.0" prefHeight="30.0" prefWidth="175.0" text="JOUEUR 1 :" textAlignment="CENTER" textFill="RED">
          <font>
             <Font name="Agency FB" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="957.0" layoutY="380.0" prefHeight="30.0" prefWidth="100.0" text="JOUEUR 2 :" textAlignment="CENTER" textFill="#4800ff">
+      <Label layoutX="957.0" layoutY="380.0" prefHeight="30.0" prefWidth="175.0" text="JOUEUR 2 :" textAlignment="CENTER" textFill="#4800ff">
          <font>
             <Font name="Agency FB" size="24.0" />
          </font>
@@ -109,9 +109,5 @@
             <Font name="System Bold" size="50.0" />
          </font>
       </Label>
-      <Button layoutX="856.0" layoutY="637.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="906.0" layoutY="664.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="811.0" layoutY="664.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="856.0" layoutY="691.0" mnemonicParsing="false" text="Button" />
    </children>
 </AnchorPane>

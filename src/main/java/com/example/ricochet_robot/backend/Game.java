@@ -131,19 +131,19 @@ public class Game {
         return true;
     }
 
-    public void move (Cell currentCell, Orientation direction) {
-        // Remove robot from board
+    public void move(Cell currentCell, Orientation direction) {
         Robot robot = currentCell.getCurrentRobot();
 
-        Position curentPosition = currentCell.getPosition();
-        board.getCell(curentPosition).removeRobot();
+        // Remove robot from board
+        Position currentPosition = currentCell.getPosition();
+        board.getCell(currentPosition).removeRobot();
 
         // Add robot to board at new position
         Position newPosition = currentCell.getPosition().nextPosition(direction);
         Cell newCell = board.getCell(newPosition);
         newCell.addRobot(robot);
     }
-  
+
     public Symbol getCurrentGoal() {
         return currentGoal;
     }
