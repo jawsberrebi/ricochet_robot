@@ -78,13 +78,17 @@ public class GameController implements Initializable {
     private Label dotPlayerTwo;
     @FXML
     private Text indicationNumberOfHits;
+    @FXML
+    private Text stateRound;
     private int launchTimer = 30;
     private boolean isTheTimerStopped;
+    private boolean itIsWin;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Lancement du jeu
         game.play();
         scorePlayerOne.setText("");
+        itIsWin = false;
         //Création du plateau en frontend
         Scene scene = boardPane.getScene();
         boardGeneration();
@@ -98,8 +102,16 @@ public class GameController implements Initializable {
         game.Status = Game.Status.LAUNCH_TIMER;
     }
 
+    public Label getScorePlayerOne() {
+        return scorePlayerOne;
+    }
+
+    public Label getScorePlayerTwo() {
+        return scorePlayerTwo;
+    }
+
     @FXML
-    private void handleGameBtn(){
+    public void handleGameBtn(){
         switch (game.Status) {
             case LAUNCH_TIMER -> {
                 this.spinnerPlayerOne.setVisible(true);
@@ -140,7 +152,12 @@ public class GameController implements Initializable {
             }case PLAYER_TWO_TURN -> {
                 movePlayer();
             }case END_ROUND -> {
+                System.out.println("finii");
+                if(itIsWin){
 
+                }else {
+
+                }
             }
         }
     }
@@ -407,6 +424,7 @@ public class GameController implements Initializable {
                             if (currentCell.getIsThereARobot()) {
                                 selectedRobot = currentCell.getCurrentRobot();
                                 selectedRobot.setCurrentCell(currentCell);
+                                /*
                                 if (game.getPlayerOne().getIsMyTurn() && game.getPlayerOne().getHitsNumber() < game.getPlayerOne().getHitsNumberChoice()){
                                     game.getPlayerOne().setHitsNumber(game.getPlayerOne().getHitsNumber() + 1);
                                     System.out.println(game.getPlayerOne().getHitsNumber());
@@ -422,6 +440,8 @@ public class GameController implements Initializable {
                                     Game.Status = Game.Status.END_ROUND;
                                     handleGameBtn();
                                 }
+
+                                 */
                             }
                             event.consume();
                         }
@@ -479,6 +499,39 @@ public class GameController implements Initializable {
                 }
             }
         });
+    }
+
+    public void setHits(){
+        if (game.getPlayerOne().getIsMyTurn() && game.getPlayerOne().getHitsNumber() < game.getPlayerOne().getHitsNumberChoice()){
+            game.getPlayerOne().setHitsNumber(game.getPlayerOne().getHitsNumber() + 1);
+            System.out.println(game.getPlayerOne().getHitsNumber());
+            scorePlayerOne.setText(String.valueOf(game.getPlayerOne().getHitsNumber()));
+            itIsWin = game.itIsWin(selectedRobot);
+        }else if(game.getPlayerTwo().getIsMyTurn() && game.getPlayerTwo().getHitsNumber() < game.getPlayerTwo().getHitsNumberChoice()) {
+            game.getPlayerTwo().setHitsNumber(game.getPlayerTwo().getHitsNumber() + 1);
+            System.out.println(game.getPlayerTwo().getHitsNumber());
+            scorePlayerTwo.setText(String.valueOf(game.getPlayerTwo().getHitsNumber()));
+            itIsWin = game.itIsWin(selectedRobot);
+        }else if(game.getPlayerOne().getIsMyTurn() && game.getPlayerOne().getHitsNumber() > game.getPlayerOne().getHitsNumberChoice()){
+            game.setNextTurn();
+        }else if (game.getPlayerTwo().getIsMyTurn() && game.getPlayerTwo().getHitsNumber() > game.getPlayerTwo().getHitsNumberChoice()) {
+            game.setNextTurn();
+
+
+
+            //METTTRE UN SYSTEME POUR LE ENDROUND
+
+        }else{
+            itIsWin = false;
+            game.setNextTurn();
+            Game.Status = Game.Status.END_ROUND;
+            handleGameBtn();
+        }
+
+        if(itIsWin){
+            Game.Status = Game.Status.END_ROUND;
+            handleGameBtn();
+        }
     }
 
 }

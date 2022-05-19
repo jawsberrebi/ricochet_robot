@@ -338,6 +338,12 @@ public class Board {
         this.cells[14][2].addSymbol(this.symbols.get(14));
         this.cells[15][7].addSymbol(this.symbols.get(15));
         this.cells[15][14].addSymbol(this.symbols.get(16));
+
+        //Tests à retirer
+        for (int i = 1; i <= 16; i++){
+            this.cells[16][i].addSymbol(this.symbols.get(i-1));
+        }
+
     }
 
     //Création de la liste de jetons objectifs pour chaque manche : les jetons sont mélangés à chaque nouveau jeu

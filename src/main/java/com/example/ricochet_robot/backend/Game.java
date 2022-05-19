@@ -86,15 +86,27 @@ public class Game {
         }
     }
 
-    public void itIsWin(Robot robot){
+    //Obtention d'un nouveau goal dans la liste
+    public void getNewGoal(){
+        this.goalCursor++;                                                                                              //On incrémente l'index de la liste
+        this.currentGoal = this.board.getGoals().get(this.goalCursor);                                                  //Définition du nouvel objectif
+    }
+
+    public boolean itIsWin(Robot robot){
         if((robot.getCurrentCell().getSymbol() == this.currentGoal) && (robot.getCurrentCell().getSymbol().getColor() == robot.getColor()) && (this.currentGoal.getColor() == robot.getColor())){
             if(this.playerOne.getIsMyTurn()){
                 this.playerOne.addAnotherWonRound();
+                System.out.println("WIIIIIIIIIIIIIIIIN" + this.playerOne.getWonRounds());
             }else if(this.playerTwo.getIsMyTurn()){
                 this.playerTwo.addAnotherWonRound();
+                System.out.println("WIIIIIIIIIIIIIIIIIIN" + this.playerOne.getWonRounds());
             }
 
             Game.Status = Status.END_ROUND;
+            return true;
+        }
+        else {
+            return false;
         }
     }
 

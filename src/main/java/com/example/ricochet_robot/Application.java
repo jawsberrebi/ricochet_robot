@@ -1,5 +1,6 @@
 package com.example.ricochet_robot;
 
+import com.example.ricochet_robot.backend.Game;
 import com.example.ricochet_robot.backend.Orientation;
 import com.example.ricochet_robot.backend.Robot;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,7 @@ import java.io.IOException;
 public class Application extends javafx.application.Application {
 
     GameController gameController;
+    Game game;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("draft.fxml"));
@@ -37,6 +39,7 @@ public class Application extends javafx.application.Application {
                     case D -> gameController.move(Orientation.EAST);
                     case A -> gameController.move(Orientation.WEST);
                 }
+                gameController.setHits();
             } else {
                 System.out.println("Il faut choisir un robot d'abord");
             }
