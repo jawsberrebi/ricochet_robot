@@ -112,11 +112,14 @@ public class Game {
 
     public boolean isValidMove(Cell currentCell, Orientation direction) {
         Position nextCellPosition = currentCell.getPosition().nextPosition(direction);
+        if (nextCellPosition.getColumn() > 16 || nextCellPosition.getRow() > 16) {
+            return false;
+        }
         System.out.println("Asked column" + nextCellPosition.getColumn());
         System.out.println("Asked row" + nextCellPosition.getRow());
 
         Cell nextCell = this.board.getCell(nextCellPosition);
-
+        // If at the edge of board
         // Check if valid move
         if (currentCell.getIsThereWall()) {
             for (Wall wall : currentCell.getWalls()) {
