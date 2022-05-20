@@ -92,6 +92,7 @@ public class GameController implements Initializable {
         //Création du plateau en frontend
         Scene scene = boardPane.getScene();
         boardGeneration();
+        this.stateRound.setVisible(false);
         this.spinnerPlayerOne.setVisible(false);
         this.spinnerPlayerTwo.setVisible(false);
         this.radioPlayerOne.setVisible(false);
@@ -150,15 +151,21 @@ public class GameController implements Initializable {
                 handleGameBtn();
             }
             case PLAYER_ONE_TURN -> {
+                this.stateRound.setVisible(true);
+                this.stateRound.setText("Tour du joueur 1");
                 movePlayer();
             }case PLAYER_TWO_TURN -> {
+                this.stateRound.setVisible(true);
+                this.stateRound.setText("Tour du joueur 2");
                 movePlayer();
             }case END_ROUND -> {
+                this.stateRound.setVisible(true);
                 System.out.println("finii");
                 if(itIsWin){
-
+                    //this.stateRound.setText();
                 }else {
-
+                    this.stateRound.setText("Personne n'a gagné");
+                    this.gameBtn.setVisible(true);
                 }
             }
         }
