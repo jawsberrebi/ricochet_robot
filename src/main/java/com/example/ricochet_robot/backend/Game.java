@@ -77,12 +77,23 @@ public class Game {
     public void setNextTurn(){
         if (this.playerOne.getIsMyTurn()){
             this.playerOne.setIsMyTurn(false);
+            this.playerOne.setHaveAlreadyPlayed(true);
             this.playerTwo.setIsMyTurn(true);
-            Game.Status = Status.PLAYER_TWO_TURN;
+            if (!this.playerTwo.isHaveAlreadyPlayed()){
+                System.out.println("Déjà joué");
+                Game.Status = Status.PLAYER_TWO_TURN;
+            }else {
+                Game.Status = Status.END_ROUND;
+            }
         }else if(this.playerTwo.getIsMyTurn()){
             this.playerTwo.setIsMyTurn(false);
+            this.playerTwo.setHaveAlreadyPlayed(true);
             this.playerOne.setIsMyTurn(true);
-            Game.Status = Status.PLAYER_ONE_TURN;
+            if (!this.playerOne.isHaveAlreadyPlayed()){
+                Game.Status = Status.PLAYER_ONE_TURN;
+            }else {
+                Game.Status = Status.END_ROUND;
+            }
         }
     }
 

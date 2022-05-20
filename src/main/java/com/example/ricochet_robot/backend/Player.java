@@ -6,6 +6,7 @@ public class Player {
     private int hitsNumber;
     private int hitsNumberChoice;
     private boolean isMyTurn;
+    private boolean haveAlreadyPlayed;
     private boolean iHaveTheNumberOfHitsFirst;
     private int wonRounds;
 
@@ -13,6 +14,7 @@ public class Player {
         this.name = n;
         this.isMyTurn = false;
         this.iHaveTheNumberOfHitsFirst = false;
+        this.haveAlreadyPlayed = false;
         this.hitsNumber = 0;
         this.wonRounds = 0;
     }
@@ -62,5 +64,13 @@ public class Player {
 
     public void setWonRounds(int wonRounds) {
         this.wonRounds = wonRounds;
+    }
+
+    public boolean isHaveAlreadyPlayed() {
+        return haveAlreadyPlayed;
+    }
+
+    public void setHaveAlreadyPlayed(boolean haveAlreadyPlayed) {
+        this.haveAlreadyPlayed = haveAlreadyPlayed;
     }
 }
