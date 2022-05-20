@@ -110,6 +110,8 @@ public class GameController implements Initializable {
         return scorePlayerTwo;
     }
 
+    public boolean getItIsWin(){return itIsWin;}
+
     @FXML
     public void handleGameBtn(){
         switch (game.Status) {
@@ -516,11 +518,6 @@ public class GameController implements Initializable {
             game.setNextTurn();
         }else if (game.getPlayerTwo().getIsMyTurn() && game.getPlayerTwo().getHitsNumber() > game.getPlayerTwo().getHitsNumberChoice()) {
             game.setNextTurn();
-
-
-
-            //METTTRE UN SYSTEME POUR LE ENDROUND
-
         }else{
             itIsWin = false;
             game.setNextTurn();
@@ -528,9 +525,19 @@ public class GameController implements Initializable {
             handleGameBtn();
         }
 
-        if(itIsWin){
+        if(itIsWin || (game.getPlayerOne().getHitsNumber() + game.getPlayerTwo().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice() + game.getPlayerTwo().getHitsNumberChoice())){
             Game.Status = Game.Status.END_ROUND;
             handleGameBtn();
+        }
+    }
+
+    public boolean itIsFinished(){
+        if(itIsWin || (game.getPlayerOne().getHitsNumber() + game.getPlayerTwo().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice() + game.getPlayerTwo().getHitsNumberChoice())){
+            System.out.println("oui");
+
+            return true;
+        }else {
+            return false;
         }
     }
 

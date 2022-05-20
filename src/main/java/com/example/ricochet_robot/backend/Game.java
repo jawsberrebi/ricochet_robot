@@ -112,6 +112,9 @@ public class Game {
 
     public boolean isValidMove(Cell currentCell, Orientation direction) {
         Position nextCellPosition = currentCell.getPosition().nextPosition(direction);
+        System.out.println("Asked column" + nextCellPosition.getColumn());
+        System.out.println("Asked row" + nextCellPosition.getRow());
+
         Cell nextCell = this.board.getCell(nextCellPosition);
 
         // Check if valid move

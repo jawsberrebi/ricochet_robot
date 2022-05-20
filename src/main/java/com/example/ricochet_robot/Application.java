@@ -28,23 +28,25 @@ public class Application extends javafx.application.Application {
     }
 
     private void initKeyEventHandler(Scene scene) {
-        scene.setOnKeyPressed(e -> {
-            System.out.println("Pressed");
-            Robot selectedRobot = gameController.selectedRobot;
-
-            if (selectedRobot != null) {
-                switch (e.getCode()) {
-                    case W -> gameController.move(Orientation.NORTH);
-                    case S -> gameController.move(Orientation.SOUTH);
-                    case D -> gameController.move(Orientation.EAST);
-                    case A -> gameController.move(Orientation.WEST);
+            scene.setOnKeyPressed(e -> {
+                System.out.println("Pressed");
+                if (gameController.itIsFinished()) {
+                    return;
                 }
-                gameController.setHits();
-            } else {
-                System.out.println("Il faut choisir un robot d'abord");
-            }
-
-        });
+                Robot selectedRobot = gameController.selectedRobot;
+                if (selectedRobot != null) {
+                    switch (e.getCode()) {
+                        case W -> gameController.move(Orientation.NORTH);
+                        case S -> gameController.move(Orientation.SOUTH);
+                        case D -> gameController.move(Orientation.EAST);
+                        case A -> gameController.move(Orientation.WEST);
+                    }
+                    gameController.setHits();
+                } else {
+                    System.out.println("Il faut choisir un robot d'abord");
+                }
+                e.consume();
+            });
     }
 
     public static void main(String[] args) {
