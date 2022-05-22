@@ -39,6 +39,10 @@ public class Cell {
         return this.walls;
     }
 
+    public void setWalls(List<Wall> walls) {
+        this.walls = walls;
+    }
+
     public void addWalls(Orientation orientation) {
         this.walls.add(new Wall(orientation));
         this.isThereWall = true;
@@ -56,7 +60,7 @@ public class Cell {
             }
         }
     }
-      
+
     //Ajout d'un jeton objectif sur la case
     public void addSymbol(Symbol symbol){
         this.isThereASymbol = true;
@@ -81,7 +85,7 @@ public class Cell {
 
     //Getters/Setters
     public boolean getIsThereWall() {
-        return isThereWall;
+        return walls.size() > 0;
     }
 
 
@@ -95,7 +99,6 @@ public class Cell {
     public Symbol getSymbol() {
         return symbol;
     }
-
 
 
 }

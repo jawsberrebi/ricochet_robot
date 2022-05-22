@@ -156,14 +156,14 @@ public class Board {
          */
 
         //Création de murs pour encadrer la boîte de l'objectif
-        this.cells[9][7].addWalls(Orientation.EAST);
-        this.cells[9][10].addWalls(Orientation.WEST);
-        this.cells[10][9].addWalls(Orientation.NORTH);
-        this.cells[7][9].addWalls(Orientation.SOUTH);
-        this.cells[7][8].addWalls(Orientation.SOUTH);
-        this.cells[8][10].addWalls(Orientation.WEST);
-        this.cells[8][7].addWalls(Orientation.EAST);
-        this.cells[10][8].addWalls(Orientation.NORTH);
+        this.cells[9][7].addWalls(Orientation.SOUTH);
+        this.cells[9][10].addWalls(Orientation.NORTH);
+        this.cells[10][8].addWalls(Orientation.WEST);
+        this.cells[10][9].addWalls(Orientation.WEST);
+        this.cells[7][8].addWalls(Orientation.EAST);
+        this.cells[7][9].addWalls(Orientation.EAST);
+        this.cells[8][7].addWalls(Orientation.SOUTH);
+        this.cells[8][10].addWalls(Orientation.NORTH);
 
         //Création des murs de détourage du plateau
         for(int i = 1; i < this.cells.length; i++){
@@ -228,11 +228,11 @@ public class Board {
     }
 
     private void initMiniBoards() {
-        this.miniBoards = new Cell[4][16][16];
+        this.miniBoards = new Cell[4][8][8];
 
         for (int b = 0; b < 4; b++) {
-            for (int i = 0; i < 16; i++) {
-                for (int j = 0; j < 16; j++) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
                     this.miniBoards[b][i][j] = new Cell(new Position(i, j));
                 }
             }
@@ -248,24 +248,26 @@ public class Board {
 
     private void rotateMiniBoardRight(int index, int numberOfRotations) {
         Cell[][] miniBoard = miniBoards[index];
-        Cell[][] rotatedMiniBoard = new Cell[16][16];
 
         for (int n = 0; n < numberOfRotations; n++) {
-            for (int i = 0; i < 16; i++) {
-                for (int j = 0; j < 16; j++) {
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+
                     // get rotated  board cell
-                    Cell cell = miniBoard[16 - j - 1][i];
+                    Cell tempCell = miniBoard[i][j];
 
-                    // rotate cell
+                    miniBoard[i][j] = miniBoard[8 - 1 - j][i];
+                    miniBoard[8 - 1 - j][i] = miniBoard[8 - 1 - i][8 - 1 - j];
+                    miniBoard[8 - 1 - i][8 - 1 - j] = miniBoard[j][8 - 1 - i];
+                    miniBoard[j][8 - 1 - i] = tempCell;
+
+                    Cell cell = miniBoard[i][j];
+
+                    // rotate cell content
                     cell.rotateWallsRight(1);
-
-                    // update rotated board
-                    rotatedMiniBoard[i][j] = miniBoard[j][i];
                 }
             }
         }
-
-        miniBoards[index] = rotatedMiniBoard;
     }
 
     public void constructBoardFromMiniBoards() {
@@ -273,50 +275,58 @@ public class Board {
         addWallsToMiniBoards();
 
         // Randomly order each board
-        List<Integer> indexes = Arrays.asList(0, 1, 2, 3);
-        Collections.shuffle(indexes);
+        List<Integer> randomIndexes = Arrays.asList(0, 1, 2, 3);
+        Collections.shuffle(randomIndexes);
 
         // Randomly rotate each board
-        for (Integer index : indexes) {
+        for (Integer index : randomIndexes) {
             int numberOfRotations = (int) (Math.random() * 4);
             rotateMiniBoardRight(index, numberOfRotations);
         }
 
-        // Combine miniboards
+        // Initialize cells in board board
         this.cells = new Cell[17][17];
 
-        for (int row = 0; row < 8; row++) {
-            Cell[] newRow = new Cell[17];
-            for (int i = 1; i < miniBoards[0].length; i++) {
-                newRow[i] = miniBoards[indexes.get(0)][row][i - 1];
-            }
-            for (int i = miniBoards.length; i < newRow.length; i++) {
-                newRow[i] = miniBoards[indexes.get(1)][row][i - 1];
-            }
-            this.cells[row + 1] = newRow;
-        }
-
-        for (int row = 8; row < 16; row++) {
-            Cell[] newRow = new Cell[17];
-            for (int i = 1; i < miniBoards[0].length; i++) {
-                newRow[i] = miniBoards[indexes.get(2)][row][i - 1];
-            }
-            for (int i = miniBoards.length; i < newRow.length; i++) {
-                newRow[i] = miniBoards[indexes.get(3)][row][i - 1];
-            }
-            this.cells[row + 1] = newRow;
-        }
-
-        // Construct board
         for (int i = 1; i < 17; i++) {
             for (int j = 1; j < 17; j++) {
-                this.cells[i][j].setPosition(new Position(i, j));
+                this.cells[i][j] = new Cell(new Position(i, j));
+            }
+
+        }
+
+        // Combine boards
+        for (int r = 1; r < 17; r++) {
+            for (int c = 1; c < 17; c++) {
+
+                // Get mini board index
+                int index;
+
+                if (r <= 8) {
+                    index = c <= 8 ? 0 : 1;
+                } else {
+                    index = c <= 8 ? 2 : 3;
+                }
+
+                // Get cell walls of cell in mini board
+                Cell[][] miniBoard = miniBoards[randomIndexes.get(index)];
+                //System.out.println(index);
+                //System.out.println("r : " + (r - 1 - (index < 2 ? 0 : 8)));
+                //System.out.println("c : " + (c - 1 - (index % 2) * 8));
+                Cell cell = miniBoard[r - 1 - (index < 2 ? 0 : 8)][c - 1 - (index % 2) * 8];
+                List<Wall> walls = cell.getWalls();
+
+                if (cell.getIsThereWall()) {
+                    // Set cell walls in cell of mai board
+                    this.cells[r][c].setWalls(walls);
+                }
             }
         }
 
         // Add borders
         makeCentralBox();
         addWallsOnBoard();
+        setSymbols();
+        setSymbolsOnCell();           //Placement des objectifs sur les cases
     }
 
     //Ajout des symboles sur les cases
