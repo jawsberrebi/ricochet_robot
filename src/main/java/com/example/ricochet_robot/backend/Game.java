@@ -103,14 +103,17 @@ public class Game {
         this.currentGoal = this.board.getGoals().get(this.goalCursor);                                                  //Définition du nouvel objectif
     }
 
+    //Fonction vérifiant si l'objectif a bien été atteint
     public boolean itIsWin(Robot robot){
         if((robot.getCurrentCell().getSymbol() == this.currentGoal) && (robot.getCurrentCell().getSymbol().getColor() == robot.getColor()) && (this.currentGoal.getColor() == robot.getColor())){
             if(this.playerOne.getIsMyTurn()){
                 this.playerOne.addAnotherWonRound();
+                this.playerOne.setRoundWon(true);
                 System.out.println("WIIIIIIIIIIIIIIIIN" + this.playerOne.getWonRounds());
             }else if(this.playerTwo.getIsMyTurn()){
                 this.playerTwo.addAnotherWonRound();
-                System.out.println("WIIIIIIIIIIIIIIIIIIN" + this.playerOne.getWonRounds());
+                this.playerTwo.setRoundWon(true);
+                System.out.println("WIIIIIIIIIIIIIIIIIIN" + this.playerTwo.getWonRounds());
             }
 
             Game.Status = Status.END_ROUND;
@@ -119,6 +122,21 @@ public class Game {
         else {
             return false;
         }
+    }
+
+
+    //Fonction remettant à zero les coups des joueurs
+    public void reinitializePlayers(){
+        this.playerOne.setRoundWon(false);
+        this.playerTwo.setRoundWon(false);
+        this.playerOne.setHaveAlreadyPlayed(false);
+        this.playerTwo.setHaveAlreadyPlayed(false);
+        this.playerOne.setIsMyTurn(false);
+        this.playerTwo.setIsMyTurn(false);
+        this.playerOne.setHitsNumberChoice(0);
+        this.playerTwo.setHitsNumberChoice(0);
+        this.playerOne.setHitsNumber(0);
+        this.playerTwo.setHitsNumber(0);
     }
 
     public boolean isValidMove(Cell currentCell, Orientation direction) {

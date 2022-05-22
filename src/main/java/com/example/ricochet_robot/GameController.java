@@ -87,7 +87,8 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Lancement du jeu
         game.play();
-        scorePlayerOne.setText("");
+        this.scorePlayerOne.setText("");
+        this.scorePlayerTwo.setText("");
         itIsWin = false;
         //Création du plateau en frontend
         Scene scene = boardPane.getScene();
@@ -117,11 +118,16 @@ public class GameController implements Initializable {
     public void handleGameBtn(){
         switch (game.Status) {
             case LAUNCH_TIMER -> {
+                game.reinitializePlayers();                                                                             //Remet à 0 le nombre de coups fait précédéments, le nombre de coups choisis etc.
+                this.stateRound.setText("Entrez le plus petit nombre de coups");
+                this.stateRound.setVisible(true);
                 this.spinnerPlayerOne.setVisible(true);
                 this.spinnerPlayerTwo.setVisible(true);
-                this.indicationNumberOfHits.setVisible(true);
+                this.indicationNumberOfHits.setVisible(false);
                 hitsNumberChoicePlayerOne.setVisible(false);
                 hitsNumberChoicePlayerTwo.setVisible(false);
+                this.scorePlayerOne.setVisible(false);
+                this.scorePlayerTwo.setVisible(false);
                 this.gameBtn.setText("Confirmer le nombre de coups");
                 game.Status = Game.Status.PREPARE_ROUND;
                 launchSpinners();
@@ -131,6 +137,8 @@ public class GameController implements Initializable {
                 displayGoal();
             }
             case PREPARE_ROUND -> {
+                this.scorePlayerOne.setText("");
+                this.scorePlayerTwo.setText("");
                 launchTimer = 0;
                 this.spinnerPlayerOne.setVisible(false);
                 this.spinnerPlayerTwo.setVisible(false);
@@ -151,11 +159,15 @@ public class GameController implements Initializable {
                 handleGameBtn();
             }
             case PLAYER_ONE_TURN -> {
+                this.scorePlayerOne.setVisible(true);
+                this.scorePlayerTwo.setVisible(true);
                 this.stateRound.setVisible(true);
                 System.out.println("On est dans Joueur 1");
                 this.stateRound.setText("Tour du joueur 1");
                 movePlayer();
             }case PLAYER_TWO_TURN -> {
+                this.scorePlayerOne.setVisible(true);
+                this.scorePlayerTwo.setVisible(true);
                 this.stateRound.setVisible(true);
                 System.out.println("On est dans Joueur 2");
                 this.stateRound.setText("Tour du joueur 2");
@@ -163,11 +175,14 @@ public class GameController implements Initializable {
             }case END_ROUND -> {
                 this.stateRound.setVisible(true);
                 System.out.println("finii");
-                if(itIsWin){
-                    this.gameBtn.setText("Nouvelle manche");
-                }else {
+                this.gameBtn.setText("Nouvelle manche");
+                if(itIsWin && game.getPlayerOne().isRoundWon()){
+                    this.stateRound.setText(game.getPlayerOne().getName() + " a gagné la manche");
+                }else if(itIsWin && game.getPlayerTwo().isRoundWon()){
+                    this.stateRound.setText(game.getPlayerTwo().getName() + " a gagné la manche");
+                }
+                else {
                     this.stateRound.setText("Personne n'a gagné");
-                    this.gameBtn.setText("Nouvelle manche");
                 }
                 this.gameBtn.setVisible(true);
                 game.getNewGoal();
@@ -524,7 +539,7 @@ public class GameController implements Initializable {
         if (game.getPlayerOne().getIsMyTurn() && (game.getPlayerOne().getHitsNumber() >= game.getPlayerOne().getHitsNumberChoice())){
             game.setNextTurn();
             handleGameBtn();
-        } else if (game.getPlayerOne().getIsMyTurn() && (game.getPlayerTwo().getHitsNumber() >= game.getPlayerTwo().getHitsNumberChoice())) {
+        } else if (game.getPlayerTwo().getIsMyTurn() && (game.getPlayerTwo().getHitsNumber() >= game.getPlayerTwo().getHitsNumberChoice())) {
             game.setNextTurn();
             handleGameBtn();
         }
@@ -539,12 +554,16 @@ public class GameController implements Initializable {
             System.out.println(game.getPlayerTwo().getHitsNumber());
             scorePlayerTwo.setText(String.valueOf(game.getPlayerTwo().getHitsNumber()));
             itIsWin = game.itIsWin(selectedRobot);
+        }else {
+            System.out.println("CACTUS");
         }
     }
 
     public boolean itIsFinished(){
         if((Game.Status != Game.Status.PLAYER_ONE_TURN &&  Game.Status != Game.Status.PLAYER_TWO_TURN) || itIsWin || (game.getPlayerOne().getHitsNumber() + game.getPlayerTwo().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice() + game.getPlayerTwo().getHitsNumberChoice())){
             System.out.println("oui");
+            Game.Status = Game.Status.END_ROUND;
+            handleGameBtn();
             return true;
         }else {
             return false;

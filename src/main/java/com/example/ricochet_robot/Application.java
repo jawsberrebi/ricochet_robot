@@ -28,6 +28,7 @@ public class Application extends javafx.application.Application {
     }
 
     private void initKeyEventHandler(Scene scene) {
+        if(Game.Status != Game.Status.END_ROUND){
             scene.setOnKeyPressed(e -> {
                 System.out.println("Pressed");
                 if (gameController.itIsFinished()) {
@@ -47,6 +48,7 @@ public class Application extends javafx.application.Application {
                 }
                 e.consume();
             });
+        }
     }
 
     public static void main(String[] args) {

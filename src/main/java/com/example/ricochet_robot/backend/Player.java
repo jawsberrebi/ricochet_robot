@@ -2,14 +2,14 @@ package com.example.ricochet_robot.backend;
 
 public class Player {
 
-    private String name;
-    private int hitsNumber;
-    private int hitsNumberChoice;
-    private boolean isMyTurn;
-    private boolean haveAlreadyPlayed;
-    private boolean iHaveTheNumberOfHitsFirst;
-    private int wonRounds;
-
+    private String name;                                                                                                //Nom du joueur
+    private int hitsNumber;                                                                                             //Nombre de coups faits dans une partie
+    private int hitsNumberChoice;                                                                                       //Nombre de coups trouvés durant le décompte
+    private boolean isMyTurn;                                                                                           //Définit si c'est au tour du joueur
+    private boolean haveAlreadyPlayed;                                                                                  //Dit si le joueur a déjà joué
+    private boolean iHaveTheNumberOfHitsFirst;                                                                          //Dit si le joueur est le premier a avoir trouvé le nombre de coups
+    private int wonRounds;                                                                                              //Nombre de manches remportées
+    private boolean roundWon;                                                                                           //Indique si la manche en cours a été gagnée par le joueur
     Player(String n){
         this.name = n;
         this.isMyTurn = false;
@@ -72,5 +72,21 @@ public class Player {
 
     public void setHaveAlreadyPlayed(boolean haveAlreadyPlayed) {
         this.haveAlreadyPlayed = haveAlreadyPlayed;
+    }
+
+    public boolean isRoundWon() {
+        return roundWon;
+    }
+
+    public void setRoundWon(boolean roundWon) {
+        this.roundWon = roundWon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
