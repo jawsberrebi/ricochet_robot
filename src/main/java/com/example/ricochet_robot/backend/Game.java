@@ -1,10 +1,5 @@
 package com.example.ricochet_robot.backend;
 
-import com.example.ricochet_robot.GameController;
-import javafx.geometry.Pos;
-
-import java.util.stream.Stream;
-
 public class Game {
 
     public static Game context;
@@ -46,13 +41,26 @@ public class Game {
         return playerTwo;
     }
 
+    public void setPlayerOne(Player playerOne) {
+        this.playerOne = playerOne;
+    }
+
+    public void setPlayerTwo(Player playerTwo) {
+        this.playerTwo = playerTwo;
+    }
+
+    public void setGoalCursor(int goalCursor) {
+        this.goalCursor = goalCursor;
+    }
+
     //État du jeu
     public enum Status{
-        LAUNCH_TIMER,
-        PREPARE_ROUND,
-        PLAYER_ONE_TURN,
-        PLAYER_TWO_TURN,
-        END_ROUND;
+        LAUNCH_TIMER,                                                                                                   //Statut activé quand le timer est lancé et que les joueurs doivent entrer le nombre de coups pour atteindre l'objectif
+        PREPARE_ROUND,                                                                                                  //Statut intermédiaire pour préparer une manche (entre LAUNCH_TIMER et PLAYER_ONE_TURN/PLAYER_TWO_TURN)
+        PLAYER_ONE_TURN,                                                                                                //Tour du joueur 1
+        PLAYER_TWO_TURN,                                                                                                //Tour du joueur 2
+        END_ROUND,                                                                                                      //Fin d'une manche
+        GAME_OVER;                                                                                                      //Fin du jeu
     }
 
     //Méthodes
@@ -74,6 +82,10 @@ public class Game {
         }
     }
 
+    private void replaceRobots(){
+        this.board.addRobotsToBoard();
+    }
+
     public void setNextTurn(){
         if (this.playerOne.getIsMyTurn()){
             this.playerOne.setIsMyTurn(false);
@@ -82,6 +94,7 @@ public class Game {
             if (!this.playerTwo.isHaveAlreadyPlayed()){
                 System.out.println("Déjà joué");
                 Game.Status = Status.PLAYER_TWO_TURN;
+                replaceRobots();
             }else {
                 Game.Status = Status.END_ROUND;
             }
@@ -91,16 +104,22 @@ public class Game {
             this.playerOne.setIsMyTurn(true);
             if (!this.playerOne.isHaveAlreadyPlayed()){
                 Game.Status = Status.PLAYER_ONE_TURN;
+                replaceRobots();
             }else {
                 Game.Status = Status.END_ROUND;
             }
         }
     }
 
-    //Obtention d'un nouveau goal dans la liste
-    public void getNewGoal(){
+    //Obtention d'un nouveau goal dans la liste ou si la fin de la liste de jetons objectifs a été atteinte, fin du jeu
+    public void nextGoalOrGameOver(){
         this.goalCursor++;                                                                                              //On incrémente l'index de la liste
-        this.currentGoal = this.board.getGoals().get(this.goalCursor);                                                  //Définition du nouvel objectif
+        if(this.goalCursor >= 17){                                                                                      //Si l'index est supérieur ou égal à 17
+            Game.Status = Status.GAME_OVER;                                                                             //C'est la fin du jeu
+        }else{
+            this.currentGoal = this.board.getGoals().get(this.goalCursor);                                              //Sinon on définit du nouvel objectif
+            Game.Status = Game.Status.LAUNCH_TIMER;
+        }
     }
 
     //Fonction vérifiant si l'objectif a bien été atteint

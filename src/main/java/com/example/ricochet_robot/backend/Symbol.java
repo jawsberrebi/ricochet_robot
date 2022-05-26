@@ -10,7 +10,7 @@ public class Symbol extends StackPane {
     private Position position;
     private boolean isItAGoal;
 
-    Symbol(Color c, Shape s, Position p){
+    public Symbol(Color c, Shape s, Position p){
         this.color = c;
         this.shape = s;
         this.position = p;
@@ -50,6 +50,7 @@ public class Symbol extends StackPane {
         isItAGoal = itAGoal;
     }
 
+    //À supprimer ?
     public void display(){
         System.out.println(this.shape + " " + this.color);
     }

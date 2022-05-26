@@ -61,18 +61,18 @@
          </font>
       </Label>
       <ImageView fx:id="currentImageGoal" fitHeight="89.0" fitWidth="92.0" layoutX="1012.0" layoutY="131.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="957.0" layoutY="315.0" prefHeight="30.0" prefWidth="175.0" text="JOUEUR 1 :" textAlignment="CENTER" textFill="RED">
+      <Label fx:id="titlePlayerOne" layoutX="957.0" layoutY="315.0" prefHeight="30.0" prefWidth="175.0" text="JOUEUR 1 :" textAlignment="CENTER" textFill="RED">
          <font>
             <Font name="Agency FB" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="957.0" layoutY="380.0" prefHeight="30.0" prefWidth="175.0" text="JOUEUR 2 :" textAlignment="CENTER" textFill="#4800ff">
+      <Label fx:id="titlePlayerTwo" layoutX="957.0" layoutY="380.0" prefHeight="30.0" prefWidth="175.0" text="JOUEUR 2 :" textAlignment="CENTER" textFill="#4800ff">
          <font>
             <Font name="Agency FB" size="24.0" />
          </font>
       </Label>
       <Button fx:id="gameBtn" layoutX="944.0" layoutY="500.0" mnemonicParsing="false" onAction="#handleGameBtn" prefHeight="46.0" prefWidth="225.0" text="Lancer le sablier" />
-      <Label fx:id="timerText" layoutX="819.0" layoutY="188.0" prefHeight="63.0" prefWidth="75.0" textAlignment="CENTER">
+      <Label fx:id="timerText" layoutX="868.0" layoutY="187.0" prefHeight="63.0" prefWidth="75.0" textAlignment="CENTER">
          <font>
             <Font name="Agency FB" size="50.0" />
          </font>
@@ -116,7 +116,32 @@
             <Font name="System Bold" size="50.0" />
          </font>
       </Label>
-      <Text fx:id="stateRound" layoutX="735.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label" textAlignment="CENTER" wrappingWidth="132.7999877929687">
+      <Text fx:id="stateRound" layoutX="735.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Label" textAlignment="CENTER" wrappingWidth="132.7999877929687">
+         <font>
+            <Font name="Agency FB" size="18.0" />
+         </font>
+      </Text>
+      <Label fx:id="namePlayerOne" layoutX="735.0" layoutY="86.0" prefHeight="30.0" prefWidth="88.0" text="JOUEUR 1 :" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font name="Agency FB" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="namePlayerTwo" layoutX="735.0" layoutY="133.0" prefHeight="30.0" prefWidth="88.0" text="JOUEUR 2 :" textAlignment="CENTER" textFill="#4800ff">
+         <font>
+            <Font name="Agency FB" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="roundsWonPlayerOne" layoutX="823.0" layoutY="86.0" prefHeight="30.0" prefWidth="100.0" textAlignment="CENTER">
+         <font>
+            <Font name="Agency FB" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="roundsWonPlayerTwo" layoutX="823.0" layoutY="134.0" prefHeight="30.0" prefWidth="100.0" textAlignment="CENTER">
+         <font>
+            <Font name="Agency FB" size="24.0" />
+         </font>
+      </Label>
+      <Text layoutX="757.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de manches gagnées" textAlignment="CENTER" wrappingWidth="132.7999877929687">
          <font>
             <Font name="Agency FB" size="18.0" />
          </font>

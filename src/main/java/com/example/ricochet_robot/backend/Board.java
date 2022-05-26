@@ -14,6 +14,8 @@ public class Board {
     private Cell[][][] miniBoards;
     private List<Symbol> symbols = new ArrayList<>();
     private List<Symbol> goals = new ArrayList<>();
+    private List<Integer> randomRow = new ArrayList<>();
+    private List<Integer> randomColumn = new ArrayList<>();
     private Cell[][] goalBox;
     private List<Robot> robots = new ArrayList<>();
     private Robot currentRobot;
@@ -21,7 +23,7 @@ public class Board {
     private Symbol currentGoal;
     private int goalsNumber;
 
-    Board(){        //Test
+    public Board(){        //Test
 
     }
 
@@ -224,6 +226,9 @@ public class Board {
             this.cells[randomRow][randomColumn].addRobot(robot);
 
             System.out.println("Robot " + i + " : " + randomRow + "," + randomColumn);
+
+            this.randomColumn.add(randomColumn);
+            this.randomRow.add(randomRow);
         }
     }
 
@@ -362,10 +367,19 @@ public class Board {
         Collections.shuffle(this.goals);
     }
 
+    //À revoir
     public void setSymbolInGoalBox(Symbol symbol){
         this.cells[8][8].addSymbol(symbol);
         this.cells[9][8].addSymbol(symbol);
         this.cells[8][9].addSymbol(symbol);
         this.cells[9][9].addSymbol(symbol);
+    }
+
+    public List<Integer> getRandomColumn() {
+        return randomColumn;
+    }
+
+    public List<Integer> getRandomRow() {
+        return randomRow;
     }
 }

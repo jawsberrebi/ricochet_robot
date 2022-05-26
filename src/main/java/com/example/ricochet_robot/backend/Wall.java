@@ -3,7 +3,7 @@ package com.example.ricochet_robot.backend;
 public class Wall {
     private Orientation orientation;
 
-    Wall(Orientation o){
+    public Wall(Orientation o){
         this.orientation = o;
     }
 

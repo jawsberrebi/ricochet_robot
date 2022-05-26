@@ -26,8 +26,9 @@ import javafx.scene.text.Text;
 
 import java.io.File;
 import java.net.URL;
-import java.text.BreakIterator;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
@@ -41,6 +42,7 @@ public class GameController implements Initializable {
     private Label timerLabel = new Label(), splitTimerLabel = new Label();
     private DoubleProperty timeSeconds = new SimpleDoubleProperty(), splitTimeSeconds = new SimpleDoubleProperty();
     private Duration time = Duration.ZERO, splitTime = Duration.ZERO;
+    private Timeline timeline = new Timeline();
 
     @FXML
     private GridPane boardPane;
@@ -80,19 +82,37 @@ public class GameController implements Initializable {
     private Text indicationNumberOfHits;
     @FXML
     private Text stateRound;
+    @FXML
+    private Label namePlayerOne;
+    @FXML
+    private Label namePlayerTwo;
+    @FXML
+    private Label roundsWonPlayerOne;
+    @FXML
+    private Label roundsWonPlayerTwo;
+    @FXML
+    private Label titlePlayerOne;
+    @FXML
+    private Label titlePlayerTwo;
     private int launchTimer = 30;
     private boolean isTheTimerStopped;
     private boolean itIsWin;
+    private Map<Robot, Integer> currentColum = new HashMap<>();
+    private Map<Robot, Integer> currentRow = new HashMap<>();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Lancement du jeu
         game.play();
         this.scorePlayerOne.setText("");
         this.scorePlayerTwo.setText("");
+        this.namePlayerOne.setText(game.getPlayerOne().getName());
+        this.namePlayerTwo.setText(game.getPlayerTwo().getName());
+        this.roundsWonPlayerOne.setText(String.valueOf(game.getPlayerOne().getWonRounds()));
+        this.roundsWonPlayerTwo.setText(String.valueOf(game.getPlayerTwo().getWonRounds()));
         itIsWin = false;
         //Création du plateau en frontend
-        Scene scene = boardPane.getScene();
         boardGeneration();
+        Scene scene = boardPane.getScene();
         this.stateRound.setVisible(false);
         this.spinnerPlayerOne.setVisible(false);
         this.spinnerPlayerTwo.setVisible(false);
@@ -118,7 +138,10 @@ public class GameController implements Initializable {
     public void handleGameBtn(){
         switch (game.Status) {
             case LAUNCH_TIMER -> {
+                getPositionRobots();
+                timeline.stop();
                 game.reinitializePlayers();                                                                             //Remet à 0 le nombre de coups fait précédéments, le nombre de coups choisis etc.
+                //reinitializeRobot();
                 this.stateRound.setText("Entrez le plus petit nombre de coups");
                 this.stateRound.setVisible(true);
                 this.spinnerPlayerOne.setVisible(true);
@@ -139,6 +162,7 @@ public class GameController implements Initializable {
             case PREPARE_ROUND -> {
                 this.scorePlayerOne.setText("");
                 this.scorePlayerTwo.setText("");
+
                 launchTimer = 0;
                 this.spinnerPlayerOne.setVisible(false);
                 this.spinnerPlayerTwo.setVisible(false);
@@ -184,9 +208,33 @@ public class GameController implements Initializable {
                 else {
                     this.stateRound.setText("Personne n'a gagné");
                 }
+                itIsWin = false;
+                game.reinitializePlayers();
+                this.roundsWonPlayerOne.setText(String.valueOf(game.getPlayerOne().getWonRounds()));
+                this.roundsWonPlayerTwo.setText(String.valueOf(game.getPlayerTwo().getWonRounds()));
                 this.gameBtn.setVisible(true);
-                game.getNewGoal();
-                Game.Status = Game.Status.LAUNCH_TIMER;
+                game.nextGoalOrGameOver();
+            }case GAME_OVER -> {
+                timeline.stop();
+                this.gameBtn.setVisible(false);
+                this.boardPane.setVisible(false);
+                this.scorePlayerOne.setVisible(false);
+                this.scorePlayerTwo.setVisible(false);
+                this.indication.setVisible(false);
+                this.currentImageGoal.setVisible(false);
+                this.titlePlayerOne.setVisible(false);
+                this.titlePlayerTwo.setVisible(false);
+                this.hitsNumberChoicePlayerOne.setVisible(false);
+                this.hitsNumberChoicePlayerTwo.setVisible(false);
+                this.dotPlayerOne.setVisible(false);
+                this.dotPlayerTwo.setVisible(false);
+                if(game.getPlayerOne().getWonRounds() > game.getPlayerTwo().getWonRounds()){
+                    this.stateRound.setText(game.getPlayerOne().getName() + " a gagné");
+                } else if (game.getPlayerOne().getWonRounds() == game.getPlayerTwo().getWonRounds()) {
+                    this.stateRound.setText("Personne n'a gagné");
+                }else {
+                    this.stateRound.setText(game.getPlayerTwo().getName() + " a gagné");
+                }
             }
         }
     }
@@ -352,6 +400,24 @@ public class GameController implements Initializable {
 
             // Update selected robot
             selectedRobot = currentCell.getCurrentRobot();
+            getPositionRobots();
+
+        }
+    }
+
+    private void getPositionRobots() {
+        this.currentRow.clear();
+        this.currentColum.clear();
+        for (int i = 1; i < 17; i++) {
+            for (int j = 1; j < 17; j++) {
+                if(game.getBoard().getCells()[i][j].getIsThereARobot()){
+                    Robot robot = game.getBoard().getCells()[i][j].getCurrentRobot();
+                    int column = game.getBoard().getCells()[i][j].getPosition().getColumn();
+                    int row = game.getBoard().getCells()[i][j].getPosition().getRow();
+                    this.currentColum.put(robot, column);
+                    this.currentRow.put(robot, row);
+                }
+            }
         }
     }
 
@@ -420,7 +486,7 @@ public class GameController implements Initializable {
         isTheTimerStopped = false;
         timerText.setVisible(true);
         timerText.setText(String.valueOf(launchTimer));
-        Timeline timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e ->{
+        timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e ->{
             if (launchTimer == 0) {
                 if(!isTheTimerStopped) {
                     timerText.setText("");
@@ -482,7 +548,6 @@ public class GameController implements Initializable {
                 }
             }
         }
-
     }
 
     private void launchSpinners(){
@@ -567,6 +632,26 @@ public class GameController implements Initializable {
             return true;
         }else {
             return false;
+        }
+    }
+
+    private void reinitializeRobot(){
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                if(game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()){
+                    Position position = game.getBoard().getCells()[i + 1][j + 1].getPosition();
+                    removeRobotFromCell(position);
+                    Robot robot = selectedRobot;
+                    String filename = getRobotImageFilename(game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot().getColor());
+
+                    // Get stackPane
+                    Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
+                    ImageView robotImageView = new ImageView(robotImage);
+
+                    board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
+                }
+            }
+
         }
     }
 

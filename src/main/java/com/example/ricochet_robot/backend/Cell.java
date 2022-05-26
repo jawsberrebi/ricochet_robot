@@ -13,7 +13,7 @@ public class Cell {
     private Symbol symbol;
 
     //Construction d'une case simple
-    Cell(Position p){
+    public Cell(Position p){
         this.position = p;
         this.isThereWall = false;
         this.isThereASymbol = false;

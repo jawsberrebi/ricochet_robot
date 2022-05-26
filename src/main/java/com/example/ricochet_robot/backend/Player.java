@@ -10,7 +10,7 @@ public class Player {
     private boolean iHaveTheNumberOfHitsFirst;                                                                          //Dit si le joueur est le premier a avoir trouvé le nombre de coups
     private int wonRounds;                                                                                              //Nombre de manches remportées
     private boolean roundWon;                                                                                           //Indique si la manche en cours a été gagnée par le joueur
-    Player(String n){
+    public Player(String n){
         this.name = n;
         this.isMyTurn = false;
         this.iHaveTheNumberOfHitsFirst = false;

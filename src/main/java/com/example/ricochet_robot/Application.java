@@ -37,12 +37,23 @@ public class Application extends javafx.application.Application {
                 Robot selectedRobot = gameController.selectedRobot;
                 if (selectedRobot != null) {
                     switch (e.getCode()) {
-                        case W -> gameController.move(Orientation.NORTH);
-                        case S -> gameController.move(Orientation.SOUTH);
-                        case D -> gameController.move(Orientation.EAST);
-                        case A -> gameController.move(Orientation.WEST);
+                        case W -> {
+                            gameController.move(Orientation.NORTH);
+                            gameController.setHits();
+                        }
+                        case S -> {
+                            gameController.move(Orientation.SOUTH);
+                            gameController.setHits();
+                        }
+                        case D -> {
+                            gameController.move(Orientation.EAST);
+                            gameController.setHits();
+                        }
+                        case A -> {
+                            gameController.move(Orientation.WEST);
+                            gameController.setHits();
+                        }
                     }
-                    gameController.setHits();
                 } else {
                     System.out.println("Il faut choisir un robot d'abord");
                 }
