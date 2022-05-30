@@ -507,9 +507,9 @@ public class GameController implements Initializable {
     }
 
     private void movePlayer(){
-        if(isTheTimerStopped){
-            for (int i = 0; i < 16; i++){
-                for (int j = 0; j < 16; j++){
+        if (isTheTimerStopped) {
+            for (int i = 0; i < 16; i++) {
+                for (int j = 0; j < 16; j++) {
                     this.board[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent event) {

@@ -10,6 +10,8 @@ public class Game {
     private Player playerOne = new Player("J1");
     private Player playerTwo = new Player("J2");
 
+    private Position[] initialRobotPositions = new Position[4];
+
     public Game(){
         this.board = new Board();
     }
@@ -19,12 +21,11 @@ public class Game {
             throw new RuntimeException
                     ("Merci de ne pas exécuter plusieurs fois le jeu");
         }
-        //this.board.constructBoardFromMiniBoards();
         //Création d'un jeu
         Game.context = new Game();
         //Création des joueurs
         Player playerTwo = new Player("J2");
-        this.board.createBoard();                                       //Création du plateau
+        this.board.constructBoardFromMiniBoards();
         this.board.addRobotsToBoard();                                  //Ajout des robots sur le plateau
         this.board.setGoalList();                                       //Définition de l'ordre d'apparition des jetons objectif à atteindre
         this.goalCursor = 0;                                            //Initialisation du curseur qui parcours la liste d'objectifs au fil de la partie
@@ -212,5 +213,9 @@ public class Game {
 
     public Symbol getCurrentGoal() {
         return currentGoal;
+    }
+
+    public void setInitialRobotPositionAtIndex(Position initialRobotPositions, int i) {
+        this.initialRobotPositions[i] = initialRobotPositions;
     }
 }

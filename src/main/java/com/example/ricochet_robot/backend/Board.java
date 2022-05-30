@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import javafx.scene.paint.Color;
 
@@ -224,6 +223,9 @@ public class Board {
 
             Robot robot = new Robot(robotColor);
             this.cells[randomRow][randomColumn].addRobot(robot);
+
+            // Record robot initial position
+            Game.context.setInitialRobotPositionAtIndex(new Position(randomRow, randomColumn), i);
 
             System.out.println("Robot " + i + " : " + randomRow + "," + randomColumn);
 
