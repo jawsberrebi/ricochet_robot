@@ -214,4 +214,8 @@ public class Game {
     public Symbol getCurrentGoal() {
         return currentGoal;
     }
+
+    public void setInitialRobotPositionAtIndex(Position initialRobotPosition, int i) {
+        this.initialRobotPositions[i] = initialRobotPosition;
+    }
 }
