@@ -64,7 +64,7 @@ public class Game {
         GAME_OVER;                                                                                                      //Fin du jeu
     }
 
-    //Méthodes
+
 
     //Getters/Setters
     public Board getBoard() {
@@ -85,7 +85,7 @@ public class Game {
 
     private void replaceRobots(){
         this.board.addRobotsToBoard();
-    }
+    }           //À modifier
 
     public void setNextTurn(){
         if (this.playerOne.getIsMyTurn()){
@@ -213,9 +213,5 @@ public class Game {
 
     public Symbol getCurrentGoal() {
         return currentGoal;
-    }
-
-    public void setInitialRobotPositionAtIndex(Position initialRobotPositions, int i) {
-        this.initialRobotPositions[i] = initialRobotPositions;
     }
 }

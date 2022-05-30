@@ -7,13 +7,17 @@ public class Robot {
     private boolean isTheGoalRobot;
     private Cell currentCell;
 
-    Robot(Color c){
+    public Robot(Color c){
         this.color = c;
     }
 
     //Getters/Setters
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public Cell getCurrentCell() {
