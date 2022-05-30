@@ -53,6 +53,10 @@ public class Game {
         this.goalCursor = goalCursor;
     }
 
+    public Symbol getCurrentGoal() {
+        return currentGoal;
+    }
+
     //État du jeu
     public enum Status{
         LAUNCH_TIMER,                                                                                                   //Statut activé quand le timer est lancé et que les joueurs doivent entrer le nombre de coups pour atteindre l'objectif
@@ -63,13 +67,14 @@ public class Game {
         GAME_OVER;                                                                                                      //Fin du jeu
     }
 
-    //Méthodes
+
 
     //Getters/Setters
     public Board getBoard() {
         return this.board;
     }
 
+    //Méthodes
     public void setFirstTurn(){
         if(this.playerOne.getIsIHaveTheNumberOfHitsFirst()){
             this.playerOne.setIsMyTurn(true);
@@ -84,7 +89,7 @@ public class Game {
 
     private void replaceRobots(){
         this.board.addRobotsToBoard();
-    }
+    }           //À modifier
 
     public void setNextTurn(){
         if (this.playerOne.getIsMyTurn()){
@@ -208,9 +213,5 @@ public class Game {
         Position newPosition = currentCell.getPosition().nextPosition(direction);
         Cell newCell = board.getCell(newPosition);
         newCell.addRobot(robot);
-    }
-
-    public Symbol getCurrentGoal() {
-        return currentGoal;
     }
 }

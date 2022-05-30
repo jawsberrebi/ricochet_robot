@@ -1,7 +1,5 @@
-import com.example.ricochet_robot.backend.Board;
-import com.example.ricochet_robot.backend.Game;
-import com.example.ricochet_robot.backend.Player;
-import com.example.ricochet_robot.backend.Symbol;
+import com.example.ricochet_robot.backend.*;
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,5 +79,147 @@ public class TestGame {
         game.play();
         game.nextGoalOrGameOver();
         assertEquals(Game.Status.LAUNCH_TIMER, Game.Status);
+    }
+
+    @Test
+    //Test pour vérifier si le programme change le statut pour le tour du joueur 2
+    public void testSetFirstTurnForPlayerTwo(){
+        Game game = new Game();
+        game.play();
+        Player playerOne = new Player("J1");
+        Player playerTwo = new Player("J2");
+        playerOne.setiHaveTheNumberOfHitsFirst(false);
+        playerTwo.setiHaveTheNumberOfHitsFirst(true);
+        game.setPlayerOne(playerOne);
+        game.setPlayerTwo(playerTwo);
+        game.setFirstTurn();
+        assertEquals(Game.Status.PLAYER_TWO_TURN, Game.Status);
+    }
+
+    @Test
+    //Test pour vérifier si le programme change le statut pour le tour du joueur 2
+    public void testSetFirstTurnForPlayerOne(){
+        Game game = new Game();
+        game.play();
+        Player playerOne = new Player("J1");
+        Player playerTwo = new Player("J2");
+        playerOne.setiHaveTheNumberOfHitsFirst(true);
+        playerTwo.setiHaveTheNumberOfHitsFirst(false);
+        game.setPlayerOne(playerOne);
+        game.setPlayerTwo(playerTwo);
+        game.setFirstTurn();
+        assertEquals(Game.Status.PLAYER_ONE_TURN, Game.Status);
+    }
+
+    @Test
+    //Test pour vérifier si la fonction vérifiant si le joueur 1 a gagné marche dans le cas du joueur 1
+    public void testItIsWinForPlayerOne(){
+        Game game = new Game();
+        game.play();
+        Robot robot = new Robot(Color.BLACK);
+        Cell cell = new Cell(new Position(0,0));
+        robot.setColor(game.getCurrentGoal().getColor());
+        cell.addSymbol(game.getCurrentGoal());
+        robot.setCurrentCell(cell);
+
+        Player playerOne = new Player("J1");
+        Player playerTwo = new Player("J2");
+        playerOne.setIsMyTurn(true);
+        playerTwo.setIsMyTurn(false);
+
+        game.setPlayerOne(playerOne);
+        game.setPlayerTwo(playerTwo);
+
+        game.itIsWin(robot);
+
+        assertEquals(1, game.getPlayerOne().getWonRounds());
+    }
+
+    @Test
+    //Test pour vérifier si la fonction vérifiant si le joueur 2 a gagné marche dans le cas du joueur 2
+    public void testItIsWinForPlayerTwo(){
+        Game game = new Game();
+        game.play();
+        Robot robot = new Robot(Color.BLACK);
+        Cell cell = new Cell(new Position(0,0));
+        robot.setColor(game.getCurrentGoal().getColor());
+        cell.addSymbol(game.getCurrentGoal());
+        robot.setCurrentCell(cell);
+
+        Player playerOne = new Player("J1");
+        Player playerTwo = new Player("J2");
+        playerOne.setIsMyTurn(false);
+        playerTwo.setIsMyTurn(true);
+
+        game.setPlayerOne(playerOne);
+        game.setPlayerTwo(playerTwo);
+
+        game.itIsWin(robot);
+
+        assertEquals(1, game.getPlayerTwo().getWonRounds());
+    }
+
+    @Test
+    //Test pour vérifier si la fonction vérifiant si le fait de gagner fait passer le jeu à la fin du tour
+    public void testItIsWinForEndRound(){
+        Game game = new Game();
+        game.play();
+        Robot robot = new Robot(Color.BLACK);
+        Cell cell = new Cell(new Position(0,0));
+        robot.setColor(game.getCurrentGoal().getColor());
+        cell.addSymbol(game.getCurrentGoal());
+        robot.setCurrentCell(cell);
+
+        Player playerOne = new Player("J1");
+        Player playerTwo = new Player("J2");
+        playerOne.setIsMyTurn(true);
+        playerTwo.setIsMyTurn(false);
+
+        game.setPlayerOne(playerOne);
+        game.setPlayerTwo(playerTwo);
+
+        game.itIsWin(robot);
+
+        assertEquals(Game.Status.END_ROUND, Game.Status);
+    }
+
+    @Test
+    //Test pour vérifier si la fonction vérifiant si le fait de gagner retourne true si on gagne
+    public void testItIsWinForTrue(){
+        Game game = new Game();
+        game.play();
+        Robot robot = new Robot(Color.BLACK);
+        Cell cell = new Cell(new Position(0,0));
+        robot.setColor(game.getCurrentGoal().getColor());
+        cell.addSymbol(game.getCurrentGoal());
+        robot.setCurrentCell(cell);
+
+        Player playerOne = new Player("J1");
+        Player playerTwo = new Player("J2");
+        playerOne.setIsMyTurn(true);
+        playerTwo.setIsMyTurn(false);
+
+        game.setPlayerOne(playerOne);
+        game.setPlayerTwo(playerTwo);
+        assertTrue(game.itIsWin(robot));
+    }
+
+    @Test
+    //Test pour vérifier si la fonction vérifiant si le fait de gagner retourne false si le robot n'est pas sur l'objectif qui lui ferait gagner
+    public void testItIsWinForFalse(){
+        Game game = new Game();
+        game.play();
+        Robot robot = new Robot(Color.BLACK);
+        Cell cell = new Cell(new Position(0,0));
+        robot.setCurrentCell(cell);
+
+        Player playerOne = new Player("J1");
+        Player playerTwo = new Player("J2");
+        playerOne.setIsMyTurn(true);
+        playerTwo.setIsMyTurn(false);
+
+        game.setPlayerOne(playerOne);
+        game.setPlayerTwo(playerTwo);
+        assertFalse(game.itIsWin(robot));
     }
 }

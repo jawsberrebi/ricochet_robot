@@ -113,6 +113,7 @@ public class GameController implements Initializable {
         //Création du plateau en frontend
         boardGeneration();
         Scene scene = boardPane.getScene();
+        this.radioPlayerOne.setSelected(true);
         this.stateRound.setVisible(false);
         this.spinnerPlayerOne.setVisible(false);
         this.spinnerPlayerTwo.setVisible(false);
@@ -582,6 +583,8 @@ public class GameController implements Initializable {
         this.radioPlayerTwo.setToggleGroup(this.radioGroup);
         this.radioPlayerOne.setVisible(true);
         this.radioPlayerTwo.setVisible(true);
+        game.getPlayerOne().setiHaveTheNumberOfHitsFirst(true);
+        game.getPlayerTwo().setiHaveTheNumberOfHitsFirst(false);
         radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
@@ -594,6 +597,9 @@ public class GameController implements Initializable {
                         game.getPlayerTwo().setiHaveTheNumberOfHitsFirst(true);
                         game.getPlayerOne().setiHaveTheNumberOfHitsFirst(false);
                     }
+                }else {
+                    game.getPlayerOne().setiHaveTheNumberOfHitsFirst(true);
+                    game.getPlayerTwo().setiHaveTheNumberOfHitsFirst(false);
                 }
             }
         });
