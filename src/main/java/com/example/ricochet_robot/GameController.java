@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import com.example.ricochet_robot.backend.Cell;
@@ -609,9 +610,11 @@ public class GameController implements Initializable {
 
         if (game.getPlayerOne().getIsMyTurn() && (game.getPlayerOne().getHitsNumber() >= game.getPlayerOne().getHitsNumberChoice())){
             game.setNextTurn();
+            reinitializeRobot();
             handleGameBtn();
         } else if (game.getPlayerTwo().getIsMyTurn() && (game.getPlayerTwo().getHitsNumber() >= game.getPlayerTwo().getHitsNumberChoice())) {
             game.setNextTurn();
+            reinitializeRobot();
             handleGameBtn();
         }
 
@@ -641,24 +644,27 @@ public class GameController implements Initializable {
         }
     }
 
-    private void reinitializeRobot(){
+    public void reinitializeRobot(){
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 if(game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()){
-                    Position position = game.getBoard().getCells()[i + 1][j + 1].getPosition();
-                    removeRobotFromCell(position);
-                    Robot robot = selectedRobot;
-                    String filename = getRobotImageFilename(game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot().getColor());
+                    Position oldPosition = game.getBoard().getCells()[i + 1][j + 1].getPosition();
+                    //removeRobotFromCell(position);
+                    Robot robot = game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
+                    Position newPosition = game.getInitialRobotPositions().get(robot.getColor());
+                    //System.out.println(newPosition.getRow());
+                    //newPosition = new Position(1,1);
+                    updateRobotDisplay(oldPosition, newPosition);
+
+                    //String filename = getRobotImageFilename(game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot().getColor());
 
                     // Get stackPane
-                    Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
-                    ImageView robotImageView = new ImageView(robotImage);
+                    //Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
+                    //ImageView robotImageView = new ImageView(robotImage);
 
-                    board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
+                    //board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
                 }
             }
-
         }
     }
-
 }

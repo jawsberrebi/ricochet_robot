@@ -1,5 +1,11 @@
 package com.example.ricochet_robot.backend;
 
+import com.example.ricochet_robot.GameController;
+import javafx.scene.paint.Color;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Game {
 
     public static Game context;
@@ -10,7 +16,8 @@ public class Game {
     private Player playerOne = new Player("J1");
     private Player playerTwo = new Player("J2");
 
-    private Position[] initialRobotPositions = new Position[4];
+    //private Position[] initialRobotPositions = new Position[4];
+    private Map<Color, Position> initialRobotPositions = new HashMap<>();
 
     public Game(){
         this.board = new Board();
@@ -36,6 +43,10 @@ public class Game {
     //Getters/Setters
     public Player getPlayerOne() {
         return playerOne;
+    }
+
+    public Map<Color, Position> getInitialRobotPositions() {
+        return initialRobotPositions;
     }
 
     public Player getPlayerTwo() {
@@ -88,24 +99,24 @@ public class Game {
     }           //À modifier
 
     public void setNextTurn(){
-        if (this.playerOne.getIsMyTurn()){
+        if (this.playerOne.getIsMyTurn() && this.playerOne.getHitsNumber() >= this.playerOne.getHitsNumberChoice()){
             this.playerOne.setIsMyTurn(false);
             this.playerOne.setHaveAlreadyPlayed(true);
             this.playerTwo.setIsMyTurn(true);
             if (!this.playerTwo.isHaveAlreadyPlayed()){
                 System.out.println("Déjà joué");
                 Game.Status = Status.PLAYER_TWO_TURN;
-                replaceRobots();
+                //replaceRobots();
             }else {
                 Game.Status = Status.END_ROUND;
             }
-        }else if(this.playerTwo.getIsMyTurn()){
+        }else if(this.playerTwo.getIsMyTurn() && this.playerTwo.getHitsNumber() >= this.playerTwo.getHitsNumberChoice()){
             this.playerTwo.setIsMyTurn(false);
             this.playerTwo.setHaveAlreadyPlayed(true);
             this.playerOne.setIsMyTurn(true);
             if (!this.playerOne.isHaveAlreadyPlayed()){
                 Game.Status = Status.PLAYER_ONE_TURN;
-                replaceRobots();
+                //replaceRobots();
             }else {
                 Game.Status = Status.END_ROUND;
             }
@@ -135,7 +146,6 @@ public class Game {
                 this.playerTwo.setRoundWon(true);
                 System.out.println("WIIIIIIIIIIIIIIIIIIN" + this.playerTwo.getWonRounds());
             }
-
             Game.Status = Status.END_ROUND;
             return true;
         }
@@ -215,7 +225,10 @@ public class Game {
         return currentGoal;
     }
 
-    public void setInitialRobotPositionAtIndex(Position initialRobotPosition, int i) {
-        this.initialRobotPositions[i] = initialRobotPosition;
+    public void setInitialRobotPositionAtIndex(Position initialRobotPosition, Color robotColor) {
+        //this.initialRobotPositions[i] = initialRobotPosition;
+        //this.initialRobotPositions = new HashMap<>();
+        this.initialRobotPositions.put(robotColor, initialRobotPosition);
+        System.out.println(initialRobotPosition.getRow() + " - " + initialRobotPosition.getColumn());
     }
 }
