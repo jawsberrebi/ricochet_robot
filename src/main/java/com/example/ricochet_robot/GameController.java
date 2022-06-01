@@ -6,7 +6,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import com.example.ricochet_robot.backend.Cell;
@@ -26,6 +25,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
@@ -35,69 +36,69 @@ import java.util.stream.Stream;
 
 public class GameController implements Initializable {
 
-    private static final Game game = new Game();
-    private final Pane[][] board = new Pane[16][16];
-    private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";
-    public Robot selectedRobot;
+    private static final Game game = new Game();                                                                        //Variable statique de jeu
+    private final Pane[][] board = new Pane[16][16];                                                                    //Grille du plateau pour accéder aux éléments
+    private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";                               //Chemin d'accès aux ressources
+    public Robot selectedRobot;                                                                                         //Robot sélectionné par le joueur
 
     private Label timerLabel = new Label(), splitTimerLabel = new Label();
     private DoubleProperty timeSeconds = new SimpleDoubleProperty(), splitTimeSeconds = new SimpleDoubleProperty();
     private Duration time = Duration.ZERO, splitTime = Duration.ZERO;
-    private Timeline timeline = new Timeline();
+    private Timeline timeline = new Timeline();                                                                         //Timer
 
     @FXML
-    private GridPane boardPane;
+    private GridPane boardPane;                                                                                         //Grille du plateau
     @FXML
-    private Label indication;
+    private Label indication;                                                                                           //Indication textuelle au joueur
     @FXML
-    private ImageView currentImageGoal;
+    private ImageView currentImageGoal;                                                                                 //Image du jeton objectif actuel à atteindre
     @FXML
-    private Button gameBtn;
+    private Button gameBtn;                                                                                             //Bouton principal de jeu
     @FXML
-    private Label timerText;
+    private Label timerText;                                                                                            //Texte d'affichage du timer
     @FXML
-    private Label scorePlayerOne;
+    private Label scorePlayerOne;                                                                                       //Score du joueur 1
     @FXML
-    private Label scorePlayerTwo;
+    private Label scorePlayerTwo;                                                                                       //Score du joueur 2
     @FXML
     private ImageView goalCenterImage;
     @FXML
-    private Spinner<Integer> spinnerPlayerOne;
+    private Spinner<Integer> spinnerPlayerOne;                                                                          //Boîte d'entrée du nombre de coups pour le joueur 1
     @FXML
-    private Spinner<Integer> spinnerPlayerTwo;
+    private Spinner<Integer> spinnerPlayerTwo;                                                                          //Boîte d'entrée du nombre de coups pour le joueur 2
     @FXML
-    private Label hitsNumberChoicePlayerOne;
+    private Label hitsNumberChoicePlayerOne;                                                                            //Texte affichant le nombre de coups choisi par le joueur 1
     @FXML
-    private Label hitsNumberChoicePlayerTwo;
+    private Label hitsNumberChoicePlayerTwo;                                                                            //Texte affichant le nombre de coups choisi par le joueur 2
     @FXML
-    private RadioButton radioPlayerOne;
+    private RadioButton radioPlayerOne;                                                                                 //Bouton radio de sélection du joueur 1 s'il a eu le nombre de coups en premier
     @FXML
-    private RadioButton radioPlayerTwo;
+    private RadioButton radioPlayerTwo;                                                                                 //Bouton radio de sélection du joueur 2 s'il a eu le nombre de coups en premier
     @FXML
-    private ToggleGroup radioGroup = new ToggleGroup();
+    private ToggleGroup radioGroup = new ToggleGroup();                                                                 //Groupe de boutons radio
     @FXML
-    private Label dotPlayerOne;
+    private Label dotPlayerOne;                                                                                         //Point signalant que le joueur 1 a trouvé en premier le nombre de coups
     @FXML
-    private Label dotPlayerTwo;
+    private Label dotPlayerTwo;                                                                                         //Point signalant que le joueur 2 a trouvé en premier le nombre de coups
     @FXML
-    private Text indicationNumberOfHits;
+    private Text indicationNumberOfHits;                                                                                //Indication du nombre de coups effectués
     @FXML
-    private Text stateRound;
+    private Text stateRound;                                                                                            //Indication textuelle sur l'état de la partie
     @FXML
-    private Label namePlayerOne;
+    private Label namePlayerOne;                                                                                        //Nom du joueur 1
     @FXML
-    private Label namePlayerTwo;
+    private Label namePlayerTwo;                                                                                        //Nom du joueur 2
     @FXML
-    private Label roundsWonPlayerOne;
+    private Label roundsWonPlayerOne;                                                                                   //Affichage du nombre de manches gagnées joueur 1
     @FXML
-    private Label roundsWonPlayerTwo;
+    private Label roundsWonPlayerTwo;                                                                                   //Affichage du nombre de manches gagnées joueur 2
     @FXML
-    private Label titlePlayerOne;
+    private Label titlePlayerOne;                                                                                       //Titre principal du joueur 1
     @FXML
-    private Label titlePlayerTwo;
-    private int launchTimer = 30;
-    private boolean isTheTimerStopped;
-    private boolean itIsWin;
+    private Label titlePlayerTwo;                                                                                       //Titre principal du joueur 2
+    private int launchTimer = 30;                                                                                       //Temps de départ du compte à rebours du sablier
+    private boolean isTheTimerStopped;                                                                                  //Indication sur l'état du timer (stoppé ou non)
+    private boolean itIsWin;                                                                                            //Indication si le jeton objectif correspondant a été atteint
     private Map<Robot, Integer> currentColum = new HashMap<>();
     private Map<Robot, Integer> currentRow = new HashMap<>();
     @Override
@@ -141,7 +142,7 @@ public class GameController implements Initializable {
         switch (game.Status) {
             case LAUNCH_TIMER -> {
                 getPositionRobots();
-                timeline.stop();
+                timeline.stop();                                                                                        //Réinitialisation du timer
                 game.reinitializePlayers();                                                                             //Remet à 0 le nombre de coups fait précédéments, le nombre de coups choisis etc.
                 //reinitializeRobot();
                 this.stateRound.setText("Entrez le plus petit nombre de coups");
@@ -155,11 +156,11 @@ public class GameController implements Initializable {
                 this.scorePlayerTwo.setVisible(false);
                 this.gameBtn.setText("Confirmer le nombre de coups");
                 game.Status = Game.Status.PREPARE_ROUND;
-                launchSpinners();
-                getFirstFinderPlayer();
-                timer();
+                launchSpinners();                                                                                       //Affichage et lancement des spinners pour le nombre de coups
+                getFirstFinderPlayer();                                                                                 //Lancement des radio boxes pour déterminer le premier joueur qui jouera
+                timer();                                                                                                //Lancement du timer
                 movePlayer();
-                displayGoal();
+                displayGoal();                                                                                          //Affichage de l'image du jeton objectif à atteindre
             }
             case PREPARE_ROUND -> {
                 this.scorePlayerOne.setText("");
@@ -171,7 +172,7 @@ public class GameController implements Initializable {
                 this.radioPlayerOne.setVisible(false);
                 this.radioPlayerTwo.setVisible(false);
                 this.indicationNumberOfHits.setVisible(false);
-                if (game.getPlayerOne().getIsIHaveTheNumberOfHitsFirst()){
+                if (game.getPlayerOne().getIsIHaveTheNumberOfHitsFirst()){                                              //Affichage du point pour montrer qui jouera en premier
                     this.dotPlayerOne.setVisible(true);
                     this.dotPlayerTwo.setVisible(false);
                 } else if (game.getPlayerTwo().getIsIHaveTheNumberOfHitsFirst()) {
@@ -181,23 +182,21 @@ public class GameController implements Initializable {
                 this.gameBtn.setVisible(false);
                 this.hitsNumberChoicePlayerOne.setVisible(true);
                 this.hitsNumberChoicePlayerTwo.setVisible(true);
-                game.setFirstTurn();
+                game.setFirstTurn();                                                                                    //Détermine le premier joueur qui jouera
                 handleGameBtn();
             }
             case PLAYER_ONE_TURN -> {
                 this.scorePlayerOne.setVisible(true);
                 this.scorePlayerTwo.setVisible(true);
                 this.stateRound.setVisible(true);
-                System.out.println("On est dans Joueur 1");
                 this.stateRound.setText("Tour du joueur 1");
-                movePlayer();
+                movePlayer();                                                                                           //Possibilité de déplacer les robots par le joueur
             }case PLAYER_TWO_TURN -> {
                 this.scorePlayerOne.setVisible(true);
                 this.scorePlayerTwo.setVisible(true);
                 this.stateRound.setVisible(true);
-                System.out.println("On est dans Joueur 2");
                 this.stateRound.setText("Tour du joueur 2");
-                movePlayer();
+                movePlayer();                                                                                           //Possibilité de déplacer les robots par le joueur
             }case END_ROUND -> {
                 this.stateRound.setVisible(true);
                 System.out.println("finii");
