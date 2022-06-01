@@ -223,7 +223,7 @@ public class Board {
 
             Robot robot = new Robot(robotColor);
             this.cells[randomRow][randomColumn].addRobot(robot);
-
+            robot.setOldPosition(new Position(randomRow, randomColumn));
             // Record robot initial position
             Game.context.setInitialRobotPositionAtIndex(new Position(randomRow, randomColumn), robot.getColor());
 

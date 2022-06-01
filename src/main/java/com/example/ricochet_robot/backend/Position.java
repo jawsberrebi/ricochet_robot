@@ -11,24 +11,20 @@ public class Position {
 
 
     //Getters/Setters
-
     public int getRow() {
         return row;
     }
-
     public void setRow(int row) {
         this.row = row;
     }
-
     public int getColumn() {
         return column;
     }
-
     public void setColumn(int column) {
         this.column = column;
     }
 
-    // Methods
+    //Méthodes
     public Position nextPosition(Orientation direction) {
         Position nextCellPosition = new Position(this.row, this.column);
 

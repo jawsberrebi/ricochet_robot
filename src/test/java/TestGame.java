@@ -108,7 +108,7 @@ public class TestGame {
         game.setPlayerOne(playerOne);
         game.setPlayerTwo(playerTwo);
         game.setFirstTurn();
-        assertEquals(Game.Status.PLAYER_ONE_TURN, Game.Status);
+        assertEquals(game.Status.PLAYER_ONE_TURN, Game.Status);
     }
 
     @Test
@@ -221,5 +221,30 @@ public class TestGame {
         game.setPlayerOne(playerOne);
         game.setPlayerTwo(playerTwo);
         assertFalse(game.itIsWin(robot));
+    }
+
+    @Test
+    //Test mouvement : on test que le mouvement tout en haut à droite vers le nord n'est pas valide
+    public void testIsValidMoveFalse(){
+        Game game = new Game();
+        game.play();
+        assertFalse(game.isValidMove(game.getBoard().getCell(new Position(1,1)), Orientation.NORTH));
+    }
+
+    @Test
+    //Test de la validation d'un mouvement : on teste que le mouvement tout en haut à droite vers le sud est valide
+    public void testIsValidMoveTrue(){
+        Game game = new Game();
+        game.play();
+        assertTrue(game.isValidMove(game.getBoard().getCell(new Position(1,1)), Orientation.SOUTH));
+    }
+
+    @Test
+    //Test du mouvement : déplacement sur une case
+    public void testMove(){
+        Game game = new Game();
+        game.play();
+        game.move(game.getBoard().getCell(new Position(1,1)), Orientation.SOUTH);
+        assertTrue(game.getBoard().getCell(new Position(1,2)).getIsThereARobot());
     }
 }

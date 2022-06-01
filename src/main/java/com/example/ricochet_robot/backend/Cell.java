@@ -30,17 +30,26 @@ public class Cell {
     public Position getPosition() {
         return position;
     }
-
     public void setPosition(Position position) {
         this.position = position;
     }
-
     public List<Wall> getWalls() {
         return this.walls;
     }
-
     public void setWalls(List<Wall> walls) {
         this.walls = walls;
+    }
+    public boolean getIsThereWall() {
+        return walls.size() > 0;
+    }
+    public boolean getIsThereARobot() {
+        return isThereARobot;
+    }
+    public boolean getIsThereASymbol() {
+        return isThereASymbol;
+    }
+    public Symbol getSymbol() {
+        return symbol;
     }
 
     public void addWalls(Orientation orientation) {
@@ -80,27 +89,6 @@ public class Cell {
         this.currentRobot = null;
         this.isThereARobot = false;
     }
-
-
-
-    //Getters/Setters
-    public boolean getIsThereWall() {
-        return walls.size() > 0;
-    }
-
-
-
-    public boolean getIsThereARobot() {
-        return isThereARobot;
-    }
-    public boolean getIsThereASymbol() {
-        return isThereASymbol;
-    }
-    public Symbol getSymbol() {
-        return symbol;
-    }
-
-
 }
 
 

@@ -3,7 +3,9 @@ package com.example.ricochet_robot.backend;
 import com.example.ricochet_robot.GameController;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Game {
@@ -17,7 +19,7 @@ public class Game {
     private Player playerTwo = new Player("J2");
 
     //private Position[] initialRobotPositions = new Position[4];
-    private Map<Color, Position> initialRobotPositions = new HashMap<>();
+    private Map<String, Position> initialRobotPositions = new HashMap<>();
 
     public Game(){
         this.board = new Board();
@@ -45,8 +47,13 @@ public class Game {
         return playerOne;
     }
 
-    public Map<Color, Position> getInitialRobotPositions() {
+    public Map<String, Position> getInitialRobotPositions() {
         return initialRobotPositions;
+        //System.out.println(initialRobotPositions.);
+    }
+
+    public Symbol getCurrentGoal() {
+        return currentGoal;
     }
 
     public Player getPlayerTwo() {
@@ -221,14 +228,10 @@ public class Game {
         newCell.addRobot(robot);
     }
 
-    public Symbol getCurrentGoal() {
-        return currentGoal;
-    }
-
     public void setInitialRobotPositionAtIndex(Position initialRobotPosition, Color robotColor) {
         //this.initialRobotPositions[i] = initialRobotPosition;
         //this.initialRobotPositions = new HashMap<>();
-        this.initialRobotPositions.put(robotColor, initialRobotPosition);
-        System.out.println(initialRobotPosition.getRow() + " - " + initialRobotPosition.getColumn());
+        this.initialRobotPositions.put(String.valueOf(robotColor), initialRobotPosition);
+        System.out.println(String.valueOf(robotColor));
     }
 }

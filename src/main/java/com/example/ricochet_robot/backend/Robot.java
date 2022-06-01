@@ -6,6 +6,7 @@ public class Robot {
     private Color color;
     private boolean isTheGoalRobot;
     private Cell currentCell;
+    private Position oldPosition;
 
     public Robot(Color c){
         this.color = c;
@@ -34,5 +35,13 @@ public class Robot {
 
     public void setTheGoalRobot(boolean theGoalRobot) {
         isTheGoalRobot = theGoalRobot;
+    }
+
+    public Position getOldPosition() {
+        return oldPosition;
+    }
+
+    public void setOldPosition(Position oldPosition) {
+        this.oldPosition = oldPosition;
     }
 }
