@@ -291,6 +291,7 @@ public class GameController implements Initializable {
                 /* Potentiel bug */
                 //Ajout des symboles, s'il y en a
                 String symbolImageFilename = null;
+                System.out.println(currentCell.getIsThereASymbol());
                 if(currentCell.getIsThereASymbol()){
                     if (Color.BLUE.equals(currentCell.getSymbol().getColor())) {
                         switch (currentCell.getSymbol().getTheShape()) {

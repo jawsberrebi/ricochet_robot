@@ -110,53 +110,54 @@ public class Board {
      */
     private void addWallsToMiniBoards() {
         // Add walls to first mini board
-        this.miniBoards[0][0][3].addWalls(Orientation.EAST);
-        this.miniBoards[0][2][5].addWalls(Orientation.EAST);
-        this.miniBoards[0][2][5].addWalls(Orientation.SOUTH);
-        this.miniBoards[0][4][0].addWalls(Orientation.SOUTH);
-        this.miniBoards[0][4][2].addWalls(Orientation.EAST);
-        this.miniBoards[0][4][2].addWalls(Orientation.NORTH);
-        this.miniBoards[0][5][7].addWalls(Orientation.SOUTH);
-        this.miniBoards[0][5][7].addWalls(Orientation.WEST);
-        this.miniBoards[0][6][1].addWalls(Orientation.WEST);
+        this.miniBoards[0][3][0].addWalls(Orientation.EAST);
+        this.miniBoards[0][5][2].addWalls(Orientation.EAST);
+        this.miniBoards[0][5][2].addWalls(Orientation.SOUTH);
+        this.miniBoards[0][0][4].addWalls(Orientation.SOUTH);
+        this.miniBoards[0][2][4].addWalls(Orientation.EAST);
+        this.miniBoards[0][2][4].addWalls(Orientation.NORTH);
+        this.miniBoards[0][7][5].addWalls(Orientation.SOUTH);
+        this.miniBoards[0][7][5].addWalls(Orientation.WEST);
+        this.miniBoards[0][1][6].addWalls(Orientation.NORTH);
+        this.miniBoards[0][1][6].addWalls(Orientation.WEST);
 
         // Add walls to second mini board
-        this.miniBoards[1][0][1].addWalls(Orientation.EAST);
+        this.miniBoards[1][4][1].addWalls(Orientation.SOUTH);
+        this.miniBoards[1][4][1].addWalls(Orientation.WEST);
+        this.miniBoards[1][0][2].addWalls(Orientation.SOUTH);
+        this.miniBoards[1][6][2].addWalls(Orientation.NORTH);
+        this.miniBoards[1][6][2].addWalls(Orientation.WEST);
+        this.miniBoards[1][7][4].addWalls(Orientation.NORTH);
+        this.miniBoards[1][7][4].addWalls(Orientation.EAST);
+        this.miniBoards[1][1][5].addWalls(Orientation.NORTH);
         this.miniBoards[1][1][5].addWalls(Orientation.EAST);
-        this.miniBoards[1][1][5].addWalls(Orientation.EAST);
-        this.miniBoards[1][1][7].addWalls(Orientation.SOUTH);
-        this.miniBoards[1][3][1].addWalls(Orientation.NORTH);
-        this.miniBoards[1][3][1].addWalls(Orientation.WEST);
-        this.miniBoards[1][4][6].addWalls(Orientation.NORTH);
-        this.miniBoards[1][4][6].addWalls(Orientation.EAST);
-        this.miniBoards[1][6][4].addWalls(Orientation.SOUTH);
-        this.miniBoards[1][6][4].addWalls(Orientation.WEST);
+        this.miniBoards[1][3][6].addWalls(Orientation.EAST);
+        this.miniBoards[1][3][6].addWalls(Orientation.SOUTH);
+        this.miniBoards[1][4][7].addWalls(Orientation.EAST);
 
         // Add walls to third mini board
-        this.miniBoards[2][1][4].addWalls(Orientation.SOUTH);
-        this.miniBoards[2][1][4].addWalls(Orientation.WEST);
-        this.miniBoards[2][2][0].addWalls(Orientation.SOUTH);
-        this.miniBoards[2][2][6].addWalls(Orientation.NORTH);
-        this.miniBoards[2][2][6].addWalls(Orientation.WEST);
-        this.miniBoards[2][4][7].addWalls(Orientation.NORTH);
-        this.miniBoards[2][4][7].addWalls(Orientation.EAST);
-        this.miniBoards[2][5][1].addWalls(Orientation.NORTH);
+        this.miniBoards[2][1][0].addWalls(Orientation.EAST);
         this.miniBoards[2][5][1].addWalls(Orientation.EAST);
-        this.miniBoards[2][6][3].addWalls(Orientation.EAST);
-        this.miniBoards[2][6][3].addWalls(Orientation.SOUTH);
-        this.miniBoards[2][7][4].addWalls(Orientation.EAST);
+        this.miniBoards[2][5][1].addWalls(Orientation.SOUTH);
+        this.miniBoards[2][7][1].addWalls(Orientation.SOUTH);
+        this.miniBoards[2][1][3].addWalls(Orientation.NORTH);
+        this.miniBoards[2][1][3].addWalls(Orientation.WEST);
+        this.miniBoards[2][6][4].addWalls(Orientation.NORTH);
+        this.miniBoards[2][6][4].addWalls(Orientation.EAST);
+        this.miniBoards[2][4][6].addWalls(Orientation.SOUTH);
+        this.miniBoards[2][4][6].addWalls(Orientation.WEST);
 
         // Add walls to the fourth mini board
-        this.miniBoards[3][1][5].addWalls(Orientation.SOUTH);
-        this.miniBoards[3][1][5].addWalls(Orientation.WEST);
-        this.miniBoards[3][3][1].addWalls(Orientation.EAST);
-        this.miniBoards[3][3][1].addWalls(Orientation.SOUTH);
-        this.miniBoards[3][3][7].addWalls(Orientation.SOUTH);
-        this.miniBoards[3][5][6].addWalls(Orientation.NORTH);
-        this.miniBoards[3][5][6].addWalls(Orientation.EAST);
-        this.miniBoards[3][6][2].addWalls(Orientation.NORTH);
-        this.miniBoards[3][6][2].addWalls(Orientation.WEST);
-        this.miniBoards[3][7][3].addWalls(Orientation.EAST);
+        this.miniBoards[3][5][1].addWalls(Orientation.SOUTH);
+        this.miniBoards[3][5][1].addWalls(Orientation.WEST);
+        this.miniBoards[3][1][3].addWalls(Orientation.EAST);
+        this.miniBoards[3][1][3].addWalls(Orientation.SOUTH);
+        this.miniBoards[3][7][3].addWalls(Orientation.SOUTH);
+        this.miniBoards[3][6][5].addWalls(Orientation.NORTH);
+        this.miniBoards[3][6][5].addWalls(Orientation.EAST);
+        this.miniBoards[3][2][6].addWalls(Orientation.NORTH);
+        this.miniBoards[3][2][6].addWalls(Orientation.WEST);
+        this.miniBoards[3][3][7].addWalls(Orientation.EAST);
     }
 
     /**
@@ -197,16 +198,17 @@ public class Board {
     public void constructBoardFromMiniBoards() {
         initMiniBoards();
         addWallsToMiniBoards();
+        setSymbols();
         setSymbolsOnCell();           // Placement des objectifs sur les cases
 
         // Randomly order each board
         List<Integer> randomIndexes = Arrays.asList(0, 1, 2, 3);
-        //Collections.shuffle(randomIndexes);
+        Collections.shuffle(randomIndexes);
 
         // Randomly rotate each board 90 degrees each time
         for (Integer index : randomIndexes) {
             int numberOfRotations = (int) (Math.random() * 4);
-            //rotateMiniBoardAtIndexRight(index, numberOfRotations);
+            rotateMiniBoardAtIndexRight(index, numberOfRotations);
         }
 
         // Initialize cells in board board
@@ -238,20 +240,21 @@ public class Board {
                 List<Wall> walls = cell.getWalls();
 
                 if (cell.getIsThereWall()) {
-                    // Set cell walls in cell of mai board
+                    // Set cell walls in cell of mini board
                     this.cells[r][c].setWalls(walls);
                 }
 
                 if (cell.getIsThereASymbol()) {
                     // Set new cell position
-                    cell.getSymbol().setPosition(new Position(r, c));
+                    Symbol symbol = cell.getSymbol();
+                    cell.setPosition(new Position(r, c));
+                    this.cells[r][c].addSymbol(symbol);
                 }
             }
         }
 
         // Add borders
         makeCentralBox();
-        setSymbols();
     }
 
     /**
@@ -283,29 +286,29 @@ public class Board {
      */
     public void setSymbolsOnCell(){
         // Add symbols to first mini board
-        miniBoards[0][2][5].addSymbol(symbols.get(0));
-        miniBoards[0][4][2].addSymbol(symbols.get(1));
-        miniBoards[0][5][7].addSymbol(symbols.get(2));
-        miniBoards[0][6][1].addSymbol(symbols.get(3));
+        miniBoards[0][5][2].addSymbol(symbols.get(0));
+        miniBoards[0][2][4].addSymbol(symbols.get(1));
+        miniBoards[0][7][5].addSymbol(symbols.get(2));
+        miniBoards[0][1][6].addSymbol(symbols.get(3));
 
         // Add symbols to second mini board
-        miniBoards[1][1][5].addSymbol(symbols.get(4));
-        miniBoards[1][3][1].addSymbol(symbols.get(5));
-        miniBoards[1][4][6].addSymbol(symbols.get(6));
-        miniBoards[1][6][4].addSymbol(symbols.get(7));
+        miniBoards[1][4][1].addSymbol(symbols.get(8));
+        miniBoards[1][6][2].addSymbol(symbols.get(9));
+        miniBoards[1][7][4].addSymbol(symbols.get(10));
+        miniBoards[1][1][5].addSymbol(symbols.get(11));
+        miniBoards[1][3][6].addSymbol(symbols.get(12));
 
         // Add symbols to third mini board
-        miniBoards[2][1][4].addSymbol(symbols.get(8));
-        miniBoards[2][2][6].addSymbol(symbols.get(9));
-        miniBoards[2][4][7].addSymbol(symbols.get(10));
-        miniBoards[2][5][1].addSymbol(symbols.get(11));
-        miniBoards[2][6][3].addSymbol(symbols.get(12));
+        miniBoards[2][5][1].addSymbol(symbols.get(4));
+        miniBoards[2][1][3].addSymbol(symbols.get(5));
+        miniBoards[2][6][4].addSymbol(symbols.get(6));
+        miniBoards[2][4][6].addSymbol(symbols.get(7));
 
         // Add symbols to fourth mini board
-        miniBoards[3][1][5].addSymbol(symbols.get(13));
-        miniBoards[3][3][1].addSymbol(symbols.get(14));
-        miniBoards[3][5][6].addSymbol(symbols.get(15));
-        miniBoards[3][6][2].addSymbol(symbols.get(16));
+        miniBoards[3][5][1].addSymbol(symbols.get(13));
+        miniBoards[3][1][3].addSymbol(symbols.get(14));
+        miniBoards[3][6][5].addSymbol(symbols.get(15));
+        miniBoards[3][2][6].addSymbol(symbols.get(16));
     }
 
     /**

@@ -24,16 +24,6 @@ public class Symbol extends StackPane {
         this.position = p;
     }
 
-    /**
-     * Constructeur du jeton objectif
-     * @param c Couleur du jeton objectif
-     * @param s Forme du jeton objectif
-     */
-    public Symbol(Color c, Shape s){
-        this.color = c;
-        this.shape = s;
-    }
-
     //Getters/Setters
     /**
      * Getter retournant la position du jeton objectif sur le plateau

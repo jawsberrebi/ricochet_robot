@@ -10,9 +10,7 @@ public class Cell {
     private Position position;
     private Robot currentRobot;
     private List<Wall> walls = new ArrayList<>();
-    private boolean isThereWall;
     private boolean isThereARobot;
-    private boolean isThereASymbol;
     private Symbol symbol;
 
     /**
@@ -21,8 +19,6 @@ public class Cell {
      */
     public Cell(Position p){
         this.position = p;
-        this.isThereWall = false;
-        this.isThereASymbol = false;
     }
 
     /**
@@ -33,7 +29,6 @@ public class Cell {
     Cell(Position p, List<Wall> w){
         this.position = p;
         this.walls = w;
-        this.isThereWall = true;
     }
 
     //Getters/Setters
@@ -91,7 +86,7 @@ public class Cell {
      * @return true s'il y a un jeton objectif sur la case, false dans le cas inverse
      */
     public boolean getIsThereASymbol() {
-        return isThereASymbol;
+        return symbol != null;
     }
 
     /**
@@ -117,7 +112,6 @@ public class Cell {
      */
     public void addWalls(Orientation orientation) {
         this.walls.add(new Wall(orientation));
-        this.isThereWall = true;
     }
 
     /**
@@ -141,8 +135,7 @@ public class Cell {
      * Ajout d'un jeton objectif sur la case
      * @param symbol Jeton objectif à ajouer sur la case
      */
-    public void addSymbol(Symbol symbol){
-        this.isThereASymbol = true;
+    public void addSymbol(Symbol symbol) {
         this.symbol = symbol;
     }
 
