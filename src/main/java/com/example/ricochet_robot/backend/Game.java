@@ -1,5 +1,7 @@
 package com.example.ricochet_robot.backend;
 
+import javafx.scene.paint.Color;
+
 /**
  * Classe gérant le déroulement du jeu
  */
@@ -197,16 +199,23 @@ public class Game {
             if(this.playerOne.getIsMyTurn()){
                 this.playerOne.addAnotherWonRound();
                 this.playerOne.setRoundWon(true);
-                System.out.println("WIIIIIIIIIIIIIIIIN" + this.playerOne.getWonRounds());
             }else if(this.playerTwo.getIsMyTurn()){
                 this.playerTwo.addAnotherWonRound();
                 this.playerTwo.setRoundWon(true);
-                System.out.println("WIIIIIIIIIIIIIIIIIIN" + this.playerTwo.getWonRounds());
             }
             Game.Status = Status.END_ROUND;
             return true;
-        }
-        else {
+        } else if (robot.getCurrentCell().getSymbol() == this.currentGoal && this.currentGoal.getColor() == Color.BLACK) {
+            if(this.playerOne.getIsMyTurn()){
+                this.playerOne.addAnotherWonRound();
+                this.playerOne.setRoundWon(true);
+            }else if(this.playerTwo.getIsMyTurn()){
+                this.playerTwo.addAnotherWonRound();
+                this.playerTwo.setRoundWon(true);
+            }
+            Game.Status = Status.END_ROUND;
+            return true;
+        } else {
             return false;
         }
     }
