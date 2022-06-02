@@ -8,9 +8,8 @@ import java.util.List;
 import javafx.scene.paint.Color;
 
 /**
- * Plateau ju jeu
+ * Plateau du jeu
  */
-
 public class Board {
 
     private Cell[][] cells;                 // Le plateau est une matrice 16x16 de cases --- Convention : on partirait de 1 pour le premier coeff de la matrice comme ça pas d'embrouille ?
@@ -23,44 +22,14 @@ public class Board {
     private Symbol currentGoal;
     private int goalsNumber;
 
-    // Constructor
+    /**
+     * Constructeur du plateau
+     */
     public Board() {}
 
-    //Getters/Setters
-    public Cell[][] getCells() {
-        return this.cells;
-    }
-
-    public List<Symbol> getGoals() {
-        return goals;
-    }
-
-    public Cell getCell(Position position) {
-        return this.cells[position.getRow()][position.getColumn()];
-    }
-
-    public void setSymbols() {
-        // Add symbos to board
-        this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
-        this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.STAR, new Position(4, 10)));
-        this.symbols.add(new Symbol(Color.RED, Shape.MOON, new Position(5, 2)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.MOON, new Position(5, 15)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.PLANET, new Position(6, 11)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.PLANET, new Position(7, 5)));
-        this.symbols.add(new Symbol(Color.BLACK, Shape.VORTEX, new Position(9, 13)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.MOON, new Position(10, 11)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.GEAR, new Position(10, 4)));
-        this.symbols.add(new Symbol(Color.RED, Shape.PLANET, new Position(12, 6)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.GEAR, new Position(12, 10)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.PLANET, new Position(13, 15)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
-        this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
-    }
-
-    //Génération de la boîte centrale avec l'objectif dedans
+    /**
+     * Générer la boîte centrale avec l'objectif dedans
+     */
     public void makeCentralBox(){
         //Création de murs pour encadrer la boîte de l'objectif
         this.cells[9][7].addWalls(Orientation.SOUTH);
@@ -94,7 +63,9 @@ public class Board {
         }
     }
 
-    //Ajout des robots sur le plateau
+    /**
+     * Ajouter les robots sur le plateau
+     */
     public void addRobotsToBoard() {
         for (int i = 0; i < 4; i++) {
             int randomRow = (int)(Math.random() * 16) + 1;
@@ -124,6 +95,9 @@ public class Board {
         }
     }
 
+    /**
+     * Initialiser la liste des petits plateaux
+     */
     private void initMiniBoards() {
         this.miniBoards = new Cell[4][8][8];
 
@@ -136,6 +110,9 @@ public class Board {
         }
     }
 
+    /**
+     * Ajouter des murs aux petits plateaux
+     */
     private void addWallsToMiniBoards() {
         // Add walls to first mini board
         this.miniBoards[0][0][3].addWalls(Orientation.EAST);
@@ -187,6 +164,11 @@ public class Board {
         this.miniBoards[3][6][2].addWalls(Orientation.EAST);
     }
 
+    /**
+     * Faire numberOfRotations rotations de 90 degrés vers la droite de la matrice du petit plateau à l'indexe index de la liste des petits plateaux
+     * @param index Indexe du petit plateau dans miniBoards
+     * @param numberOfRotations Nombre de rotations de 90 degrés vers la droite du petit plateau
+     */
     private void rotateMiniBoardRight(int index, int numberOfRotations) {
         Cell[][] miniBoard = miniBoards[index];
 
@@ -211,6 +193,9 @@ public class Board {
         }
     }
 
+    /**
+     * Composer plateau à partir des petits plateau avec une rotation aléatoire et position aléatoire pour chaque petit plateau
+     */
     public void constructBoardFromMiniBoards() {
         initMiniBoards();
         addWallsToMiniBoards();
@@ -266,7 +251,33 @@ public class Board {
         setSymbolsOnCell();           // Placement des objectifs sur les cases
     }
 
-    //Ajout des symboles sur les cases
+    /**
+     * Ajouter des symboles à une liste de symboles à des position prédeéfinies
+     */
+    public void setSymbols() {
+        // Add symbos to board
+        this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.STAR, new Position(4, 10)));
+        this.symbols.add(new Symbol(Color.RED, Shape.MOON, new Position(5, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.MOON, new Position(5, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.PLANET, new Position(6, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.PLANET, new Position(7, 5)));
+        this.symbols.add(new Symbol(Color.BLACK, Shape.VORTEX, new Position(9, 13)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.MOON, new Position(10, 11)));
+        this.symbols.add(new Symbol(Color.BLUE, Shape.GEAR, new Position(10, 4)));
+        this.symbols.add(new Symbol(Color.RED, Shape.PLANET, new Position(12, 6)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.GEAR, new Position(12, 10)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.PLANET, new Position(13, 15)));
+        this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
+        this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
+        this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
+    }
+
+    /**
+     * Ajouter des symboles sur les cases
+     */
     public void setSymbolsOnCell(){
         this.cells[2][4].addSymbol(this.symbols.get(0));
         this.cells[2][13].addSymbol(this.symbols.get(1));
@@ -287,9 +298,38 @@ public class Board {
         this.cells[15][14].addSymbol(this.symbols.get(16));
     }
 
-    //Création de la liste de jetons objectifs pour chaque manche : les jetons sont mélangés à chaque nouveau jeu
+    /**
+     * Créer la liste de jetons objectifs pour chaque manche : les jetons sont mélangés à chaque nouveau jeu
+     */
     public void setGoalList(){
         this.goals = this.symbols;
         Collections.shuffle(this.goals);
+    }
+
+    //Getters/Setters
+
+    /**
+     * Getter retournant les cellules du plateau
+     * @return Liste 2D des cellules du plateau
+     */
+    public Cell[][] getCells() {
+        return this.cells;
+    }
+
+    /**
+     * Getter retournant les objectifs du plateau
+     * @return Liste des objectifs du plateau
+     */
+    public List<Symbol> getGoals() {
+        return goals;
+    }
+
+    /**
+     * Getter retournant une cellule du plateau à la position entrée en paramètre
+     * @param position Position de la cellule à chercher
+     * @return Cellule du plateau
+     */
+    public Cell getCell(Position position) {
+        return this.cells[position.getRow()][position.getColumn()];
     }
 }
