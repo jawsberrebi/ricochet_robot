@@ -9,116 +9,34 @@ import javafx.scene.paint.Color;
 
 public class Board {
 
-    private Cell[][] cells;     //Le plateau est une matrice 16x16 de cases --- Convention : on partirait de 1 pour le premier coeff de la matrice comme ça pas d'embrouille ?
-    private Cell[][][] miniBoards;
-    private List<Symbol> symbols = new ArrayList<>();
+    private Cell[][] cells;                 // Le plateau est une matrice 16x16 de cases --- Convention : on partirait de 1 pour le premier coeff de la matrice comme ça pas d'embrouille ?
+    private Cell[][][] miniBoards;          // Un plateau est constitué de 4 petits plateaux ayant une taille de 8x8
+    private final List<Symbol> symbols = new ArrayList<>();
     private List<Symbol> goals = new ArrayList<>();
-    private List<Integer> randomRow = new ArrayList<>();
-    private List<Integer> randomColumn = new ArrayList<>();
     private Cell[][] goalBox;
-    private List<Robot> robots = new ArrayList<>();
     private Robot currentRobot;
     private Robot goalRobot;
     private Symbol currentGoal;
     private int goalsNumber;
 
-    public Board(){        //Test
-
-    }
-
-    Board(List<Goal> g, int gN){
-        this.symbols = new ArrayList<>();
-        this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
-        this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.STAR, new Position(4, 10)));
-        this.symbols.add(new Symbol(Color.RED, Shape.MOON, new Position(5, 2)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.MOON, new Position(5, 15)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.PLANET, new Position(6, 11)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.PLANET, new Position(7, 5)));
-        this.symbols.add(new Symbol(Color.BLACK, Shape.VORTEX, new Position(9, 13)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.MOON, new Position(10, 11)));
-        this.symbols.add(new Symbol(Color.BLUE, Shape.GEAR, new Position(10, 4)));
-        this.symbols.add(new Symbol(Color.RED, Shape.PLANET, new Position(12, 6)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.GEAR, new Position(12, 10)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.PLANET, new Position(13, 15)));
-        this.symbols.add(new Symbol(Color.YELLOW, Shape.MOON, new Position(14, 2)));
-        this.symbols.add(new Symbol(Color.GREEN, Shape.STAR, new Position(15, 7)));
-        this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
-        //this.goalBox = new Goal[4][4];
-        this.cells = new Cell[17][17];
-        this.miniBoards = new Cell[4][8][8];
-    }
+    // Constructor
+    public Board() {}
 
     //Getters/Setters
     public Cell[][] getCells() {
         return this.cells;
     }
-    public void setCells(Cell[][] cells) {
-        this.cells = cells;
-    }
+
     public List<Symbol> getGoals() {
         return goals;
-    }
-
-    public List<Symbol> getSymbols() {
-        return symbols;
-    }
-
-    public void setCurrentGoal(Goal currentGoal) {
-        this.currentGoal = currentGoal;
-    }
-    public Symbol getCurrentGoal() {
-        return currentGoal;
     }
 
     public Cell getCell(Position position) {
         return this.cells[position.getRow()][position.getColumn()];
     }
 
-    //Génération d'un nouveau plateau
-    public void createBoard(){
-        this.cells = new Cell[17][17];
-        for (int i = 1; i < 17; i++){    //On commence à initialiser la matrice de case à 1-1 ou 0-0 ? J'ai choisi 1-1
-            for (int n = 1; n < 17; n++){
-                this.cells[i][n] = new Cell(new Position(i, n));
-            }
-        }
-
-        makeCentralBox();       //Création de la boîte centrale
-        addWallsOnBoard();      //Ajout des murs
-        setSymbols();
-        setSymbolsOnCell();           //Placement des objectifs sur les cases
-
-        Cell[][] celltest = new Cell[9][9];
-
-        for(int i = 1; i <= 8; i++){
-            for(int n = 1; n <= 8; n++){
-                celltest[i][n] = this.cells[n][i];
-            }
-        }
-
-        for(int i = 1; i <= 8; i++){
-            for(int n = 1; n <= 8; n++){
-
-            }
-        }
-
-        for(int i = 1; i <= 8; i++){
-            for(int n = 1; n <= 8; n++){
-
-            }
-        }
-
-        for(int i = 1; i <= 8; i++){
-            for(int n = 1; n <= 8; n++){
-
-            }
-        }
-
-    }
-
     public void setSymbols() {
+        // Add symbos to board
         this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
         this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
         this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
@@ -138,24 +56,8 @@ public class Board {
         this.symbols.add(new Symbol(Color.RED, Shape.STAR, new Position(15, 14)));
     }
 
-    //Ajout de murs dans une case : on spécifie la position de cette case dans la matrice de cases puis on opère la changement
-    public void addWallInACell(int row, int column, Orientation orientation){
-        this.cells[row][column].addWalls(orientation);
-    }
-
     //Génération de la boîte centrale avec l'objectif dedans
     public void makeCentralBox(){
-        //Attribution de l'objectif pour la boîte
-        /*
-        this.goalBox = new Cell[4][4];
-        for (int i = 0; i < 2; i++){
-            for (int n = 0; n < 2; n++){
-                this.goalBox[i][n].addSymbol(this.currentGoal);
-            }
-        }
-
-         */
-
         //Création de murs pour encadrer la boîte de l'objectif
         this.cells[9][7].addWalls(Orientation.SOUTH);
         this.cells[9][10].addWalls(Orientation.NORTH);
@@ -167,40 +69,25 @@ public class Board {
         this.cells[8][10].addWalls(Orientation.NORTH);
 
         //Création des murs de détourage du plateau
+        // Murs en haut du plateau
         for(int i = 1; i < this.cells.length; i++){
             this.cells[i][1].addWalls(Orientation.NORTH);
         }
 
+        // Murs à gauche du plateau
         for(int i = 1; i < this.cells.length; i++){
             this.cells[1][i].addWalls(Orientation.WEST);
         }
 
+        // Murs à droite du plateau
         for(int i = 1; i < this.cells.length; i++){
             this.cells[16][i].addWalls(Orientation.EAST);
         }
 
+        // Murs en bas du plateau
         for(int i = 1; i < this.cells.length; i++){
             this.cells[i][16].addWalls(Orientation.SOUTH);
         }
-    }
-
-    public void addWallsOnBoard(){
-        this.cells[1][2].addWalls(Orientation.EAST);
-        this.cells[1][10].addWalls(Orientation.EAST);
-        this.cells[2][4].addWalls(Orientation.NORTH);
-        this.cells[2][4].addWalls(Orientation.WEST);
-        this.cells[5][2].addWalls(Orientation.WEST);
-        this.cells[5][2].addWalls(Orientation.SOUTH);
-        this.cells[7][5].addWalls(Orientation.NORTH);
-        this.cells[7][1].addWalls(Orientation.SOUTH);
-        this.cells[7][5].addWalls(Orientation.EAST);
-        this.cells[10][4].addWalls(Orientation.SOUTH);
-        this.cells[10][4].addWalls(Orientation.EAST);
-        this.cells[11][1].addWalls(Orientation.SOUTH);
-        this.cells[14][2].addWalls(Orientation.WEST);
-        this.cells[14][2].addWalls(Orientation.SOUTH);
-        this.cells[16][5].addWalls(Orientation.EAST);
-        this.cells[16][11].addWalls(Orientation.EAST);
     }
 
     //Ajout des robots sur le plateau
@@ -208,12 +95,14 @@ public class Board {
         for (int i = 0; i < 4; i++) {
             int randomRow = (int)(Math.random() * 16) + 1;
             int randomColumn = (int)(Math.random() * 16) + 1;
+
             // Positionner aléatoirement les robots
             while ((randomRow == 8 || randomRow == 9) && (randomColumn == 8 || randomColumn == 9)) {
                 randomRow = (int)(Math.random() * 16) + 1;
                 randomColumn = (int)(Math.random() * 16) + 1;
             }
 
+            // Déterminer la couleur du robot
             Color robotColor = Color.RED;
             switch (i) {
                 case 1 -> robotColor = Color.BLUE;
@@ -228,9 +117,6 @@ public class Board {
             Game.context.setInitialRobotPositionAtIndex(new Position(randomRow, randomColumn), i);
 
             System.out.println("Robot " + i + " : " + randomRow + "," + randomColumn);
-
-            this.randomColumn.add(randomColumn);
-            this.randomRow.add(randomRow);
         }
     }
 
@@ -247,10 +133,54 @@ public class Board {
     }
 
     private void addWallsToMiniBoards() {
-        this.miniBoards[0][2][2].addWalls(Orientation.WEST);
-        this.miniBoards[0][2][2].addWalls(Orientation.NORTH);
-        this.miniBoards[0][2][2].addWalls(Orientation.SOUTH);
+        // Add walls to first mini board
+        this.miniBoards[0][0][3].addWalls(Orientation.EAST);
+        this.miniBoards[0][2][5].addWalls(Orientation.EAST);
+        this.miniBoards[0][2][5].addWalls(Orientation.SOUTH);
+        this.miniBoards[0][4][0].addWalls(Orientation.SOUTH);
+        this.miniBoards[0][4][2].addWalls(Orientation.EAST);
+        this.miniBoards[0][4][2].addWalls(Orientation.NORTH);
+        this.miniBoards[0][5][7].addWalls(Orientation.SOUTH);
+        this.miniBoards[0][5][7].addWalls(Orientation.WEST);
+        this.miniBoards[0][6][1].addWalls(Orientation.WEST);
 
+        // Add walls to second mini board
+        this.miniBoards[1][0][1].addWalls(Orientation.EAST);
+        this.miniBoards[1][1][5].addWalls(Orientation.EAST);
+        this.miniBoards[1][1][5].addWalls(Orientation.EAST);
+        this.miniBoards[1][1][7].addWalls(Orientation.SOUTH);
+        this.miniBoards[1][3][1].addWalls(Orientation.NORTH);
+        this.miniBoards[1][3][1].addWalls(Orientation.WEST);
+        this.miniBoards[1][4][6].addWalls(Orientation.NORTH);
+        this.miniBoards[1][4][6].addWalls(Orientation.EAST);
+        this.miniBoards[1][6][4].addWalls(Orientation.SOUTH);
+        this.miniBoards[1][6][4].addWalls(Orientation.WEST);
+
+        // Add walls to third mini board
+        this.miniBoards[2][1][4].addWalls(Orientation.SOUTH);
+        this.miniBoards[2][1][4].addWalls(Orientation.WEST);
+        this.miniBoards[2][2][0].addWalls(Orientation.SOUTH);
+        this.miniBoards[2][2][6].addWalls(Orientation.NORTH);
+        this.miniBoards[2][2][6].addWalls(Orientation.WEST);
+        this.miniBoards[2][4][7].addWalls(Orientation.NORTH);
+        this.miniBoards[2][4][7].addWalls(Orientation.EAST);
+        this.miniBoards[2][5][1].addWalls(Orientation.NORTH);
+        this.miniBoards[2][5][1].addWalls(Orientation.EAST);
+        this.miniBoards[2][6][3].addWalls(Orientation.EAST);
+        this.miniBoards[2][6][3].addWalls(Orientation.SOUTH);
+        this.miniBoards[2][7][4].addWalls(Orientation.EAST);
+
+        // Add walls to the fourth mini board
+        this.miniBoards[3][1][5].addWalls(Orientation.SOUTH);
+        this.miniBoards[3][1][5].addWalls(Orientation.WEST);
+        this.miniBoards[3][3][1].addWalls(Orientation.EAST);
+        this.miniBoards[3][3][1].addWalls(Orientation.SOUTH);
+        this.miniBoards[3][3][7].addWalls(Orientation.SOUTH);
+        this.miniBoards[3][5][6].addWalls(Orientation.NORTH);
+        this.miniBoards[3][5][6].addWalls(Orientation.EAST);
+        this.miniBoards[3][6][2].addWalls(Orientation.NORTH);
+        this.miniBoards[3][6][2].addWalls(Orientation.WEST);
+        this.miniBoards[3][6][2].addWalls(Orientation.EAST);
     }
 
     private void rotateMiniBoardRight(int index, int numberOfRotations) {
@@ -285,7 +215,7 @@ public class Board {
         List<Integer> randomIndexes = Arrays.asList(0, 1, 2, 3);
         Collections.shuffle(randomIndexes);
 
-        // Randomly rotate each board
+        // Randomly rotate each board 90 degrees each time
         for (Integer index : randomIndexes) {
             int numberOfRotations = (int) (Math.random() * 4);
             rotateMiniBoardRight(index, numberOfRotations);
@@ -316,9 +246,6 @@ public class Board {
 
                 // Get cell walls of cell in mini board
                 Cell[][] miniBoard = miniBoards[randomIndexes.get(index)];
-                //System.out.println(index);
-                //System.out.println("r : " + (r - 1 - (index < 2 ? 0 : 8)));
-                //System.out.println("c : " + (c - 1 - (index % 2) * 8));
                 Cell cell = miniBoard[r - 1 - (index < 2 ? 0 : 8)][c - 1 - (index % 2) * 8];
                 List<Wall> walls = cell.getWalls();
 
@@ -331,9 +258,8 @@ public class Board {
 
         // Add borders
         makeCentralBox();
-        addWallsOnBoard();
         setSymbols();
-        setSymbolsOnCell();           //Placement des objectifs sur les cases
+        setSymbolsOnCell();           // Placement des objectifs sur les cases
     }
 
     //Ajout des symboles sur les cases
@@ -355,12 +281,6 @@ public class Board {
         this.cells[14][2].addSymbol(this.symbols.get(14));
         this.cells[15][7].addSymbol(this.symbols.get(15));
         this.cells[15][14].addSymbol(this.symbols.get(16));
-
-        //Tests à retirer
-        for (int i = 1; i <= 16; i++){
-            this.cells[16][i].addSymbol(this.symbols.get(i-1));
-        }
-
     }
 
     //Création de la liste de jetons objectifs pour chaque manche : les jetons sont mélangés à chaque nouveau jeu
@@ -377,11 +297,4 @@ public class Board {
         this.cells[9][9].addSymbol(symbol);
     }
 
-    public List<Integer> getRandomColumn() {
-        return randomColumn;
-    }
-
-    public List<Integer> getRandomRow() {
-        return randomRow;
-    }
 }
