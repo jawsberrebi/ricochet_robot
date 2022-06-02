@@ -3,6 +3,9 @@ package com.example.ricochet_robot.backend;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Case du plateau
+ */
 public class Cell {
     private Position position;
     private Robot currentRobot;

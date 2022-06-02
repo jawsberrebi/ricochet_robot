@@ -7,6 +7,10 @@ import java.util.List;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Plateau ju jeu
+ */
+
 public class Board {
 
     private Cell[][] cells;     //Le plateau est une matrice 16x16 de cases --- Convention : on partirait de 1 pour le premier coeff de la matrice comme ça pas d'embrouille ?

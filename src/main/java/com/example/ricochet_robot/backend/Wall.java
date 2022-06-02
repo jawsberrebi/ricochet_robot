@@ -1,5 +1,9 @@
 package com.example.ricochet_robot.backend;
 
+/**
+ * Murs à insérer sur certaines cases
+ */
+
 public class Wall {
     private Orientation orientation;
 

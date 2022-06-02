@@ -1,5 +1,8 @@
 package com.example.ricochet_robot.backend;
 
+/**
+ * Position d'une cellule
+ */
 public class Position {
     private int row;
     private int column;

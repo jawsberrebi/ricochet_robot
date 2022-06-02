@@ -5,6 +5,9 @@ import javafx.scene.paint.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe gérant le déroulement du jeu
+ */
 public class Game {
 
     public static Game context;

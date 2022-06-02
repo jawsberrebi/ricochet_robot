@@ -3,6 +3,9 @@ package com.example.ricochet_robot.backend;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+/**
+ * Jetons objectif
+ */
 public class Symbol extends StackPane {
 
     private Color color;
@@ -15,7 +18,7 @@ public class Symbol extends StackPane {
         this.shape = s;
         this.position = p;
     }
-    
+
     //Getters/Setters
     public Position getPosition() {
         return position;

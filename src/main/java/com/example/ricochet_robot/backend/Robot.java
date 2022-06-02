@@ -2,6 +2,9 @@ package com.example.ricochet_robot.backend;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Robots (pions) à déplacer dans le jeu
+ */
 public class Robot {
     private Color color;
     private Cell currentCell;

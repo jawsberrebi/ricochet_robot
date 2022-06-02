@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Application
+ */
+
 public class Application extends javafx.application.Application {
 
     GameController gameController;

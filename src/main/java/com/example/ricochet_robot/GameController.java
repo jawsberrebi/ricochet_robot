@@ -32,6 +32,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+/**
+ * Contrôleur du jeu
+ */
 public class GameController implements Initializable {
 
     private static final Game game = new Game();
@@ -99,6 +102,12 @@ public class GameController implements Initializable {
     private boolean itIsWin;
     private Map<Robot, Integer> currentColum = new HashMap<>();
     private Map<Robot, Integer> currentRow = new HashMap<>();
+
+    /**
+     * Initialisation du contrôleur
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Lancement du jeu

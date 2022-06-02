@@ -1,5 +1,8 @@
 package com.example.ricochet_robot.backend;
 
+/**
+ * Contient des informations relatives aux joueurs
+ */
 public class Player {
 
     private String name;                                                                                                //Nom du joueur
