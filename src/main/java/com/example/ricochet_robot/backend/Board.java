@@ -197,15 +197,16 @@ public class Board {
     public void constructBoardFromMiniBoards() {
         initMiniBoards();
         addWallsToMiniBoards();
+        setSymbolsOnCell();           // Placement des objectifs sur les cases
 
         // Randomly order each board
         List<Integer> randomIndexes = Arrays.asList(0, 1, 2, 3);
-        Collections.shuffle(randomIndexes);
+        //Collections.shuffle(randomIndexes);
 
         // Randomly rotate each board 90 degrees each time
         for (Integer index : randomIndexes) {
             int numberOfRotations = (int) (Math.random() * 4);
-            rotateMiniBoardAtIndexRight(index, numberOfRotations);
+            //rotateMiniBoardAtIndexRight(index, numberOfRotations);
         }
 
         // Initialize cells in board board
@@ -240,13 +241,17 @@ public class Board {
                     // Set cell walls in cell of mai board
                     this.cells[r][c].setWalls(walls);
                 }
+
+                if (cell.getIsThereASymbol()) {
+                    // Set new cell position
+                    cell.getSymbol().setPosition(new Position(r, c));
+                }
             }
         }
 
         // Add borders
         makeCentralBox();
         setSymbols();
-        setSymbolsOnCell();           // Placement des objectifs sur les cases
     }
 
     /**
@@ -277,23 +282,30 @@ public class Board {
      * Ajouter des symboles sur les cases
      */
     public void setSymbolsOnCell(){
-        this.cells[2][4].addSymbol(this.symbols.get(0));
-        this.cells[2][13].addSymbol(this.symbols.get(1));
-        this.cells[4][7].addSymbol(this.symbols.get(2));
-        this.cells[4][10].addSymbol(this.symbols.get(3));
-        this.cells[5][2].addSymbol(this.symbols.get(4));
-        this.cells[5][15].addSymbol(this.symbols.get(5));
-        this.cells[6][11].addSymbol(this.symbols.get(6));
-        this.cells[7][5].addSymbol(this.symbols.get(7));
-        this.cells[9][13].addSymbol(this.symbols.get(8));
-        this.cells[10][11].addSymbol(this.symbols.get(9));
-        this.cells[10][4].addSymbol(this.symbols.get(10));
-        this.cells[12][6].addSymbol(this.symbols.get(11));
-        this.cells[12][10].addSymbol(this.symbols.get(12));
-        this.cells[13][15].addSymbol(this.symbols.get(13));
-        this.cells[14][2].addSymbol(this.symbols.get(14));
-        this.cells[15][7].addSymbol(this.symbols.get(15));
-        this.cells[15][14].addSymbol(this.symbols.get(16));
+        // Add symbols to first mini board
+        miniBoards[0][2][5].addSymbol(symbols.get(0));
+        miniBoards[0][4][2].addSymbol(symbols.get(1));
+        miniBoards[0][5][7].addSymbol(symbols.get(2));
+        miniBoards[0][6][1].addSymbol(symbols.get(3));
+
+        // Add symbols to second mini board
+        miniBoards[1][1][5].addSymbol(symbols.get(4));
+        miniBoards[1][3][1].addSymbol(symbols.get(5));
+        miniBoards[1][4][6].addSymbol(symbols.get(6));
+        miniBoards[1][6][4].addSymbol(symbols.get(7));
+
+        // Add symbols to third mini board
+        miniBoards[2][1][4].addSymbol(symbols.get(8));
+        miniBoards[2][2][6].addSymbol(symbols.get(9));
+        miniBoards[2][4][7].addSymbol(symbols.get(10));
+        miniBoards[2][5][1].addSymbol(symbols.get(11));
+        miniBoards[2][6][3].addSymbol(symbols.get(12));
+
+        // Add symbols to fourth mini board
+        miniBoards[3][1][5].addSymbol(symbols.get(13));
+        miniBoards[3][3][1].addSymbol(symbols.get(14));
+        miniBoards[3][5][6].addSymbol(symbols.get(15));
+        miniBoards[3][6][2].addSymbol(symbols.get(16));
     }
 
     /**
