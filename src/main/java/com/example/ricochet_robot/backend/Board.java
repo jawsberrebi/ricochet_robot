@@ -7,6 +7,10 @@ import java.util.List;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Plateau ju jeu
+ */
+
 public class Board {
 
     private Cell[][] cells;                 // Le plateau est une matrice 16x16 de cases --- Convention : on partirait de 1 pour le premier coeff de la matrice comme ça pas d'embrouille ?
@@ -112,9 +116,9 @@ public class Board {
 
             Robot robot = new Robot(robotColor);
             this.cells[randomRow][randomColumn].addRobot(robot);
-
+            robot.setOldPosition(new Position(randomRow, randomColumn));
             // Record robot initial position
-            Game.context.setInitialRobotPositionAtIndex(new Position(randomRow, randomColumn), i);
+            //Game.context.setInitialRobotPositionAtIndex(new Position(randomRow, randomColumn), robot.getColor());
 
             System.out.println("Robot " + i + " : " + randomRow + "," + randomColumn);
         }

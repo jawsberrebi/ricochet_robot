@@ -9,15 +9,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Application
+ */
+
 public class Application extends javafx.application.Application {
 
     GameController gameController;
-    Game game;
+
+    /**
+     * Méthode de chargement du fichier FXML principal dans la fenêtre du programme
+     * @param stage Stage sur lequel dévoiler la scène
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("draft.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("game.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-        stage.setTitle("Hello!");
+        stage.setTitle("Ricochet Robot");
         stage.setScene(scene);
         stage.show();
 
@@ -27,11 +36,18 @@ public class Application extends javafx.application.Application {
         initKeyEventHandler(scene);
     }
 
+    /**
+     * Méthode gérant les évènements lors des pressions des touches sur le clavier (W, S, D et A)
+     * Pour déplacer un robot, cette méthode vérifie si le robot a été sélectionné à la souris dans un premier temps
+     * @param scene Scène sur laquelle on pourra agir avec l'évènement du clavier
+     */
     private void initKeyEventHandler(Scene scene) {
         if(Game.Status != Game.Status.END_ROUND){
             scene.setOnKeyPressed(e -> {
                 System.out.println("Pressed");
                 if (gameController.itIsFinished()) {
+                    return;
+                } else if (gameController.launchResetRobot()) {
                     return;
                 }
                 Robot selectedRobot = gameController.selectedRobot;
@@ -62,6 +78,10 @@ public class Application extends javafx.application.Application {
         }
     }
 
+    /**
+     * Méthode Main pour lancer le programme
+     * @param args
+     */
     public static void main(String[] args) {
         launch();
     }

@@ -32,11 +32,18 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+/**
+ * Contrôleur du jeu
+ */
 public class GameController implements Initializable {
 
     private static final Game game = new Game();
     private final Pane[][] board = new Pane[16][16];
     private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";
+
+    /**
+     * Robot sélectionné par le joueur
+     */
     public Robot selectedRobot;
 
     private Label timerLabel = new Label(), splitTimerLabel = new Label();
@@ -99,6 +106,12 @@ public class GameController implements Initializable {
     private boolean itIsWin;
     private Map<Robot, Integer> currentColum = new HashMap<>();
     private Map<Robot, Integer> currentRow = new HashMap<>();
+
+    /**
+     * Initialisation du contrôleur
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Lancement du jeu
@@ -125,16 +138,9 @@ public class GameController implements Initializable {
         game.Status = Game.Status.LAUNCH_TIMER;
     }
 
-    public Label getScorePlayerOne() {
-        return scorePlayerOne;
-    }
-
-    public Label getScorePlayerTwo() {
-        return scorePlayerTwo;
-    }
-
-    public boolean getItIsWin(){return itIsWin;}
-
+    /**
+     * Méthode gérant l'activation du bouton principal (et par la même occasion met à jour l'état du jeu)
+     */
     @FXML
     public void handleGameBtn(){
         switch (game.Status) {
@@ -163,7 +169,6 @@ public class GameController implements Initializable {
             case PREPARE_ROUND -> {
                 this.scorePlayerOne.setText("");
                 this.scorePlayerTwo.setText("");
-
                 launchTimer = 0;
                 this.spinnerPlayerOne.setVisible(false);
                 this.spinnerPlayerTwo.setVisible(false);
@@ -190,6 +195,7 @@ public class GameController implements Initializable {
                 System.out.println("On est dans Joueur 1");
                 this.stateRound.setText("Tour du joueur 1");
                 movePlayer();
+                itIsFinished();
             }case PLAYER_TWO_TURN -> {
                 this.scorePlayerOne.setVisible(true);
                 this.scorePlayerTwo.setVisible(true);
@@ -197,13 +203,18 @@ public class GameController implements Initializable {
                 System.out.println("On est dans Joueur 2");
                 this.stateRound.setText("Tour du joueur 2");
                 movePlayer();
-            }case END_ROUND -> {
+                itIsFinished();
+
+            }
+            case END_ROUND -> {
                 this.stateRound.setVisible(true);
+                reinitializeRobot();
+                selectedRobot = null;
                 System.out.println("finii");
                 this.gameBtn.setText("Nouvelle manche");
-                if(itIsWin && game.getPlayerOne().isRoundWon()){
+                if(game.getPlayerOne().isRoundWon()){
                     this.stateRound.setText(game.getPlayerOne().getName() + " a gagné la manche");
-                }else if(itIsWin && game.getPlayerTwo().isRoundWon()){
+                }else if(game.getPlayerTwo().isRoundWon()){
                     this.stateRound.setText(game.getPlayerTwo().getName() + " a gagné la manche");
                 }
                 else {
@@ -240,6 +251,9 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Méthode de génération de l'affichage du plateau principale (cases, murs, jetons objectifs et robots)
+     */
     private void boardGeneration(){
         Image cellImage = new Image(new File(filePathRoot + "boards/Cell.PNG").toURI().toString() , 44, 44, false, false);
 
@@ -327,29 +341,6 @@ public class GameController implements Initializable {
                 }
 
                 if((i != 7 && i != 8) || (j != 7 && j != 8)){
-                    // Rendre stackPane cliquable
-                    /*
-                    stackPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-                        @Override
-                        public void handle(MouseEvent event) {
-                            String id = ((StackPane) event.getSource()).getId();
-                            System.out.println("Tile id : " + id);
-
-                            // Get robot from cell
-                            int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
-                            Cell currentCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
-
-                            if (currentCell.getIsThereARobot()) {
-                                selectedRobot = currentCell.getCurrentRobot();
-                                selectedRobot.setCurrentCell(currentCell);
-                                move(Orientation.NORTH);
-                            }
-
-                            event.consume();
-                        }
-                    });
-                     */
 
                 }else{
 
@@ -357,7 +348,6 @@ public class GameController implements Initializable {
                     Image goalBox = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/GoalBox.png").toURI().toString() , 44, 44, false, false);
                     ImageView goalBoxView = new ImageView(goalBox);
                     stackPane.getChildren().add(goalBoxView);
-                    //Coder affichage du jeton objectif dans la boîte centrale
                 }
                 // Ajouter stackPane au board
                 this.board[i][j] = stackPane;
@@ -367,6 +357,12 @@ public class GameController implements Initializable {
         }
 
     }
+
+    /**
+     * Méthode renvoyant le nom d'un fichier de ressource d'image de robot
+     * @param robotColor Couleur du robot en question
+     * @return Renvoie le nom du fichier de l'image du robot correspondant à la couleur renseignée
+     */
 
     private String getRobotImageFilename(Color robotColor) {
         if (robotColor.equals(Color.RED)) {
@@ -380,6 +376,10 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Méthode effectuant le déplacement du robot par le joueur
+     * @param direction Direction vers laquelle le robot peut se déplacer (nord, sud, est ou ouest)
+     */
     public void move(Orientation direction) {
         Cell currentCell = selectedRobot.getCurrentCell();
 
@@ -394,17 +394,20 @@ public class GameController implements Initializable {
                 System.out.println(newPosition.getRow() + "," + newPosition.getColumn());
 
                 game.move(currentCell, direction);
-                updateRobotDisplay(oldPosition, newPosition);
+                updateRobotDisplay(oldPosition, newPosition, selectedRobot);
                 currentCell = game.getBoard().getCell(newPosition);
                 selectedRobot.setCurrentCell(currentCell);
             }
 
             // Update selected robot
             selectedRobot = currentCell.getCurrentRobot();
-            getPositionRobots();
 
         }
     }
+
+    /**
+     *
+     */
 
     private void getPositionRobots() {
         this.currentRow.clear();
@@ -414,7 +417,7 @@ public class GameController implements Initializable {
                 if(game.getBoard().getCells()[i][j].getIsThereARobot()){
                     Robot robot = game.getBoard().getCells()[i][j].getCurrentRobot();
                     int column = game.getBoard().getCells()[i][j].getPosition().getColumn();
-                    int row = game.getBoard().getCells()[i][j].getPosition().getRow();
+                    int row = game.getBoard().getCells()[i][j].getPosition().getColumn();
                     this.currentColum.put(robot, column);
                     this.currentRow.put(robot, row);
                 }
@@ -422,27 +425,40 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Suppression du robot de la case
+     * @param position Position actuelle du robot
+     */
+
     private void removeRobotFromCell(Position position) {
-        int numberOfChildren = board[position.getRow()  - 1][position.getColumn() - 1].getChildren().size();
-        board[position.getRow() - 1][position.getColumn() - 1].getChildren().remove(numberOfChildren - 1);
+        int numberOfChildren = board[position.getRow() - 1][position.getColumn() - 1].getChildren().size() - 1;
+        board[position.getRow() - 1][position.getColumn() - 1].getChildren().remove(numberOfChildren);
     }
 
-    private void addRobotToCell(Position position) {
-        Robot robot = selectedRobot;
-        String filename = getRobotImageFilename(selectedRobot.getColor());
+    private void addRobotToCell(Position position, Robot robot) {
+
+        String filename = getRobotImageFilename(robot.getColor());
 
         // Get stackPane
         Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
         ImageView robotImageView = new ImageView(robotImage);
-
         board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
     }
 
-    private void updateRobotDisplay(Position oldPosition, Position newPosition) {
+    /**
+     * Mise à jour de l'affichage de la position du robot
+     * @param oldPosition Position précédente du robot avant son déplacement
+     * @param newPosition Nouvelle position du robot atteinte après son déplacement
+     * @param robot Le robot à mettre à jour en question
+     */
+    private void updateRobotDisplay(Position oldPosition, Position newPosition, Robot robot) {
         removeRobotFromCell(oldPosition);
-        addRobotToCell(newPosition);
+        addRobotToCell(newPosition, robot);
     }
 
+    /**
+     * Méthode d'affichage de l'image du jeton objectif à atteindre à droite de l'écran, en dehors du plateau
+     */
     private void displayGoal(){
         String symbolImageFilename = null;
         if (Color.BLUE.equals(game.getCurrentGoal().getColor())){
@@ -481,7 +497,9 @@ public class GameController implements Initializable {
         this.currentImageGoal.setVisible(true);
     }
 
-    //Sablier activé après clic sur le bouton de jeu
+    /**
+     * Lancement du sablier de 30 secondes
+     */
     private void timer(){
         launchTimer = 30;
         isTheTimerStopped = false;
@@ -506,6 +524,10 @@ public class GameController implements Initializable {
         timeline.setCycleCount(31);
         timeline.play();
     }
+
+    /**
+     * Méthode pour gérer les mouvements du robot sélectionné
+     */
 
     private void movePlayer(){
         if (isTheTimerStopped) {
@@ -551,6 +573,9 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Méthode pour initialiser les spinners afin d'y entrer le nombre de coups choisis
+     */
     private void launchSpinners(){
         SpinnerValueFactory<Integer> valueFactoryPlayerOne = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100);
         valueFactoryPlayerOne.setValue(1);
@@ -577,6 +602,10 @@ public class GameController implements Initializable {
             }
         });
     }
+
+    /**
+     * Méthode de gestion des radio boxes (servant à définir quel joueur à trouvé le plus petit nombre de coups en premier)
+     */
 
     public void getFirstFinderPlayer(){
         this.radioPlayerOne.setToggleGroup(this.radioGroup);
@@ -605,6 +634,10 @@ public class GameController implements Initializable {
         });
     }
 
+    /**
+     * Méthode mettant à jour le comptage des coups effectués par les joueurs, et passant automatiquement le tour au joueur suivant si le précédent joueur a épuisé son nombre de coups fixé
+     */
+
     public void setHits(){
 
         if (game.getPlayerOne().getIsMyTurn() && (game.getPlayerOne().getHitsNumber() >= game.getPlayerOne().getHitsNumberChoice())){
@@ -630,9 +663,14 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Méthode définissant si la manche est finie ou pas
+     * @return true si la manche est finie, false dans le cas inverse
+     */
     public boolean itIsFinished(){
         if((Game.Status != Game.Status.PLAYER_ONE_TURN &&  Game.Status != Game.Status.PLAYER_TWO_TURN) || itIsWin || (game.getPlayerOne().getHitsNumber() + game.getPlayerTwo().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice() + game.getPlayerTwo().getHitsNumberChoice())){
             System.out.println("oui");
+            itIsWin = false;
             Game.Status = Game.Status.END_ROUND;
             handleGameBtn();
             return true;
@@ -641,24 +679,45 @@ public class GameController implements Initializable {
         }
     }
 
-    private void reinitializeRobot(){
+    /**
+     * Méthode pour réinitialiser la position des robots à chaque nouveau tour
+     */
+    public void reinitializeRobot(){
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 if(game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()){
-                    Position position = game.getBoard().getCells()[i + 1][j + 1].getPosition();
-                    removeRobotFromCell(position);
-                    Robot robot = selectedRobot;
-                    String filename = getRobotImageFilename(game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot().getColor());
-
-                    // Get stackPane
-                    Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
-                    ImageView robotImageView = new ImageView(robotImage);
-
-                    board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
+                    Position oldPosition = game.getBoard().getCells()[i + 1][j + 1].getPosition();
+                    Robot robot = game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
+                    robot.setCurrentCell(game.getBoard().getCells()[i + 1][j + 1]);
+                    Position newPosition = robot.getOldPosition();
+                    game.getBoard().getCell(oldPosition).removeRobot();
+                    game.getBoard().getCell(newPosition).addRobot(robot);
+                    updateRobotDisplay(oldPosition, newPosition, robot);
                 }
             }
-
         }
     }
 
+    /**
+     * Vérifie les conditions nécessaires pour lancer la réinitialisation des robots
+     * @return true s'il faut réinitialiser la position des robots (quand l'un des joueurs a atteint le nombre de coups qu'il a fixé), false dans les autres cas
+     */
+
+    public boolean launchResetRobot(){
+        if(game.getPlayerOne().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice()){                           //Si le joueur 1 a épuisé son nombre de coups
+            itIsWin = game.itIsWin(selectedRobot);                                                                      //On vérifie s'il a gagné
+            reinitializeRobot();                                                                                        //Réinitialisation des robots
+            game.setNextTurn();                                                                                         //Définition du tour suivant
+            game.getPlayerOne().setHitsNumber(0);                                                                       //Mise à 0 des coups  du joueur 1
+            return true;
+        }else if (game.getPlayerTwo().getHitsNumber() == game.getPlayerTwo().getHitsNumberChoice()){                    //Si le joueur 2 a épuisé son nombre de coups
+            itIsWin = game.itIsWin(selectedRobot);                                                                      //On vérifie s'il a gagné
+            reinitializeRobot();                                                                                        //Réinitialisation des robots
+            game.setNextTurn();                                                                                         //Définition du tour suivant
+            game.getPlayerTwo().setHitsNumber(0);                                                                       //Mise à 0 des coups  du joueur 2
+            return true;
+        }else {                                                                                                         //Sinon on retourne faux
+            return false;
+        }
+    }
 }

@@ -1,21 +1,39 @@
 package com.example.ricochet_robot.backend;
 
+import javafx.scene.paint.Color;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Classe gérant le déroulement du jeu
+ */
 public class Game {
 
+    /**
+     * Contexte du jeu
+     */
     public static Game context;
     private Board board;
-    private Symbol currentGoal;        //Jeton objectif à atteindre
-    private int goalCursor;            //Variable à incrémenter pour sélectionner l'objectif actuel
-    public static Status Status;       //État du jeu
+    private Symbol currentGoal;                                                                                         //Jeton objectif à atteindre
+    private int goalCursor;                                                                                             //Variable à incrémenter pour sélectionner l'objectif actuel
+    /**
+     * État du jeu
+     */
+    public static Status Status;
     private Player playerOne = new Player("J1");
     private Player playerTwo = new Player("J2");
 
-    private Position[] initialRobotPositions = new Position[4];
-
+    /**
+     * Création du jeu et du board
+     */
     public Game(){
         this.board = new Board();
     }
 
+    /**
+     * Initialisation du jeu, création d'un contexte , du plateau, du roulement des jetons objectifs à atteindre
+     */
     public void play() {
         if (Game.context != null) {
             throw new RuntimeException
@@ -23,54 +41,106 @@ public class Game {
         }
         //Création d'un jeu
         Game.context = new Game();
-        //Création des joueurs
-        Player playerTwo = new Player("J2");
         this.board.constructBoardFromMiniBoards();
-        this.board.addRobotsToBoard();                                  //Ajout des robots sur le plateau
-        this.board.setGoalList();                                       //Définition de l'ordre d'apparition des jetons objectif à atteindre
-        this.goalCursor = 0;                                            //Initialisation du curseur qui parcours la liste d'objectifs au fil de la partie
-        this.currentGoal = this.board.getGoals().get(this.goalCursor);  //Définition du jeton objectif à atteindre
-        this.board.setSymbolInGoalBox(this.currentGoal);                //Ajout du jeton objectif au centre de la boîte
+        this.board.addRobotsToBoard();                                                                                  //Ajout des robots sur le plateau
+        this.board.setGoalList();                                                                                       //Définition de l'ordre d'apparition des jetons objectif à atteindre
+        this.goalCursor = 0;                                                                                            //Initialisation du curseur qui parcours la liste d'objectifs au fil de la partie
+        this.currentGoal = this.board.getGoals().get(this.goalCursor);                                                  //Définition du jeton objectif à atteindre
+        this.board.setSymbolInGoalBox(this.currentGoal);                                                                //Ajout du jeton objectif au centre de la boîte
     }
 
     //Getters/Setters
+    /**
+     * Getter du joueur 1
+     * @return  Joueur 1
+     */
     public Player getPlayerOne() {
         return playerOne;
     }
 
+    /**
+     * Getter du jeton objectif actuel à atteindre
+     * @return Jeton objectif actuel à atteindre
+     */
+    public Symbol getCurrentGoal() {
+        return currentGoal;
+    }
+
+    /**
+     * Getter du joueur 2
+     * @return Joueur 2
+     */
     public Player getPlayerTwo() {
         return playerTwo;
     }
 
+    /**
+     * Setter du joueur 1
+     * @param playerOne Joueur 1 à définir
+     */
     public void setPlayerOne(Player playerOne) {
         this.playerOne = playerOne;
     }
 
+    /**
+     * Setter du joueur 2
+     * @param playerTwo Joueur 2 à définir
+     */
     public void setPlayerTwo(Player playerTwo) {
         this.playerTwo = playerTwo;
     }
 
+    /**
+     * Setter du jeton objectif actuel à atteindre
+     * @param goalCursor jeton objectif actuel à atteindre
+     */
     public void setGoalCursor(int goalCursor) {
         this.goalCursor = goalCursor;
     }
 
-    //État du jeu
-    public enum Status{
-        LAUNCH_TIMER,                                                                                                   //Statut activé quand le timer est lancé et que les joueurs doivent entrer le nombre de coups pour atteindre l'objectif
-        PREPARE_ROUND,                                                                                                  //Statut intermédiaire pour préparer une manche (entre LAUNCH_TIMER et PLAYER_ONE_TURN/PLAYER_TWO_TURN)
-        PLAYER_ONE_TURN,                                                                                                //Tour du joueur 1
-        PLAYER_TWO_TURN,                                                                                                //Tour du joueur 2
-        END_ROUND,                                                                                                      //Fin d'une manche
-        GAME_OVER;                                                                                                      //Fin du jeu
-    }
-
-
-
-    //Getters/Setters
+    /**
+     * Getter du plateau de jeu
+     * @return Plateau de jeu
+     */
     public Board getBoard() {
         return this.board;
     }
 
+    /**
+     * État du jeu (déroulement du jeu)
+     */
+    public enum Status{
+        /**
+         * Statut activé quand le timer est lancé et que les joueurs doivent entrer le nombre de coups pour atteindre l'objectif
+         */
+        LAUNCH_TIMER,
+        /**
+         * Statut intermédiaire pour préparer une manche (entre LAUNCH_TIMER et PLAYER_ONE_TURN/PLAYER_TWO_TURN)
+         */
+        PREPARE_ROUND,
+        /**
+         * Tour du joueur 1
+         */
+        PLAYER_ONE_TURN,
+        /**
+         * Tour du joueur 2
+         */
+        PLAYER_TWO_TURN,
+
+        /**
+         * Fin d'une manche
+         */
+        END_ROUND,
+
+        /**
+         * Fin du jeu
+         */
+        GAME_OVER;
+    }
+
+    /**
+     * Définition du premier tour (définit quel joueur jouera en premier dans un tour)
+     */
     public void setFirstTurn(){
         if(this.playerOne.getIsIHaveTheNumberOfHitsFirst()){
             this.playerOne.setIsMyTurn(true);
@@ -83,36 +153,36 @@ public class Game {
         }
     }
 
-    private void replaceRobots(){
-        this.board.addRobotsToBoard();
-    }           //À modifier
+    /**
+     * Définition du prochain tour (fait passer le tour au prochain joueur si le joueur précédent a épuisé tous ses coups définis au préalable
+     * ou passe à la fin du tour si les deux joueurs ont déjà joué)
+     */
 
     public void setNextTurn(){
-        if (this.playerOne.getIsMyTurn()){
+        if (this.playerOne.getIsMyTurn() && this.playerOne.getHitsNumber() >= this.playerOne.getHitsNumberChoice()){
             this.playerOne.setIsMyTurn(false);
             this.playerOne.setHaveAlreadyPlayed(true);
             this.playerTwo.setIsMyTurn(true);
             if (!this.playerTwo.isHaveAlreadyPlayed()){
-                System.out.println("Déjà joué");
                 Game.Status = Status.PLAYER_TWO_TURN;
-                replaceRobots();
             }else {
                 Game.Status = Status.END_ROUND;
             }
-        }else if(this.playerTwo.getIsMyTurn()){
+        }else if(this.playerTwo.getIsMyTurn() && this.playerTwo.getHitsNumber() >= this.playerTwo.getHitsNumberChoice()){
             this.playerTwo.setIsMyTurn(false);
             this.playerTwo.setHaveAlreadyPlayed(true);
             this.playerOne.setIsMyTurn(true);
             if (!this.playerOne.isHaveAlreadyPlayed()){
                 Game.Status = Status.PLAYER_ONE_TURN;
-                replaceRobots();
             }else {
                 Game.Status = Status.END_ROUND;
             }
         }
     }
 
-    //Obtention d'un nouveau goal dans la liste ou si la fin de la liste de jetons objectifs a été atteinte, fin du jeu
+    /**
+     * Obtention d'un nouveau goal dans la liste ou si la fin de la liste de jetons objectifs a été atteinte, fin du jeu
+     */
     public void nextGoalOrGameOver(){
         this.goalCursor++;                                                                                              //On incrémente l'index de la liste
         if(this.goalCursor >= 17){                                                                                      //Si l'index est supérieur ou égal à 17
@@ -123,7 +193,11 @@ public class Game {
         }
     }
 
-    //Fonction vérifiant si l'objectif a bien été atteint
+    /**
+     * Méthode vérifiant si le bon robot a atteint le bon jeton objectif (jeton objectif à atteindre en cours)
+     * @param robot Robot vérifiant potentiellement la condition pour gagner (si le robot qui atteint le jeton objectif à atteindre a la même couleur que ce dernier)
+     * @return true si le bon robot est sur le bon jeton à atteindre, false dans les autres cas
+     */
     public boolean itIsWin(Robot robot){
         if((robot.getCurrentCell().getSymbol() == this.currentGoal) && (robot.getCurrentCell().getSymbol().getColor() == robot.getColor()) && (this.currentGoal.getColor() == robot.getColor())){
             if(this.playerOne.getIsMyTurn()){
@@ -135,7 +209,6 @@ public class Game {
                 this.playerTwo.setRoundWon(true);
                 System.out.println("WIIIIIIIIIIIIIIIIIIN" + this.playerTwo.getWonRounds());
             }
-
             Game.Status = Status.END_ROUND;
             return true;
         }
@@ -145,7 +218,9 @@ public class Game {
     }
 
 
-    //Fonction remettant à zero les coups des joueurs
+    /**
+     * Méthode remettant à zéro les coups (coups définis et coups effectués) des joueurs et à false leurs propriétés (si la manche a été gagnée, s'ils ont déjà joué, si c'est à eux de jouer)
+     */
     public void reinitializePlayers(){
         this.playerOne.setRoundWon(false);
         this.playerTwo.setRoundWon(false);
@@ -158,6 +233,13 @@ public class Game {
         this.playerOne.setHitsNumber(0);
         this.playerTwo.setHitsNumber(0);
     }
+
+    /**
+     * Méthode vérifiant si le coup choisi par le joueur est valide
+     * @param currentCell Case où le robot se trouve actuellement
+     * @param direction Direction vers où le joueur souhaite déplacer le robot
+     * @return true si le coup est possible à effectuer, false si le coup n'est pas possible à effectuer
+     */
 
     public boolean isValidMove(Cell currentCell, Orientation direction) {
         Position nextCellPosition = currentCell.getPosition().nextPosition(direction);
@@ -198,6 +280,11 @@ public class Game {
         return true;
     }
 
+    /**
+     * Méthode servant à déplacer le robot de case en case
+     * @param currentCell Case où le robot se trouve actuellement
+     * @param direction Direction vers laquelle le robot va avancer
+     */
     public void move(Cell currentCell, Orientation direction) {
         Robot robot = currentCell.getCurrentRobot();
 
@@ -211,11 +298,12 @@ public class Game {
         newCell.addRobot(robot);
     }
 
-    public Symbol getCurrentGoal() {
-        return currentGoal;
-    }
 
-    public void setInitialRobotPositionAtIndex(Position initialRobotPosition, int i) {
-        this.initialRobotPositions[i] = initialRobotPosition;
+    /*
+    public void setInitialRobotPositionAtIndex(Position initialRobotPosition, Color robotColor) {
+        //this.initialRobotPositions[i] = initialRobotPosition;
+        //this.initialRobotPositions = new HashMap<>();
+        this.initialRobotPositions.put(String.valueOf(robotColor), initialRobotPosition);
     }
+     */
 }
