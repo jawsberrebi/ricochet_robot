@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import com.example.ricochet_robot.backend.Cell;
@@ -25,8 +26,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
@@ -36,69 +35,69 @@ import java.util.stream.Stream;
 
 public class GameController implements Initializable {
 
-    private static final Game game = new Game();                                                                        //Variable statique de jeu
-    private final Pane[][] board = new Pane[16][16];                                                                    //Grille du plateau pour accéder aux éléments
-    private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";                               //Chemin d'accès aux ressources
-    public Robot selectedRobot;                                                                                         //Robot sélectionné par le joueur
+    private static final Game game = new Game();
+    private final Pane[][] board = new Pane[16][16];
+    private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";
+    public Robot selectedRobot;
 
     private Label timerLabel = new Label(), splitTimerLabel = new Label();
     private DoubleProperty timeSeconds = new SimpleDoubleProperty(), splitTimeSeconds = new SimpleDoubleProperty();
     private Duration time = Duration.ZERO, splitTime = Duration.ZERO;
-    private Timeline timeline = new Timeline();                                                                         //Timer
+    private Timeline timeline = new Timeline();
 
     @FXML
-    private GridPane boardPane;                                                                                         //Grille du plateau
+    private GridPane boardPane;
     @FXML
-    private Label indication;                                                                                           //Indication textuelle au joueur
+    private Label indication;
     @FXML
-    private ImageView currentImageGoal;                                                                                 //Image du jeton objectif actuel à atteindre
+    private ImageView currentImageGoal;
     @FXML
-    private Button gameBtn;                                                                                             //Bouton principal de jeu
+    private Button gameBtn;
     @FXML
-    private Label timerText;                                                                                            //Texte d'affichage du timer
+    private Label timerText;
     @FXML
-    private Label scorePlayerOne;                                                                                       //Score du joueur 1
+    private Label scorePlayerOne;
     @FXML
-    private Label scorePlayerTwo;                                                                                       //Score du joueur 2
+    private Label scorePlayerTwo;
     @FXML
     private ImageView goalCenterImage;
     @FXML
-    private Spinner<Integer> spinnerPlayerOne;                                                                          //Boîte d'entrée du nombre de coups pour le joueur 1
+    private Spinner<Integer> spinnerPlayerOne;
     @FXML
-    private Spinner<Integer> spinnerPlayerTwo;                                                                          //Boîte d'entrée du nombre de coups pour le joueur 2
+    private Spinner<Integer> spinnerPlayerTwo;
     @FXML
-    private Label hitsNumberChoicePlayerOne;                                                                            //Texte affichant le nombre de coups choisi par le joueur 1
+    private Label hitsNumberChoicePlayerOne;
     @FXML
-    private Label hitsNumberChoicePlayerTwo;                                                                            //Texte affichant le nombre de coups choisi par le joueur 2
+    private Label hitsNumberChoicePlayerTwo;
     @FXML
-    private RadioButton radioPlayerOne;                                                                                 //Bouton radio de sélection du joueur 1 s'il a eu le nombre de coups en premier
+    private RadioButton radioPlayerOne;
     @FXML
-    private RadioButton radioPlayerTwo;                                                                                 //Bouton radio de sélection du joueur 2 s'il a eu le nombre de coups en premier
+    private RadioButton radioPlayerTwo;
     @FXML
-    private ToggleGroup radioGroup = new ToggleGroup();                                                                 //Groupe de boutons radio
+    private ToggleGroup radioGroup = new ToggleGroup();
     @FXML
-    private Label dotPlayerOne;                                                                                         //Point signalant que le joueur 1 a trouvé en premier le nombre de coups
+    private Label dotPlayerOne;
     @FXML
-    private Label dotPlayerTwo;                                                                                         //Point signalant que le joueur 2 a trouvé en premier le nombre de coups
+    private Label dotPlayerTwo;
     @FXML
-    private Text indicationNumberOfHits;                                                                                //Indication du nombre de coups effectués
+    private Text indicationNumberOfHits;
     @FXML
-    private Text stateRound;                                                                                            //Indication textuelle sur l'état de la partie
+    private Text stateRound;
     @FXML
-    private Label namePlayerOne;                                                                                        //Nom du joueur 1
+    private Label namePlayerOne;
     @FXML
-    private Label namePlayerTwo;                                                                                        //Nom du joueur 2
+    private Label namePlayerTwo;
     @FXML
-    private Label roundsWonPlayerOne;                                                                                   //Affichage du nombre de manches gagnées joueur 1
+    private Label roundsWonPlayerOne;
     @FXML
-    private Label roundsWonPlayerTwo;                                                                                   //Affichage du nombre de manches gagnées joueur 2
+    private Label roundsWonPlayerTwo;
     @FXML
-    private Label titlePlayerOne;                                                                                       //Titre principal du joueur 1
+    private Label titlePlayerOne;
     @FXML
-    private Label titlePlayerTwo;                                                                                       //Titre principal du joueur 2
-    private int launchTimer = 30;                                                                                       //Temps de départ du compte à rebours du sablier
-    private boolean isTheTimerStopped;                                                                                  //Indication sur l'état du timer (stoppé ou non)
-    private boolean itIsWin;                                                                                            //Indication si le jeton objectif correspondant a été atteint
+    private Label titlePlayerTwo;
+    private int launchTimer = 30;
+    private boolean isTheTimerStopped;
+    private boolean itIsWin;
     private Map<Robot, Integer> currentColum = new HashMap<>();
     private Map<Robot, Integer> currentRow = new HashMap<>();
     @Override
@@ -142,7 +141,7 @@ public class GameController implements Initializable {
         switch (game.Status) {
             case LAUNCH_TIMER -> {
                 getPositionRobots();
-                timeline.stop();                                                                                        //Réinitialisation du timer
+                timeline.stop();
                 game.reinitializePlayers();                                                                             //Remet à 0 le nombre de coups fait précédéments, le nombre de coups choisis etc.
                 //reinitializeRobot();
                 this.stateRound.setText("Entrez le plus petit nombre de coups");
@@ -156,23 +155,22 @@ public class GameController implements Initializable {
                 this.scorePlayerTwo.setVisible(false);
                 this.gameBtn.setText("Confirmer le nombre de coups");
                 game.Status = Game.Status.PREPARE_ROUND;
-                launchSpinners();                                                                                       //Affichage et lancement des spinners pour le nombre de coups
-                getFirstFinderPlayer();                                                                                 //Lancement des radio boxes pour déterminer le premier joueur qui jouera
-                timer();                                                                                                //Lancement du timer
+                launchSpinners();
+                getFirstFinderPlayer();
+                timer();
                 movePlayer();
-                displayGoal();                                                                                          //Affichage de l'image du jeton objectif à atteindre
+                displayGoal();
             }
             case PREPARE_ROUND -> {
                 this.scorePlayerOne.setText("");
                 this.scorePlayerTwo.setText("");
-
                 launchTimer = 0;
                 this.spinnerPlayerOne.setVisible(false);
                 this.spinnerPlayerTwo.setVisible(false);
                 this.radioPlayerOne.setVisible(false);
                 this.radioPlayerTwo.setVisible(false);
                 this.indicationNumberOfHits.setVisible(false);
-                if (game.getPlayerOne().getIsIHaveTheNumberOfHitsFirst()){                                              //Affichage du point pour montrer qui jouera en premier
+                if (game.getPlayerOne().getIsIHaveTheNumberOfHitsFirst()){
                     this.dotPlayerOne.setVisible(true);
                     this.dotPlayerTwo.setVisible(false);
                 } else if (game.getPlayerTwo().getIsIHaveTheNumberOfHitsFirst()) {
@@ -182,21 +180,23 @@ public class GameController implements Initializable {
                 this.gameBtn.setVisible(false);
                 this.hitsNumberChoicePlayerOne.setVisible(true);
                 this.hitsNumberChoicePlayerTwo.setVisible(true);
-                game.setFirstTurn();                                                                                    //Détermine le premier joueur qui jouera
+                game.setFirstTurn();
                 handleGameBtn();
             }
             case PLAYER_ONE_TURN -> {
                 this.scorePlayerOne.setVisible(true);
                 this.scorePlayerTwo.setVisible(true);
                 this.stateRound.setVisible(true);
+                System.out.println("On est dans Joueur 1");
                 this.stateRound.setText("Tour du joueur 1");
-                movePlayer();                                                                                           //Possibilité de déplacer les robots par le joueur
+                movePlayer();
             }case PLAYER_TWO_TURN -> {
                 this.scorePlayerOne.setVisible(true);
                 this.scorePlayerTwo.setVisible(true);
                 this.stateRound.setVisible(true);
+                System.out.println("On est dans Joueur 2");
                 this.stateRound.setText("Tour du joueur 2");
-                movePlayer();                                                                                           //Possibilité de déplacer les robots par le joueur
+                movePlayer();
             }case END_ROUND -> {
                 this.stateRound.setVisible(true);
                 System.out.println("finii");
@@ -394,7 +394,7 @@ public class GameController implements Initializable {
                 System.out.println(newPosition.getRow() + "," + newPosition.getColumn());
 
                 game.move(currentCell, direction);
-                updateRobotDisplay(oldPosition, newPosition);
+                updateRobotDisplay(oldPosition, newPosition, selectedRobot);
                 currentCell = game.getBoard().getCell(newPosition);
                 selectedRobot.setCurrentCell(currentCell);
             }
@@ -414,7 +414,7 @@ public class GameController implements Initializable {
                 if(game.getBoard().getCells()[i][j].getIsThereARobot()){
                     Robot robot = game.getBoard().getCells()[i][j].getCurrentRobot();
                     int column = game.getBoard().getCells()[i][j].getPosition().getColumn();
-                    int row = game.getBoard().getCells()[i][j].getPosition().getRow();
+                    int row = game.getBoard().getCells()[i][j].getPosition().getColumn();
                     this.currentColum.put(robot, column);
                     this.currentRow.put(robot, row);
                 }
@@ -423,26 +423,26 @@ public class GameController implements Initializable {
     }
 
     private void removeRobotFromCell(Position position) {
-        int numberOfChildren = board[position.getRow()  - 1][position.getColumn() - 1].getChildren().size();
-        board[position.getRow() - 1][position.getColumn() - 1].getChildren().remove(numberOfChildren - 1);
+        int numberOfChildren = board[position.getRow() - 1][position.getColumn() - 1].getChildren().size() - 1;
+        board[position.getRow() - 1][position.getColumn() - 1].getChildren().remove(numberOfChildren);
     }
 
-    private void addRobotToCell(Position position) {
-        Robot robot = selectedRobot;
-        String filename = getRobotImageFilename(selectedRobot.getColor());
+    private void addRobotToCell(Position position, Robot robot) {
+
+        String filename = getRobotImageFilename(robot.getColor());
 
         // Get stackPane
         Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
         ImageView robotImageView = new ImageView(robotImage);
-
         board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
     }
 
-    private void updateRobotDisplay(Position oldPosition, Position newPosition) {
+    private void updateRobotDisplay(Position oldPosition, Position newPosition, Robot robot) {
         removeRobotFromCell(oldPosition);
-        addRobotToCell(newPosition);
+        addRobotToCell(newPosition, robot);
     }
 
+    //Affichage de l'image du jeton objectif à atteindre
     private void displayGoal(){
         String symbolImageFilename = null;
         if (Color.BLUE.equals(game.getCurrentGoal().getColor())){
@@ -635,6 +635,7 @@ public class GameController implements Initializable {
     public boolean itIsFinished(){
         if((Game.Status != Game.Status.PLAYER_ONE_TURN &&  Game.Status != Game.Status.PLAYER_TWO_TURN) || itIsWin || (game.getPlayerOne().getHitsNumber() + game.getPlayerTwo().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice() + game.getPlayerTwo().getHitsNumberChoice())){
             System.out.println("oui");
+            reinitializeRobot();
             Game.Status = Game.Status.END_ROUND;
             handleGameBtn();
             return true;
@@ -643,25 +644,18 @@ public class GameController implements Initializable {
         }
     }
 
+    //Méthode pour réinitialiser la position des robots à chaque nouveau tour
     public void reinitializeRobot(){
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 if(game.getBoard().getCells()[i + 1][j + 1].getIsThereARobot()){
                     Position oldPosition = game.getBoard().getCells()[i + 1][j + 1].getPosition();
-                    //removeRobotFromCell(position);
                     Robot robot = game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot();
-                    Position newPosition = game.getInitialRobotPositions().get(robot.getColor());
-                    //System.out.println(newPosition.getRow());
-                    //newPosition = new Position(1,1);
-                    updateRobotDisplay(oldPosition, newPosition);
-
-                    //String filename = getRobotImageFilename(game.getBoard().getCells()[i + 1][j + 1].getCurrentRobot().getColor());
-
-                    // Get stackPane
-                    //Image robotImage = new Image(new File("src/main/resources/com/example/ricochet_robot/robots/" + filename).toURI().toString() , 44, 44, false, false);
-                    //ImageView robotImageView = new ImageView(robotImage);
-
-                    //board[position.getRow() - 1][position.getColumn() - 1].getChildren().add(robotImageView);
+                    robot.setCurrentCell(game.getBoard().getCells()[i + 1][j + 1]);
+                    Position newPosition = robot.getOldPosition();
+                    game.getBoard().getCell(oldPosition).removeRobot();
+                    game.getBoard().getCell(newPosition).addRobot(robot);
+                    updateRobotDisplay(oldPosition, newPosition, robot);
                 }
             }
         }

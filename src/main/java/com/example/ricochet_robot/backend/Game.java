@@ -1,11 +1,8 @@
 package com.example.ricochet_robot.backend;
 
-import com.example.ricochet_robot.GameController;
 import javafx.scene.paint.Color;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Game {
