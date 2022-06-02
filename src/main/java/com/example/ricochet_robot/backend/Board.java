@@ -206,10 +206,12 @@ public class Board {
         Collections.shuffle(randomIndexes);
 
         // Randomly rotate each board 90 degrees each time
+        /*
         for (Integer index : randomIndexes) {
             int numberOfRotations = (int) (Math.random() * 4);
             rotateMiniBoardAtIndexRight(index, numberOfRotations);
         }
+        */
 
         // Initialize cells in board board
         this.cells = new Cell[17][17];
