@@ -93,7 +93,7 @@ public class Board {
     /**
      * Initialiser la liste des petits plateaux
      */
-    private void initMiniBoards() {
+    public void initMiniBoards() {
         this.miniBoards = new Cell[4][8][8];
 
         for (int b = 0; b < 4; b++) {
@@ -164,7 +164,7 @@ public class Board {
      * @param index Indexe du petit plateau dans miniBoards
      * @param numberOfRotations Nombre de rotations de 90 degrés vers la droite du petit plateau
      */
-    private void rotateMiniBoardRight(int index, int numberOfRotations) {
+    public void rotateMiniBoardAtIndexRight(int index, int numberOfRotations) {
         Cell[][] miniBoard = miniBoards[index];
 
         for (int n = 0; n < numberOfRotations; n++) {
@@ -202,7 +202,7 @@ public class Board {
         // Randomly rotate each board 90 degrees each time
         for (Integer index : randomIndexes) {
             int numberOfRotations = (int) (Math.random() * 4);
-            rotateMiniBoardRight(index, numberOfRotations);
+            rotateMiniBoardAtIndexRight(index, numberOfRotations);
         }
 
         // Initialize cells in board board
@@ -317,6 +317,14 @@ public class Board {
      */
     public List<Symbol> getGoals() {
         return goals;
+    }
+
+    /**
+     * Getter retournant la liste des petits plateaux
+     * @return Liste de matrice des petits plateaux
+     */
+    public Cell[][][] getMiniBoards() {
+        return miniBoards;
     }
 
     /**
