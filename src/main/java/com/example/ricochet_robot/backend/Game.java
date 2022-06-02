@@ -46,7 +46,6 @@ public class Game {
         this.board.setGoalList();                                                                                       //Définition de l'ordre d'apparition des jetons objectif à atteindre
         this.goalCursor = 0;                                                                                            //Initialisation du curseur qui parcours la liste d'objectifs au fil de la partie
         this.currentGoal = this.board.getGoals().get(this.goalCursor);                                                  //Définition du jeton objectif à atteindre
-        this.board.setSymbolInGoalBox(this.currentGoal);                                                                //Ajout du jeton objectif au centre de la boîte
     }
 
     //Getters/Setters

@@ -292,13 +292,4 @@ public class Board {
         this.goals = this.symbols;
         Collections.shuffle(this.goals);
     }
-
-    //À revoir
-    public void setSymbolInGoalBox(Symbol symbol){
-        this.cells[8][8].addSymbol(symbol);
-        this.cells[9][8].addSymbol(symbol);
-        this.cells[8][9].addSymbol(symbol);
-        this.cells[9][9].addSymbol(symbol);
-    }
-
 }
