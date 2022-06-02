@@ -9,7 +9,6 @@ public class Position {
         this.column = c;
     }
 
-
     //Getters/Setters
     public int getRow() {
         return row;
@@ -25,6 +24,12 @@ public class Position {
     }
 
     //Méthodes
+    /**
+     * Déplacement de la position actuelle vers une position suivante (de 1 en 1)
+     * Par exemple, si on a une position de (1, 1), si on se dirige vers le sud, notre nouvelle position sera de (2, 1)
+     * @param direction Direction vers laquelle on souhaite s'engager (nord, sud, est ou ouest)
+     * @return Retourne la nouvelle case sur laquelle on se trouvera après le mouvement
+     */
     public Position nextPosition(Orientation direction) {
         Position nextCellPosition = new Position(this.row, this.column);
 

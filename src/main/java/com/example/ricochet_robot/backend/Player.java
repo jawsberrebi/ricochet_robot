@@ -20,6 +20,9 @@ public class Player {
     }
 
     //Méthodes
+    /**
+     * Incrémentation du nombre de manches gagnées
+     */
     public void addAnotherWonRound(){
         this.wonRounds++;
     }
@@ -29,63 +32,48 @@ public class Player {
     public boolean getIsMyTurn() {
         return isMyTurn;
     }
-
     public void setIsMyTurn(boolean myTurn) {
         isMyTurn = myTurn;
     }
-
     public int getHitsNumber() {
         return hitsNumber;
     }
-
     public void setHitsNumber(int hitsNumber) {
         this.hitsNumber = hitsNumber;
     }
-
     public int getHitsNumberChoice() {
         return hitsNumberChoice;
     }
-
     public void setHitsNumberChoice(int hitsNumberChoice) {
         this.hitsNumberChoice = hitsNumberChoice;
     }
-
     public boolean getIsIHaveTheNumberOfHitsFirst() {
         return iHaveTheNumberOfHitsFirst;
     }
-
     public void setiHaveTheNumberOfHitsFirst(boolean iHaveTheNumberOfHitsFirst) {
         this.iHaveTheNumberOfHitsFirst = iHaveTheNumberOfHitsFirst;
     }
-
     public int getWonRounds() {
         return wonRounds;
     }
-
     public void setWonRounds(int wonRounds) {
         this.wonRounds = wonRounds;
     }
-
     public boolean isHaveAlreadyPlayed() {
         return haveAlreadyPlayed;
     }
-
     public void setHaveAlreadyPlayed(boolean haveAlreadyPlayed) {
         this.haveAlreadyPlayed = haveAlreadyPlayed;
     }
-
     public boolean isRoundWon() {
         return roundWon;
     }
-
     public void setRoundWon(boolean roundWon) {
         this.roundWon = roundWon;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }

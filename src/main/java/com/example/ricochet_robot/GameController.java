@@ -125,16 +125,6 @@ public class GameController implements Initializable {
         game.Status = Game.Status.LAUNCH_TIMER;
     }
 
-    public Label getScorePlayerOne() {
-        return scorePlayerOne;
-    }
-
-    public Label getScorePlayerTwo() {
-        return scorePlayerTwo;
-    }
-
-    public boolean getItIsWin(){return itIsWin;}
-
     /**
      * Méthode gérant l'activation du bouton principal (et par la même occasion met à jour l'état du jeu)
      */
@@ -428,13 +418,13 @@ public class GameController implements Initializable {
 
             // Update selected robot
             selectedRobot = currentCell.getCurrentRobot();
-            getPositionRobots();
+            //getPositionRobots();
 
         }
     }
 
     /**
-     * ???
+     * À supprimer
      */
 
     private void getPositionRobots() {
