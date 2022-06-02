@@ -253,7 +253,7 @@ public class Board {
      * Ajouter des symboles à une liste de symboles à des position prédeéfinies
      */
     public void setSymbols() {
-        // Add symbos to board
+        // Add symbols to board
         this.symbols.add(new Symbol(Color.GREEN, Shape.GEAR, new Position(2, 4)));
         this.symbols.add(new Symbol(Color.RED, Shape.GEAR, new Position(2, 13)));
         this.symbols.add(new Symbol(Color.YELLOW, Shape.STAR, new Position(4, 7)));
