@@ -190,6 +190,7 @@ public class GameController implements Initializable {
                 System.out.println("On est dans Joueur 1");
                 this.stateRound.setText("Tour du joueur 1");
                 movePlayer();
+                itIsFinished();
             }case PLAYER_TWO_TURN -> {
                 this.scorePlayerOne.setVisible(true);
                 this.scorePlayerTwo.setVisible(true);
@@ -197,8 +198,18 @@ public class GameController implements Initializable {
                 System.out.println("On est dans Joueur 2");
                 this.stateRound.setText("Tour du joueur 2");
                 movePlayer();
-            }case END_ROUND -> {
+                itIsFinished();
+
+            }/*case BETWEEN_TWO_ROUNDS -> {
+                System.out.println();
+                selectedRobot = null;
+                reinitializeRobot();
+                game.setNextTurn();
+                handleGameBtn();
+            }*/
+            case END_ROUND -> {
                 this.stateRound.setVisible(true);
+                reinitializeRobot();
                 selectedRobot = null;
                 System.out.println("finii");
                 this.gameBtn.setText("Nouvelle manche");
@@ -610,11 +621,13 @@ public class GameController implements Initializable {
 
         if (game.getPlayerOne().getIsMyTurn() && (game.getPlayerOne().getHitsNumber() >= game.getPlayerOne().getHitsNumberChoice())){
             game.setNextTurn();
-            reinitializeRobot();
+            //reinitializeRobot();
+            //game.setBetweenTwoRounds();
             handleGameBtn();
         } else if (game.getPlayerTwo().getIsMyTurn() && (game.getPlayerTwo().getHitsNumber() >= game.getPlayerTwo().getHitsNumberChoice())) {
+            //game.setBetweenTwoRounds();
             game.setNextTurn();
-            reinitializeRobot();
+            //reinitializeRobot();
             handleGameBtn();
         }
 
@@ -636,7 +649,7 @@ public class GameController implements Initializable {
     public boolean itIsFinished(){
         if((Game.Status != Game.Status.PLAYER_ONE_TURN &&  Game.Status != Game.Status.PLAYER_TWO_TURN) || itIsWin || (game.getPlayerOne().getHitsNumber() + game.getPlayerTwo().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice() + game.getPlayerTwo().getHitsNumberChoice())){
             System.out.println("oui");
-            reinitializeRobot();
+            itIsWin = false;
             Game.Status = Game.Status.END_ROUND;
             handleGameBtn();
             return true;
@@ -659,6 +672,24 @@ public class GameController implements Initializable {
                     updateRobotDisplay(oldPosition, newPosition, robot);
                 }
             }
+        }
+    }
+
+    public boolean launchResetRobot(){
+        if(game.getPlayerOne().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice()){
+            itIsWin = game.itIsWin(selectedRobot);
+            reinitializeRobot();
+            game.setNextTurn();
+            game.getPlayerOne().setHitsNumber(0);
+            return true;
+        }else if (game.getPlayerTwo().getHitsNumber() == game.getPlayerTwo().getHitsNumberChoice()){
+            itIsWin = game.itIsWin(selectedRobot);
+            reinitializeRobot();
+            game.setNextTurn();
+            game.getPlayerTwo().setHitsNumber(0);
+            return true;
+        }else {
+            return false;
         }
     }
 }

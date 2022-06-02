@@ -75,6 +75,7 @@ public class Game {
         PREPARE_ROUND,                                                                                                  //Statut intermédiaire pour préparer une manche (entre LAUNCH_TIMER et PLAYER_ONE_TURN/PLAYER_TWO_TURN)
         PLAYER_ONE_TURN,                                                                                                //Tour du joueur 1
         PLAYER_TWO_TURN,                                                                                                //Tour du joueur 2
+        //BETWEEN_TWO_ROUNDS,
         END_ROUND,                                                                                                      //Fin d'une manche
         GAME_OVER;                                                                                                      //Fin du jeu
     }
@@ -110,6 +111,7 @@ public class Game {
             if (!this.playerTwo.isHaveAlreadyPlayed()){
                 System.out.println("Déjà joué");
                 Game.Status = Status.PLAYER_TWO_TURN;
+                System.out.println("cccc");
                 //replaceRobots();
             }else {
                 Game.Status = Status.END_ROUND;
@@ -231,4 +233,8 @@ public class Game {
         this.initialRobotPositions.put(String.valueOf(robotColor), initialRobotPosition);
         System.out.println(String.valueOf(robotColor));
     }
+
+    //public void setBetweenTwoRounds(){
+        //Game.Status = Status.BETWEEN_TWO_ROUNDS;
+    //}
 }

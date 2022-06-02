@@ -33,6 +33,8 @@ public class Application extends javafx.application.Application {
                 System.out.println("Pressed");
                 if (gameController.itIsFinished()) {
                     return;
+                } else if (gameController.launchResetRobot()) {
+                    return;
                 }
                 Robot selectedRobot = gameController.selectedRobot;
                 if (selectedRobot != null) {
