@@ -16,11 +16,6 @@ public class Board {
     private Cell[][][] miniBoards;          // Un plateau est constitué de 4 petits plateaux ayant une taille de 8x8
     private final List<Symbol> symbols = new ArrayList<>();
     private List<Symbol> goals = new ArrayList<>();
-    private Cell[][] goalBox;
-    private Robot currentRobot;
-    private Robot goalRobot;
-    private Symbol currentGoal;
-    private int goalsNumber;
 
     /**
      * Constructeur du plateau
