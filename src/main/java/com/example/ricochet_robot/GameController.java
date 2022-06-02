@@ -199,6 +199,7 @@ public class GameController implements Initializable {
                 movePlayer();
             }case END_ROUND -> {
                 this.stateRound.setVisible(true);
+                selectedRobot = null;
                 System.out.println("finii");
                 this.gameBtn.setText("Nouvelle manche");
                 if(itIsWin && game.getPlayerOne().isRoundWon()){
