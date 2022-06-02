@@ -16,7 +16,7 @@ public class TestBoard {
         board.getMiniBoards()[0][1][1].addWalls(Orientation.EAST);
         board.rotateMiniBoardAtIndexRight(0, 4);
 
-        assertEquals(board.getMiniBoards()[0][1][1].getWalls().get(0).getOrientation(), Orientation.EAST);              // À améilorer
+        assertEquals(board.getMiniBoards()[0][1][1].getWalls().get(0).getOrientation(), Orientation.EAST);
     }
 
     @Test
