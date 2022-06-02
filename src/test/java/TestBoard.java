@@ -7,6 +7,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestBoard {
 
     @Test
+    // Test de la rotation d'un petit plateau
+    public void testMiniBoardRotation() {
+        Board board = new Board();
+        board.initMiniBoards();
+
+        // Add walls to test
+        board.getMiniBoards()[0][1][1].addWalls(Orientation.EAST);
+        board.rotateMiniBoardAtIndexRight(0, 4);
+
+        assertEquals(board.getMiniBoards()[0][1][1].getWalls().get(0).getOrientation(), Orientation.EAST);              // À améilorer
+    }
+
+    @Test
     // Test de chercher une cellule avec les coordonnées
     public void testGetCell() {
         Board board = new Board();

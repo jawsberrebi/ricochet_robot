@@ -157,6 +157,7 @@ public class Board {
         this.miniBoards[3][6][2].addWalls(Orientation.NORTH);
         this.miniBoards[3][6][2].addWalls(Orientation.WEST);
         this.miniBoards[3][6][2].addWalls(Orientation.EAST);
+        this.miniBoards[3][7][3].addWalls(Orientation.EAST);
     }
 
     /**
@@ -186,6 +187,9 @@ public class Board {
                 }
             }
         }
+
+        // Update miniboard
+        miniBoards[index] = miniBoard;
     }
 
     /**
