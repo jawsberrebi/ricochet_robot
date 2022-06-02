@@ -205,13 +205,7 @@ public class GameController implements Initializable {
                 movePlayer();
                 itIsFinished();
 
-            }/*case BETWEEN_TWO_ROUNDS -> {
-                System.out.println();
-                selectedRobot = null;
-                reinitializeRobot();
-                game.setNextTurn();
-                handleGameBtn();
-            }*/
+            }
             case END_ROUND -> {
                 this.stateRound.setVisible(true);
                 reinitializeRobot();
@@ -347,29 +341,6 @@ public class GameController implements Initializable {
                 }
 
                 if((i != 7 && i != 8) || (j != 7 && j != 8)){
-                    // Rendre stackPane cliquable
-                    /*
-                    stackPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-                        @Override
-                        public void handle(MouseEvent event) {
-                            String id = ((StackPane) event.getSource()).getId();
-                            System.out.println("Tile id : " + id);
-
-                            // Get robot from cell
-                            int[] coordinates = Stream.of(id.split(",")).mapToInt(Integer::parseInt).toArray();
-                            Cell currentCell = game.getBoard().getCells()[coordinates[0]][coordinates[1]];
-
-                            if (currentCell.getIsThereARobot()) {
-                                selectedRobot = currentCell.getCurrentRobot();
-                                selectedRobot.setCurrentCell(currentCell);
-                                move(Orientation.NORTH);
-                            }
-
-                            event.consume();
-                        }
-                    });
-                     */
 
                 }else{
 
@@ -377,7 +348,6 @@ public class GameController implements Initializable {
                     Image goalBox = new Image(new File("src/main/resources/com/example/ricochet_robot/boards/GoalBox.png").toURI().toString() , 44, 44, false, false);
                     ImageView goalBoxView = new ImageView(goalBox);
                     stackPane.getChildren().add(goalBoxView);
-                    //Coder affichage du jeton objectif dans la boîte centrale
                 }
                 // Ajouter stackPane au board
                 this.board[i][j] = stackPane;
@@ -431,13 +401,12 @@ public class GameController implements Initializable {
 
             // Update selected robot
             selectedRobot = currentCell.getCurrentRobot();
-            //getPositionRobots();
 
         }
     }
 
     /**
-     * À supprimer
+     *
      */
 
     private void getPositionRobots() {
