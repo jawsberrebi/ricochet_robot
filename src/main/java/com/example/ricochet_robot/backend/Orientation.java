@@ -5,8 +5,20 @@ package com.example.ricochet_robot.backend;
  */
 
 public enum Orientation {
+    /**
+     * Nord du plateau
+     */
     NORTH,
+    /**
+     * Sud du plateau
+     */
     SOUTH,
+    /**
+     * Est du plateau
+     */
     EAST,
+    /**
+     * Ouest du plateau
+     */
     WEST
 }

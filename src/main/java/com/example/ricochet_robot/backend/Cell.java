@@ -15,14 +15,21 @@ public class Cell {
     private boolean isThereASymbol;
     private Symbol symbol;
 
-    //Construction d'une case simple
+    /**
+     * Construction d'une case simple, en renseignant sa position
+     * @param p Position de la case à définir
+     */
     public Cell(Position p){
         this.position = p;
         this.isThereWall = false;
         this.isThereASymbol = false;
     }
 
-    //Construction d'une case avec mur
+    /**
+     * Construction d'une case avec mur
+     * @param p Position de la case à définir
+     * @param w Liste de murs figurant sur la case à définir
+     */
     Cell(Position p, List<Wall> w){
         this.position = p;
         this.walls = w;
@@ -30,30 +37,75 @@ public class Cell {
     }
 
     //Getters/Setters
+
+    /**
+     * Getter retournant la position de la case
+     * @return Position de la case
+     */
     public Position getPosition() {
         return position;
     }
+
+    /**
+     * Setter définissant la position de la case
+     * @param position Position de la case
+     */
     public void setPosition(Position position) {
         this.position = position;
     }
+
+    /**
+     * Getter retournant la liste des murs posés sur la case
+     * @return Liste des murs posés sur la case
+     */
     public List<Wall> getWalls() {
         return this.walls;
     }
+
+    /**
+     * Setter définissant la liste des murs posés sur la case
+     * @param walls Liste des murs posés sur la case
+     */
     public void setWalls(List<Wall> walls) {
         this.walls = walls;
     }
+
+    /**
+     * Getter retournant s'il y a un mur sur la case
+     * @return true s'il y a un mur sur la case, false dans le cas inverse
+     */
     public boolean getIsThereWall() {
         return walls.size() > 0;
     }
+
+    /**
+     * Getter retournant s'il y a un robot sur la case
+     * @return true s'il y a un robot sur la case, false dans le cas inverse
+     */
     public boolean getIsThereARobot() {
         return isThereARobot;
     }
+
+    /**
+     * Getter retournant s'il y a un jeton objectif sur la case
+     * @return true s'il y a un jeton objectif sur la case, false dans le cas inverse
+     */
     public boolean getIsThereASymbol() {
         return isThereASymbol;
     }
+
+    /**
+     * Getter retournant le jeton objectif sur la case
+     * @return le jeton objectif sur la case
+     */
     public Symbol getSymbol() {
         return symbol;
     }
+
+    /**
+     * Getter retournant le robot sur la case
+     * @return Le robot sur la case
+     */
     public Robot getCurrentRobot() {
         return currentRobot;
     }

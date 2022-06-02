@@ -40,6 +40,10 @@ public class GameController implements Initializable {
     private static final Game game = new Game();
     private final Pane[][] board = new Pane[16][16];
     private final String filePathRoot = "src/main/resources/com/example/ricochet_robot/";
+
+    /**
+     * Robot sélectionné par le joueur
+     */
     public Robot selectedRobot;
 
     private Label timerLabel = new Label(), splitTimerLabel = new Label();
@@ -692,6 +696,7 @@ public class GameController implements Initializable {
 
     /**
      * Méthode définissant si la manche est finie ou pas
+     * @return true si la manche est finie, false dans le cas inverse
      */
     public boolean itIsFinished(){
         if((Game.Status != Game.Status.PLAYER_ONE_TURN &&  Game.Status != Game.Status.PLAYER_TWO_TURN) || itIsWin || (game.getPlayerOne().getHitsNumber() + game.getPlayerTwo().getHitsNumber() == game.getPlayerOne().getHitsNumberChoice() + game.getPlayerTwo().getHitsNumberChoice())){
@@ -726,6 +731,7 @@ public class GameController implements Initializable {
 
     /**
      * Vérifie les conditions nécessaires pour lancer la réinitialisation des robots
+     * @return true s'il faut réinitialiser la position des robots (quand l'un des joueurs a atteint le nombre de coups qu'il a fixé), false dans les autres cas
      */
 
     public boolean launchResetRobot(){

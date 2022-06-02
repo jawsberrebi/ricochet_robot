@@ -10,16 +10,19 @@ import java.util.Map;
  */
 public class Game {
 
+    /**
+     * Contexte du jeu
+     */
     public static Game context;
     private Board board;
     private Symbol currentGoal;                                                                                         //Jeton objectif à atteindre
     private int goalCursor;                                                                                             //Variable à incrémenter pour sélectionner l'objectif actuel
-    public static Status Status;                                                                                        //État du jeu
+    /**
+     * État du jeu
+     */
+    public static Status Status;
     private Player playerOne = new Player("J1");
     private Player playerTwo = new Player("J2");
-
-    //private Position[] initialRobotPositions = new Position[4];
-    private Map<String, Position> initialRobotPositions = new HashMap<>();
 
     /**
      * Création du jeu et du board
@@ -47,33 +50,58 @@ public class Game {
     }
 
     //Getters/Setters
+    /**
+     * Getter du joueur 1
+     * @return  Joueur 1
+     */
     public Player getPlayerOne() {
         return playerOne;
     }
-    public Map<String, Position> getInitialRobotPositions() {
-        return initialRobotPositions;
-        //System.out.println(initialRobotPositions.);
-    }
+
+    /**
+     * Getter du jeton objectif actuel à atteindre
+     * @return Jeton objectif actuel à atteindre
+     */
     public Symbol getCurrentGoal() {
         return currentGoal;
     }
 
+    /**
+     * Getter du joueur 2
+     * @return Joueur 2
+     */
     public Player getPlayerTwo() {
         return playerTwo;
     }
 
+    /**
+     * Setter du joueur 1
+     * @param playerOne Joueur 1 à définir
+     */
     public void setPlayerOne(Player playerOne) {
         this.playerOne = playerOne;
     }
 
+    /**
+     * Setter du joueur 2
+     * @param playerTwo Joueur 2 à définir
+     */
     public void setPlayerTwo(Player playerTwo) {
         this.playerTwo = playerTwo;
     }
 
+    /**
+     * Setter du jeton objectif actuel à atteindre
+     * @param goalCursor jeton objectif actuel à atteindre
+     */
     public void setGoalCursor(int goalCursor) {
         this.goalCursor = goalCursor;
     }
 
+    /**
+     * Getter du plateau de jeu
+     * @return Plateau de jeu
+     */
     public Board getBoard() {
         return this.board;
     }
@@ -82,12 +110,32 @@ public class Game {
      * État du jeu (déroulement du jeu)
      */
     public enum Status{
-        LAUNCH_TIMER,                                                                                                   //Statut activé quand le timer est lancé et que les joueurs doivent entrer le nombre de coups pour atteindre l'objectif
-        PREPARE_ROUND,                                                                                                  //Statut intermédiaire pour préparer une manche (entre LAUNCH_TIMER et PLAYER_ONE_TURN/PLAYER_TWO_TURN)
-        PLAYER_ONE_TURN,                                                                                                //Tour du joueur 1
-        PLAYER_TWO_TURN,                                                                                                //Tour du joueur 2
-        END_ROUND,                                                                                                      //Fin d'une manche
-        GAME_OVER;                                                                                                      //Fin du jeu
+        /**
+         * Statut activé quand le timer est lancé et que les joueurs doivent entrer le nombre de coups pour atteindre l'objectif
+         */
+        LAUNCH_TIMER,
+        /**
+         * Statut intermédiaire pour préparer une manche (entre LAUNCH_TIMER et PLAYER_ONE_TURN/PLAYER_TWO_TURN)
+         */
+        PREPARE_ROUND,
+        /**
+         * Tour du joueur 1
+         */
+        PLAYER_ONE_TURN,
+        /**
+         * Tour du joueur 2
+         */
+        PLAYER_TWO_TURN,
+
+        /**
+         * Fin d'une manche
+         */
+        END_ROUND,
+
+        /**
+         * Fin du jeu
+         */
+        GAME_OVER;
     }
 
     /**
@@ -250,18 +298,12 @@ public class Game {
         newCell.addRobot(robot);
     }
 
-    /**
-     * À supprimer
-     * @param initialRobotPosition
-     * @param robotColor
-     */
+
+    /*
     public void setInitialRobotPositionAtIndex(Position initialRobotPosition, Color robotColor) {
         //this.initialRobotPositions[i] = initialRobotPosition;
         //this.initialRobotPositions = new HashMap<>();
         this.initialRobotPositions.put(String.valueOf(robotColor), initialRobotPosition);
     }
-
-    //public void setBetweenTwoRounds(){
-        //Game.Status = Status.BETWEEN_TWO_ROUNDS;
-    //}
+     */
 }

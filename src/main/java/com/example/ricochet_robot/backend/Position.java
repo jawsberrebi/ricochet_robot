@@ -7,21 +7,46 @@ public class Position {
     private int row;
     private int column;
 
+    /**
+     * Constructeur de la position
+     * @param r Numéro de ligne de la position
+     * @param c Numéro de colonne de la position
+     */
     public Position(int r, int c){
         this.row = r;
         this.column = c;
     }
 
     //Getters/Setters
+
+    /**
+     * Getter retournant le numéro de ligne de la position
+     * @return Numéro de colonne de la position
+     */
     public int getRow() {
         return row;
     }
+
+    /**
+     * Setter définissant le numéro de ligne de la position
+     * @param row Numéro de ligne de la position
+     */
     public void setRow(int row) {
         this.row = row;
     }
+
+    /**
+     * Getter retournant le numéro de colonne de la position
+     * @return Numéro de colonne de la position
+     */
     public int getColumn() {
         return column;
     }
+
+    /**
+     * Setter définissant le numéro de colonne de la position
+     * @param column Numéro de colonne de la position
+     */
     public void setColumn(int column) {
         this.column = column;
     }
