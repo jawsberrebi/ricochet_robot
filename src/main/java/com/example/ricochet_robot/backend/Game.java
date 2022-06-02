@@ -1,10 +1,5 @@
 package com.example.ricochet_robot.backend;
 
-import javafx.scene.paint.Color;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Classe gérant le déroulement du jeu
  */
@@ -296,13 +291,4 @@ public class Game {
         Cell newCell = board.getCell(newPosition);
         newCell.addRobot(robot);
     }
-
-
-    /*
-    public void setInitialRobotPositionAtIndex(Position initialRobotPosition, Color robotColor) {
-        //this.initialRobotPositions[i] = initialRobotPosition;
-        //this.initialRobotPositions = new HashMap<>();
-        this.initialRobotPositions.put(String.valueOf(robotColor), initialRobotPosition);
-    }
-     */
 }
