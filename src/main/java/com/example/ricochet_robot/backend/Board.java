@@ -12,8 +12,8 @@ import javafx.scene.paint.Color;
  */
 public class Board {
 
-    private Cell[][] cells;                 // Le plateau est une matrice 16x16 de cases --- Convention : on partirait de 1 pour le premier coeff de la matrice comme ça pas d'embrouille ?
-    private Cell[][][] miniBoards;          // Un plateau est constitué de 4 petits plateaux ayant une taille de 8x8
+    private Cell[][] cells;
+    private Cell[][][] miniBoards;          
     private final List<Symbol> symbols = new ArrayList<>();
     private List<Symbol> goals = new ArrayList<>();
 
