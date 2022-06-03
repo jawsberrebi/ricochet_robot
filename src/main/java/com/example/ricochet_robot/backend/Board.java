@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 public class Board {
 
     private Cell[][] cells;
-    private Cell[][][] miniBoards;          
+    private Cell[][][] miniBoards;
     private final List<Symbol> symbols = new ArrayList<>();
     private List<Symbol> goals = new ArrayList<>();
 
