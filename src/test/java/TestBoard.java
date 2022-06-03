@@ -13,10 +13,10 @@ public class TestBoard {
         board.initMiniBoards();
 
         // Add walls to test
-        board.getMiniBoards()[0][1][1].addWalls(Orientation.EAST);
-        board.rotateMiniBoardAtIndexRight(0, 4);
+        board.getMiniBoards()[0][1][2].addWalls(Orientation.EAST);
+        board.rotateMiniBoardAtIndexRight(0, 1);
 
-        assertEquals(board.getMiniBoards()[0][1][1].getWalls().get(0).getOrientation(), Orientation.EAST);
+        assertEquals(board.getMiniBoards()[0][1][5].getWalls().get(0).getOrientation(), Orientation.WEST);
     }
 
     @Test
