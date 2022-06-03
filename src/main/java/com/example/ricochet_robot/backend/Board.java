@@ -175,15 +175,22 @@ public class Board {
                     // get rotated  board cell
                     Cell tempCell = miniBoard[i][j];
 
-                    miniBoard[i][j] = miniBoard[8 - 1 - j][i];
-                    miniBoard[8 - 1 - j][i] = miniBoard[8 - 1 - i][8 - 1 - j];
-                    miniBoard[8 - 1 - i][8 - 1 - j] = miniBoard[j][8 - 1 - i];
-                    miniBoard[j][8 - 1 - i] = tempCell;
-
-                    Cell cell = miniBoard[i][j];
+                    miniBoard[i][j] = miniBoard[j][i];
+                    miniBoard[j][i] = tempCell;
 
                     // rotate cell content
-                    cell.rotateWallsRight(1);
+                    miniBoard[j][i].rotateWallsRight(1);
+                }
+            }
+
+            // swap columns
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    Cell tempCell = miniBoard[i][j];
+                    miniBoard[i][j] = miniBoard[i][8 - j - 1];
+                    miniBoard[i][8 - j - 1] = tempCell;
                 }
             }
         }
@@ -206,12 +213,11 @@ public class Board {
         Collections.shuffle(randomIndexes);
 
         // Randomly rotate each board 90 degrees each time
-        /*
+
         for (Integer index : randomIndexes) {
             int numberOfRotations = (int) (Math.random() * 4);
             rotateMiniBoardAtIndexRight(index, numberOfRotations);
         }
-        */
 
         // Initialize cells in board board
         this.cells = new Cell[17][17];
