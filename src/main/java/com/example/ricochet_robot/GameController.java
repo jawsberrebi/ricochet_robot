@@ -145,10 +145,8 @@ public class GameController implements Initializable {
     public void handleGameBtn(){
         switch (game.Status) {
             case LAUNCH_TIMER -> {
-                getPositionRobots();
                 timeline.stop();
-                game.reinitializePlayers();                                                                             //Remet à 0 le nombre de coups fait précédéments, le nombre de coups choisis etc.
-                //reinitializeRobot();
+                game.reinitializePlayers();
                 this.stateRound.setText("Entrez le plus petit nombre de coups");
                 this.stateRound.setVisible(true);
                 this.spinnerPlayerOne.setVisible(true);
@@ -288,7 +286,6 @@ public class GameController implements Initializable {
                     }
                 }
 
-                /* Potentiel bug */
                 //Ajout des symboles, s'il y en a
                 String symbolImageFilename = null;
                 System.out.println(currentCell.getIsThereASymbol());
